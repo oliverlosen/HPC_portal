@@ -2,6 +2,27 @@
 
 Primera versión del frontend para el piloto de asesoría de HPC, basada en **Fase 2 - Proyecto Final.pdf**. Se enfoca en ayudar a un cliente que llega desde QR, NFC o un enlace a encontrar una herramienta para su proyecto y conocer el respaldo local.
 
+## Empezar como colaborador o agente
+
+El contexto compartido vive en el repositorio. Antes de modificar archivos, lee estas referencias desde la rama en la que vas a trabajar:
+
+| Documento | Para qué sirve |
+|---|---|
+| [AGENTS.md](AGENTS.md) | Instrucciones comunes de trabajo, comprobaciones y registro obligatorio de cambios |
+| [CLAUDE.md](CLAUDE.md) | Entrada para Claude Code; importa la guía común |
+| [PROYECTO.md](PROYECTO.md) | Objetivo, usuarios, alcance, arquitectura, estado y próximos pasos |
+| [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBIOS.md) | Qué se modificó, por qué, archivos afectados, comprobaciones y pendientes |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Cómo coordinar tareas, ramas y PR entre colaboradores |
+| [docs/alcance-cliente.md](docs/alcance-cliente.md) | Detalle de la primera versión de cliente |
+
+**Todo agente que haga una modificación debe registrar su tarea en `ULTIMOS_CAMBIOS.md` antes de entregar o publicar el commit/PR.** Si cambia una decisión, arquitectura o integración, actualiza también `PROYECTO.md`. El equipo mantiene estos archivos junto al código; no dependen de que un agente recuerde conversaciones de otro.
+
+Puedes iniciar un chat o tarea con este mensaje, agregando tu solicitud al final:
+
+> Trabaja en el repositorio `oliverlosen/HPC_portal`. Antes de modificar archivos, lee y sigue `AGENTS.md`; revisa `PROYECTO.md`, `README.md` y las entradas recientes de `ULTIMOS_CAMBIOS.md` de la rama vigente. Comprueba el estado de GitHub y trabaja en una rama por tarea. Al terminar, registra qué hiciste, por qué, los archivos afectados, las comprobaciones y los pendientes; entrega el enlace a la rama o PR. Mi tarea es: [describir tarea].
+
+Codex utiliza `AGENTS.md` como instrucciones de proyecto. `CLAUDE.md` usa la importación `@AGENTS.md` para compartir la misma guía con Claude Code. En interfaces de chat que no carguen archivos automáticamente, solicita su lectura de forma explícita. Referencias: [instrucciones de Codex](https://developers.openai.com/codex/guides/agents-md) e [importaciones de Claude Code](https://code.claude.com/docs/en/memory).
+
 ## Abrir el proyecto
 
 No necesita instalar dependencias ni ejecutar una compilación. Sirve la carpeta `dist` con cualquier servidor estático. Por ejemplo, desde la raíz:
