@@ -6,6 +6,16 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-10-13 - Revisión del PR #4, conflicto conservado y política de Releases
+
+- **Agente/herramienta:** Codex / ChatGPT, por solicitud de Oliver.
+- **Rama:** `docs/readme-contributing` · [PR #4](https://github.com/oliverlosen/HPC_portal/pull/4).
+- **Qué se hizo:** se conservaron las mejoras del README y CONTRIBUTING y la aprobación de cada PR por `oliverlosen`. Se preparó la combinación con el PR #3, resolviendo el conflicto del registro con todas las entradas de ambos PR. Se añadió la política de versiones, los commits de referencia para las primeras etiquetas, notas de entrega y recuperación mediante un PR; README y contexto enlazan esa guía y describen la nueva comprobación de comportamiento.
+- **Por qué:** integrar el trabajo del equipo sin sobrescribir sus entradas, mantener documentación coherente con las correcciones y dejar una forma reproducible de conservar y recuperar entregas.
+- **Archivos afectados:** `README.md`, `CONTRIBUTING.md`, `docs/versiones.md`, `PROYECTO.md`, `ULTIMOS_CAMBIOS.md`. La combinación conserva los cambios de fuentes y vista portátil del PR #3.
+- **Comprobaciones:** enlaces relativos y rutas de documentación existentes; categorías QR, eventos y versión comparados con `dist/app.js` y `dist/data.js`; ausencia de marcadores de conflicto; preservación de todas las entradas anteriores; sintaxis, comportamiento y equivalencia de la copia portátil en la combinación preparada.
+- **Pendientes/límites:** no hay Releases publicadas. La conexión disponible permite revisar e integrar PR, pero no crear etiquetas o Releases; la guía deja preparada su creación en GitHub. No se cambió ni se desplegó el Site. Las limitaciones de comprobación visual del PR #3 siguen documentadas.
+
 ### 2026-10-13 - Documentación: requisitos, estructura y colaboración
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
@@ -15,6 +25,26 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 - **Archivos afectados:** `README.md`, `CONTRIBUTING.md`.
 - **Comprobaciones:** enlaces relativos de ambos documentos verificados contra los archivos del repositorio; categorías y eventos comparados con `dist/app.js`; estructura comparada con los archivos versionados. Sin cambios de código.
 - **Pendientes/límites:** la regla sobre quién aprueba la integración es una propuesta para que Oliver la confirme en la revisión. "Alternativa elegida" describe el comportamiento corregido en el PR #3; en `main`, "Mantener esta" todavía registra ese evento hasta que se integre.
+
+### 2026-10-13 - Revisión del PR #3 y selección para madera y metal
+
+- **Agente/herramienta:** Codex / ChatGPT, por solicitud de Oliver.
+- **Rama:** `fix/errores-revision-inicial` · [PR #3](https://github.com/oliverlosen/HPC_portal/pull/3).
+- **Qué se hizo:** se conservaron las correcciones del colaborador y se completó la decisión de recomendación: para madera o metal con uso diario o prioridad de capacidad se muestra ROTI-20A3; el SDS deja de seleccionarse o compararse automáticamente en esos materiales. Se explica el modo sin percusión, la diferencia de baterías y la consulta a HPC para trabajo intenso o continuo. Se corrigió la explicación restante del SDS para mampostería, se actualizó el contexto, se agregó una comprobación de comportamiento sin dependencias y se regeneró el HTML portátil. La versión del frontend queda en `0.1.1`, preparada para etiquetarla posteriormente.
+- **Por qué:** corregir el texto no resolvía una regla que trataba potencia como adecuación al material. Las fichas y el manual de Truper se consultaron el 2026-10-13; el SDS admite madera y metal, pero no será la opción automática por watts. Dos baterías no significan mayor diámetro de perforación.
+- **Archivos afectados:** `dist/app.js`, `dist/data.js`, `PROYECTO.md`, `scripts/check-guide.cjs`, `preview/HPC_Cliente_Mockup.html`, `ULTIMOS_CAMBIOS.md`.
+- **Comprobaciones:** sintaxis de ambos archivos JavaScript; `node scripts/check-guide.cjs` con 36 resultados esperados para perforación y 144 combinaciones válidas del recorrido, controles generados, cierre sin evento y selección con un evento de alternativa, 8 explicaciones de aspiradora; copia portátil regenerada y comparada con sus fuentes. Las instantáneas descargadas coinciden con sus blobs de GitHub. La combinación local de los PR #3 y #4 confirmó un único conflicto: `ULTIMOS_CAMBIOS.md`.
+- **Pendientes/límites:** no se repitió la comprobación visual móvil, consola del navegador, fotos externas ni archivos de factura: no hay navegador instalado y su descarga falló. El adaptador de las pruebas comprueba comportamiento, no diseño ni red; las comprobaciones visuales del colaborador permanecen documentadas en su entrada. La regla necesita validación comercial de HPC. Cambiar el número de versión no crea una etiqueta, una Release ni una publicación. Los problemas fuera del alcance anotados por el colaborador siguen pendientes.
+
+### 2026-10-13 - Corrección de errores de la revisión inicial
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `fix/errores-revision-inicial`.
+- **Qué se hizo:** la explicación del rotomartillo SDS Plus 1500 W, cuando se recomienda para madera, metal o block por capacidad o uso diario, ya no dice que es inalámbrico ni que atornilla: indica que es el equipo de más potencia de la muestra, pensado para concreto, y pide confirmar con un asesor. Las explicaciones de aspiradoras mencionan la limpieza que eligió el cliente. En la comparación, "Mantener esta" solo cierra la ventana y ya no registra `alternative_selected`. En pantallas de 520 px o menos, la tarjeta "Tu proyecto está respaldado" se ajusta a su columna y ya no tapa "Empezar mi proyecto". Las fotos se piden a 828 px en lugar de 3840 px.
+- **Por qué:** errores encontrados en la revisión del 2026-10-12: información de producto incorrecta, métrica de alternativas inflada, botón principal tapado en móvil (45, 30 y 15 px a 360, 375 y 390 px) y fotos unas tres veces más pesadas de lo necesario (9 fotos: 677 KB antes, 213 KB ahora).
+- **Archivos afectados:** `dist/app.js`, `dist/styles.css` y `preview/HPC_Cliente_Mockup.html` (regenerado con `node scripts/export-preview.cjs`).
+- **Comprobaciones:** `node --check dist/app.js` y `node --check dist/data.js` sin errores. Pruebas con clics en Edge sin interfaz, dentro de marcos de ancho fijo: recorridos de taladro (madera, metal, block y concreto), aspiradora (cuatro superficies), hidrolavadora y grifo (baño y cocina); "Mantener esta" sin evento y "Elegir alternativa" con `alternative_selected`; Me lo llevo, colaborador, cambio de tienda, registro sin factura, búsqueda y eliminación. La tarjeta no se superpone al botón, al título ni al texto entre 360 y 1440 px; sin desbordamiento horizontal a 360 y 390 px; fotos de 828 px cargadas; sin errores de consola. La copia portátil abre y contiene los cambios.
+- **Pendientes/límites:** sigue pendiente que HPC u Oliver decidan qué recomendar para madera o metal con mayor capacidad o uso diario (la regla no cambió, solo el texto). A 360 px el texto de la tarjeta ocupa seis líneas. No se probó en un teléfono real, ni guardar una factura como archivo ni compartir por WhatsApp. Las fotos siguen dependiendo del servicio de imágenes de hpcenlinea.com.gt. Detectado y fuera de esta tarea: la explicación de hidrolavadora dice "Quieres limpiar mi carro o moto"; volver con Atrás puede mezclar respuestas de dos recorridos; un segundo registro del mismo producto no se puede abrir; la fecha máxima de compra usa UTC.
 
 ### 2026-10-12 - Contexto compartido y guías de agentes
 

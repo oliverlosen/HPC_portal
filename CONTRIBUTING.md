@@ -19,6 +19,10 @@ Coordina quién modifica cada área cuando haya trabajo simultáneo: antes de em
 
 El responsable del repositorio (`oliverlosen`) revisa cada PR y decide si se integra en `main`; nadie integra sin esa aprobación. No uses force push para reemplazar el trabajo de otro colaborador. Si hay un conflicto en el registro de cambios, conserva ambas entradas.
 
+## Versiones y recuperación
+
+Usamos etiquetas y Releases para conservar entregas revisadas. Sigue [docs/versiones.md](docs/versiones.md) para preparar una versión y volver a una anterior mediante un PR. Una Release no publica el sitio automáticamente. Oliver aprueba la publicación y se conserva el historial compartido.
+
 ## Iniciar otro agente
 
 El [README.md](README.md) incluye un mensaje breve que puede copiarse a ChatGPT, Claude u otra herramienta. En un chat que no lee instrucciones del repositorio automáticamente, pide de forma explícita que abra `AGENTS.md`, `PROYECTO.md`, `README.md` y el registro de cambios antes de trabajar.

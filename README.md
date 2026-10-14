@@ -37,6 +37,8 @@ Para revisar la propuesta sin servidor, abre `preview/HPC_Cliente_Mockup.html`: 
 
 **Requisitos para colaborar:** Git para clonar el repositorio y trabajar en ramas. Node.js solo se usa para las comprobaciones de [AGENTS.md](AGENTS.md) (`node --check`) y para regenerar la copia portátil; no hay paquetes que instalar. Python es opcional y solo sirve para el servidor del ejemplo; sin Python, abre `preview/HPC_Cliente_Mockup.html` o `dist/index.html` directamente.
 
+`node scripts/check-guide.cjs` comprueba recomendaciones y eventos con un adaptador mínimo del navegador, sin dependencias. No sustituye la revisión visual ni comprueba fotos externas o facturas. Para identificar entregas y recuperarse de un error, sigue [Versiones y Releases](docs/versiones.md). La versión del frontend preparado es `0.1.1`; la publicación de las primeras Releases está pendiente.
+
 ## Recorridos incluidos
 
 - Inicio con cuatro necesidades, sin mostrar un catálogo como primer paso.
@@ -71,7 +73,10 @@ preview/
   HPC_Cliente_Mockup.html   # copia portátil generada; no se edita a mano
 scripts/
   export-preview.cjs        # genera la copia portátil desde dist/
-docs/alcance-cliente.md
+  check-guide.cjs           # comprueba recomendaciones y eventos sin dependencias
+docs/
+  alcance-cliente.md
+  versiones.md              # entregas, Releases y recuperación
 .openai/hosting.json
 .github/pull_request_template.md
 AGENTS.md                   # guía común para agentes
