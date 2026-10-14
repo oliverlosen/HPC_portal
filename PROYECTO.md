@@ -1,6 +1,6 @@
 # HPC Smart Guide - Contexto compartido del proyecto
 
-Última actualización de este contexto: 2026-10-12. Los avances posteriores deben registrarse en [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBIOS.md); si alteran el estado descrito aquí, actualiza también este documento.
+Última actualización de este contexto: 2026-10-13. Los avances posteriores deben registrarse en [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBIOS.md); si alteran el estado descrito aquí, actualiza también este documento.
 
 ## Qué problema queremos resolver
 
@@ -63,6 +63,9 @@ Para una etapa posterior se contemplan búsqueda directa, kits/combinaciones par
 - Diferenciar información oficial, ejemplos y datos pendientes de integración.
 - Mantener garantía y servicio local visibles sin prometer cobertura aprobada.
 - Derivar a asesoría si una necesidad queda fuera de la muestra. En concreto se prioriza el equipo SDS Plus incluido; la grifería de la muestra cubre lavamanos de baño y no se extiende automáticamente a cocina o ducha.
+- Para madera y metal, comparar los taladros/destornilladores de la muestra, sin elegir el SDS solo por potencia. Para uso diario o prioridad de mayor capacidad, mostrar ROTI-20A3 con dos baterías; para presupuesto y uso ocasional o regular, ROTI-20A2 con una batería. Son variantes de la misma familia: las baterías adicionales permiten alternarlas, no aumentan el diámetro de perforación. Indicar modo taladro sin percusión y derivar a HPC para confirmar diámetro, profundidad y trabajo intenso o continuo. Esta orientación de demostración no acredita capacidad para trabajo industrial continuo.
+
+Esta decisión se apoya en la [ficha de ROTI-20A3](https://www.truper.com/ficha_tecnica_pdf/views/ficha-print.php?id=261856) y el [manual de ROTI-20A3/20A2/20AS](https://www.truper.com/admin/descargables/manual/103246-103247-103248-02%20ROTOMARTILLO%20ESP-ING.pdf), consultados el 2026-10-13. El [SDS ROEL-50N2](https://www.truper.com/ficha_tecnica_pdf/views/ficha-print.php?id=79843) también admite madera y metal según Truper; se excluye de la selección automática para esos materiales como criterio de la guía, no por incompatibilidad absoluta.
 
 ## Arquitectura actual y fuentes de edición
 
