@@ -35,6 +35,10 @@ Abre `http://127.0.0.1:4173`. El archivo `dist/index.html` también puede abrirs
 
 Para revisar la propuesta sin servidor, abre `preview/HPC_Cliente_Mockup.html`: incluye los estilos y la lógica en un solo archivo. Se regenera desde las fuentes con `node scripts/export-preview.cjs`.
 
+**Requisitos para colaborar:** Git para clonar el repositorio y trabajar en ramas. Node.js solo se usa para las comprobaciones de [AGENTS.md](AGENTS.md) (`node --check`) y para regenerar la copia portátil; no hay paquetes que instalar. Python es opcional y solo sirve para el servidor del ejemplo; sin Python, abre `preview/HPC_Cliente_Mockup.html` o `dist/index.html` directamente.
+
+`node scripts/check-guide.cjs` comprueba recomendaciones y eventos con un adaptador mínimo del navegador, sin dependencias. No sustituye la revisión visual ni comprueba fotos externas o facturas. Para identificar entregas y recuperarse de un error, sigue [Versiones y Releases](docs/versiones.md). La versión del frontend preparado es `0.1.1`; la publicación de las primeras Releases está pendiente.
+
 ## Recorridos incluidos
 
 - Inicio con cuatro necesidades, sin mostrar un catálogo como primer paso.
@@ -54,7 +58,7 @@ Es un prototipo de frontend, sin backend, autenticación comercial, inventario n
 
 Los datos de compra no se envían a HPC. Los registros y recomendaciones permanecen en `localStorage`; los archivos de factura se guardan en `IndexedDB`. El registro no valida ni activa la garantía. El usuario acepta expresamente guardar su registro en este dispositivo.
 
-Las imágenes se sirven desde las URLs oficiales de HPC/Truper y requieren conexión. Si no cargan, aparece un icono de la categoría. Las fuentes tienen alternativas locales de sistema.
+Las fotografías del catálogo de Truper se cargan a través del servicio de imágenes de hpcenlinea.com.gt y requieren conexión; ese servicio puede rechazar solicitudes que no provienen de un navegador. Si no cargan, aparece un icono de la categoría. Las fuentes tienen alternativas locales de sistema.
 
 ## Estructura
 
@@ -65,19 +69,32 @@ dist/
   data.js          # catálogo de muestra y puntos de servicio
   app.js           # navegación, reglas, formularios y almacenamiento
   assets/favicon.svg
+preview/
+  HPC_Cliente_Mockup.html   # copia portátil generada; no se edita a mano
+scripts/
+  export-preview.cjs        # genera la copia portátil desde dist/
+  check-guide.cjs           # comprueba recomendaciones y eventos sin dependencias
+docs/
+  alcance-cliente.md
+  versiones.md              # entregas, Releases y recuperación
 .openai/hosting.json
-docs/alcance-cliente.md
+.github/pull_request_template.md
+AGENTS.md                   # guía común para agentes
+CLAUDE.md                   # entrada para Claude Code; importa AGENTS.md
+PROYECTO.md                 # contexto, estado y próximos pasos
+ULTIMOS_CAMBIOS.md          # registro de cambios
+CONTRIBUTING.md             # cómo colaborar
 ```
 
 ## Enlaces de entrada QR/NFC
 
-Ejemplo: `/?tienda=cemaco&categoria=barrenos&origen=qr`. Los identificadores válidos de tienda son `cemaco`, `aki` y `ferreteria`. El parámetro `origen` identifica el punto de entrada; no se activa Google Analytics en este prototipo.
+Ejemplo: `/?tienda=cemaco&categoria=barrenos&origen=qr`. Los identificadores válidos de tienda son `cemaco`, `aki` y `ferreteria`. Los valores válidos de `categoria` son `barrenos`, `hidrolavadoras`, `aspiradoras` y `griferia` (también se aceptan `drill`, `wash`, `vacuum` y `faucet`). El parámetro `origen` identifica el punto de entrada; no se activa Google Analytics en este prototipo.
 
 La categoría de entrada se conserva como contexto de medición y no sustituye la selección de tarea del cliente.
 
 ## Preparación para medición
 
-Los eventos de demostración se guardan localmente y se publican como `CustomEvent('hpc:event')`. Incluyen apertura, inicio del recorrido, tiempo hasta recomendación, aceptación, apertura de WhatsApp, solicitud de ayuda, alternativa, rechazo y registro de factura. No se incluye contenido de facturas ni datos personales en estos eventos.
+Los eventos de demostración se guardan localmente y se publican como `CustomEvent('hpc:event')`. Incluyen apertura, inicio del recorrido, tiempo hasta recomendación, recomendación guardada, aceptación, apertura de WhatsApp, solicitud de ayuda, alternativa elegida, rechazo y registro de compra, con o sin factura. No se incluye contenido de facturas ni datos personales en estos eventos.
 
 La apertura de WhatsApp y “Me lo llevo” indican intención, no una compra confirmada. La validación de compra necesitará un flujo posterior con backend y evidencia revisada.
 

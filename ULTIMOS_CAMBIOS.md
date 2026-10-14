@@ -6,6 +6,26 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-10-13 - Revisión del PR #4, conflicto conservado y política de Releases
+
+- **Agente/herramienta:** Codex / ChatGPT, por solicitud de Oliver.
+- **Rama:** `docs/readme-contributing` · [PR #4](https://github.com/oliverlosen/HPC_portal/pull/4).
+- **Qué se hizo:** se conservaron las mejoras del README y CONTRIBUTING y la aprobación de cada PR por `oliverlosen`. Se preparó la combinación con el PR #3, resolviendo el conflicto del registro con todas las entradas de ambos PR. Se añadió la política de versiones, los commits de referencia para las primeras etiquetas, notas de entrega y recuperación mediante un PR; README y contexto enlazan esa guía y describen la nueva comprobación de comportamiento.
+- **Por qué:** integrar el trabajo del equipo sin sobrescribir sus entradas, mantener documentación coherente con las correcciones y dejar una forma reproducible de conservar y recuperar entregas.
+- **Archivos afectados:** `README.md`, `CONTRIBUTING.md`, `docs/versiones.md`, `PROYECTO.md`, `ULTIMOS_CAMBIOS.md`. La combinación conserva los cambios de fuentes y vista portátil del PR #3.
+- **Comprobaciones:** enlaces relativos y rutas de documentación existentes; categorías QR, eventos y versión comparados con `dist/app.js` y `dist/data.js`; ausencia de marcadores de conflicto; preservación de todas las entradas anteriores; sintaxis, comportamiento y equivalencia de la copia portátil en la combinación preparada.
+- **Pendientes/límites:** no hay Releases publicadas. La conexión disponible permite revisar e integrar PR, pero no crear etiquetas o Releases; la guía deja preparada su creación en GitHub. No se cambió ni se desplegó el Site. Las limitaciones de comprobación visual del PR #3 siguen documentadas.
+
+### 2026-10-13 - Documentación: requisitos, estructura y colaboración
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `docs/readme-contributing`.
+- **Qué se hizo:** en `README.md`, requisitos para colaborar (Git; Node.js solo para comprobaciones y la copia portátil; Python opcional), estructura completa del repositorio, valores válidos de `categoria` en los enlaces QR/NFC, lista completa de eventos de medición y origen real de las fotografías. En `CONTRIBUTING.md`, se aclara que se trabaja con un clon (sin fork), cómo avisar qué área se va a modificar, que regenerar la copia portátil requiere Node.js y que el responsable del repositorio aprueba la integración de cada PR.
+- **Por qué:** la estructura no incluía los archivos agregados después de la primera versión, faltaban los requisitos y las categorías para generar enlaces, y no estaba escrito quién aprueba la integración.
+- **Archivos afectados:** `README.md`, `CONTRIBUTING.md`.
+- **Comprobaciones:** enlaces relativos de ambos documentos verificados contra los archivos del repositorio; categorías y eventos comparados con `dist/app.js`; estructura comparada con los archivos versionados. Sin cambios de código.
+- **Pendientes/límites:** la regla sobre quién aprueba la integración es una propuesta para que Oliver la confirme en la revisión. "Alternativa elegida" describe el comportamiento corregido en el PR #3; en `main`, "Mantener esta" todavía registra ese evento hasta que se integre.
+
 ### 2026-10-13 - Revisión del PR #3 y selección para madera y metal
 
 - **Agente/herramienta:** Codex / ChatGPT, por solicitud de Oliver.
