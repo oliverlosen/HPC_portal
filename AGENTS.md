@@ -57,7 +57,7 @@ No añadas un framework, backend, dependencia o servicio solo para resolver una 
 
 ## Comprobaciones antes de entregar
 
-- Para cambios de JavaScript, ejecuta `node --check dist/app.js` y/o `node --check dist/data.js`, según lo afectado.
+- Para cambios de JavaScript, ejecuta `node --check dist/app.js` y/o `node --check dist/data.js`, según lo afectado. Si cambian recomendaciones, eventos o controles, ejecuta también `node scripts/check-guide.cjs`.
 - Para cambios de frontend, comprueba el recorrido afectado, los controles y una vista móvil. Comprueba la consola y que no haya desbordamiento horizontal. Distingue recursos locales de imágenes externas que no hayas podido cargar.
 - Si cambia cualquier fuente incluida en el HTML portátil, regenera `preview/HPC_Cliente_Mockup.html` y comprueba que abre.
 - Para cambios solo de documentación, revisa claridad, enlaces y coherencia con el código. No ejecutes toda la batería de interfaz por una corrección de texto.

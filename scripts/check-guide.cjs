@@ -6,13 +6,13 @@ const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
-function browser() {
+function browser(seed={}, now) {
   const elements = new Map();
   const element = id => {
     if (!elements.has(id)) elements.set(id, {innerHTML:'', style:{}, classList:{add(){}, remove(){}}, querySelector(){return null;}});
     return elements.get(id);
   };
-  const documentListeners = {}, windowListeners = {}, storage = new Map();
+  const documentListeners = {}, windowListeners = {}, storage = new Map(Object.entries(seed));
   let hash = '', pendingHash = false;
   const location = {search:'', get hash(){return hash;}, set hash(value){hash='#'+value.replace(/^#/, '');pendingHash=true;}};
   const document = {
@@ -24,7 +24,8 @@ function browser() {
   const context = vm.createContext({window, document, location, URLSearchParams, performance,
     CustomEvent:class {constructor(name, init){this.type=name;this.detail=init.detail;}},
     localStorage:{getItem:key=>storage.get(key)??null, setItem:(key,value)=>storage.set(key,value)},
-    setTimeout(){return 0;}, clearTimeout(){}, requestAnimationFrame(callback){callback();return 0;}, console
+    setTimeout(){return 0;}, clearTimeout(){}, requestAnimationFrame(callback){callback();return 0;}, console,
+    ...(now?{Date:class extends Date {constructor(...args){args.length?super(...args):super(now);} static now(){return new Date(now).getTime();}}}:{})
   });
   vm.runInContext(read('dist/data.js'), context, {filename:'dist/data.js'});
   vm.runInContext(read('dist/app.js'), context, {filename:'dist/app.js'});
@@ -49,7 +50,12 @@ function browser() {
     for(const value of [material,frequency,priority]){click('choose',{value});click('next');}
     return html();
   }
-  return {window, html, overlay, click, guide, events:()=>JSON.parse(storage.get('hpc-demo-events'))};
+  function navigate(value) {
+    location.hash = value;
+    pendingHash = false;
+    windowListeners.hashchange();
+  }
+  return {window, html, overlay, click, guide, navigate, events:()=>JSON.parse(storage.get('hpc-demo-events'))};
 }
 
 const b = browser();
@@ -121,4 +127,41 @@ assert.equal(choose({project:'faucet',material:'bathroom'}).id,'faucet-basic');
 assert.equal(choose({project:'faucet',material:'kitchen'}),null);
 assert.equal(choose({}),null);
 assert.match(b.html(),/w=828/);
-console.log(`OK: ${drillChecks} drill combinations; 144 valid guide combinations; rendered controls, alternative events and 8 vacuum explanations. Layout, external images and receipts require a real browser.`);
+
+const washSurfaces={car:'tu carro o moto',patio:'tu patio o terraza',both:'tu carro, el patio y otros espacios de la casa',heavy:'superficies muy sucias'};
+for(const [material,text] of Object.entries(washSurfaces)){
+  const reason=b.guide('wash',material,'occasional','balance').match(/class="why-card">[\s\S]*?<p>(.*?)<\/p>/)[1];
+  assert.ok(reason.startsWith(`Quieres limpiar ${text}.`),`${material}: incorrect wash explanation`);
+}
+
+// Going back to a recommendation from an earlier guide must not mix its answers.
+b.guide('drill','wood','daily','power');
+b.click('compare');
+b.click('select-alternative',{id:'drill-single'});
+b.guide('wash','car','occasional','balance');
+b.navigate('recomendacion/drill-single');
+assert.match(b.html(),/Modelo ROTI-20A2/);
+assert.doesNotMatch(b.html(),/Lavar con presión|Mi carro o moto/);
+b.guide('drill','concrete','regular','balance');
+b.navigate('recomendacion/drill-single');
+assert.doesNotMatch(b.html(),/Elegiste trabajar sobre concreto|<span class="chip">Concreto<\/span>/);
+b.guide('drill','wood','daily','power');
+b.click('compare');
+b.click('select-alternative',{id:'drill-single'});
+assert.match(b.html(),/Buscas trabajar sobre madera/,'An alternative keeps the answers of its own guide');
+
+// Each purchase record gets its own card, even for the same product.
+const record=(id,date)=>({id,productId:'drill-pro',date,store:'Tienda',serial:'',receiptId:null,receiptName:null,createdAt:'2026-10-18T00:00:00.000Z'});
+const tools=browser({'hpc-records':JSON.stringify([record('r1','2026-10-01'),record('r2','2026-10-05')]),'hpc-saved':JSON.stringify([{id:'drill-pro',at:'2026-10-01T00:00:00.000Z',store:'cemaco'}])});
+tools.navigate('herramientas');
+assert.deepEqual([...tools.html().matchAll(/data-action="record" data-id="([^"]+)"/g)].map(m=>m[1]),['r1','r2']);
+assert.match(tools.html(),/<span class="nav-number">2<\/span>/);
+
+// At 20:00 in Guatemala the UTC date is already the next day; the purchase date limit must stay local.
+process.env.TZ='America/Guatemala';
+const evening=browser({}, '2026-10-13T02:00:00Z');
+evening.navigate('herramientas');
+evening.click('register');
+assert.match(evening.overlay(),/max="2026-10-12"/,'Purchase date limit must use the local date');
+
+console.log(`OK: ${drillChecks} drill combinations; 144 valid guide combinations; rendered controls, alternative events, 8 vacuum and 4 wash explanations, back navigation, one card per purchase record and local purchase date. Layout, external images and receipts require a real browser.`);

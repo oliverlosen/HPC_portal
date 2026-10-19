@@ -38,6 +38,15 @@ Comprobar además el recorrido afectado y la vista móvil en un navegador. El sc
 - README y colaboración actualizados; historial de ambos PR conservado; comprobación de recomendaciones y eventos incorporada.
 - Límite de esta revisión: no se repitieron las pruebas visuales ni la carga de fotos o facturas por falta de navegador; se conservan las comprobaciones visuales reportadas por el colaborador. Las reglas requieren validación comercial de HPC.
 
+### Notas preparadas para v0.1.2
+
+Si se integra la rama `fix/pendientes-revision`, publicar `v0.1.2` desde el commit de `main` que la contenga:
+
+- La explicación de hidrolavadora habla de "tu carro o moto" y "tu patio o terraza".
+- Al volver con Atrás a una recomendación de otro recorrido, la guía ya no mezcla las respuestas.
+- Cada registro de compra tiene su propia tarjeta en Mis herramientas, aunque sea del mismo producto.
+- La fecha máxima de compra usa la fecha del dispositivo, no la hora UTC.
+
 ## Recuperarse si aparece un error
 
 Para consultar una versión anterior sin tocar `main`, descargar sus archivos desde Releases o usar `git switch --detach v0.1.0` en una copia limpia.

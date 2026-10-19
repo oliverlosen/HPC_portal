@@ -1,5 +1,5 @@
 window.HPC_DATA = {
-  version: '0.1.1',
+  version: '0.1.2',
   stores: [
     {id:'cemaco',name:'CEMACO',description:'Punto de venta de ejemplo',icon:'store'},
     {id:'aki',name:'AKÍ',description:'Punto de venta de ejemplo',icon:'store'},
