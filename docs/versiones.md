@@ -62,6 +62,15 @@ Si se integra la rama `feature/portal-interno`, publicar `v0.2.0` desde el commi
 - La guía de clientes no cambia, salvo el número de versión.
 - Límites: datos y códigos de acceso de demostración; el portal no se publica con el sitio. Se puede adjuntar `prototipos/portal-interno.html` a la Release, junto con la copia portátil.
 
+### Notas preparadas para v0.2.1
+
+Si se integra la rama `fix/accesibilidad-guia` después del PR #6, publicar `v0.2.1` desde el commit de `main` que la contenga:
+
+- Al tocar «Continuar» o «Anterior», el foco pasa a la nueva pregunta; al cambiar de página, a su título principal.
+- Títulos en orden en las preguntas, la recomendación, ayuda y Mis herramientas; la barra de progreso queda como decoración.
+- Los textos grises o claros tienen al menos 4.5:1 de contraste, sin cambiar el diseño.
+- Pendiente: el naranja de la marca en textos y botones, según la opción que elija Oliver.
+
 ## Recuperarse si aparece un error
 
 Para consultar una versión anterior sin tocar `main`, descargar sus archivos desde Releases o usar `git switch --detach v0.1.0` en una copia limpia.
