@@ -36,6 +36,7 @@ Preserva estos contratos salvo que la tarea solicite cambiarlos:
 - “Me lo llevo” y abrir WhatsApp son señales de intención. No las presentes como compras confirmadas ni como mensajes enviados.
 - Los registros y facturas actuales son locales al navegador. No afirmes que se envían a HPC, se sincronizan o activan una garantía.
 - No subas facturas reales, datos personales de clientes, tokens ni contraseñas al repositorio o al registro de cambios.
+- El portal interno (`prototipos/portal-interno.html`) es un prototipo con datos de ejemplo y códigos de acceso de demostración. No lo presentes como un sistema con usuarios, inventario, pedidos o métricas reales, ni lo publiques como un acceso seguro.
 
 ## Archivos que debes modificar
 
@@ -47,17 +48,21 @@ Preserva estos contratos salvo que la tarea solicite cambiarlos:
 | Navegación, recomendaciones, formularios y almacenamiento | `dist/app.js` |
 | Generación del HTML portátil | `scripts/export-preview.cjs` |
 | Configuración de publicación existente | `.openai/hosting.json` |
+| Portal interno de colaborador y mayorista (prototipo) | `prototipos/portal-interno.html` |
 | Objetivos, estado e integraciones | `PROYECTO.md` |
 | Cómo trabajar como agente | `AGENTS.md` |
 | Historial de las modificaciones | `ULTIMOS_CAMBIOS.md` |
 
 `preview/HPC_Cliente_Mockup.html` es un archivo generado. Modifica las fuentes de `dist/` y luego ejecuta `node scripts/export-preview.cjs`; no hagas cambios únicamente en la copia portátil. Conserva el identificador de Site existente y su audiencia al trabajar en publicación.
 
+`prototipos/portal-interno.html` se edita directamente y no forma parte de `dist/` ni de la publicación. Copia de la guía los productos, la regla de recomendación, las preguntas, las explicaciones, las tiendas, los centros de servicio y los textos de garantía; si cambias esas fuentes, actualiza también el portal.
+
 No añadas un framework, backend, dependencia o servicio solo para resolver una tarea pequeña. Si una solicitud requiere ampliar la arquitectura, documenta la decisión y actualiza el contexto del proyecto.
 
 ## Comprobaciones antes de entregar
 
 - Para cambios de JavaScript, ejecuta `node --check dist/app.js` y/o `node --check dist/data.js`, según lo afectado. Si cambian recomendaciones, eventos o controles, ejecuta también `node scripts/check-guide.cjs`.
+- Si cambias `dist/data.js`, las reglas o textos de `dist/app.js`, o el portal interno, ejecuta `node scripts/check-portal-interno.cjs`. Comprueba que el portal siga usando lo mismo que la guía y su versión; no sustituye la revisión del portal en un navegador.
 - Para cambios de frontend, comprueba el recorrido afectado, los controles y una vista móvil. Comprueba la consola y que no haya desbordamiento horizontal. Distingue recursos locales de imágenes externas que no hayas podido cargar.
 - Si cambia cualquier fuente incluida en el HTML portátil, regenera `preview/HPC_Cliente_Mockup.html` y comprueba que abre.
 - Para cambios solo de documentación, revisa claridad, enlaces y coherencia con el código. No ejecutes toda la batería de interfaz por una corrección de texto.

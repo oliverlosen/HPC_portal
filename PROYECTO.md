@@ -1,6 +1,6 @@
 # HPC Smart Guide - Contexto compartido del proyecto
 
-Última actualización de este contexto: 2026-10-18. Los avances posteriores deben registrarse en [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBIOS.md); si alteran el estado descrito aquí, actualiza también este documento.
+Última actualización de este contexto: 2026-10-21. Los avances posteriores deben registrarse en [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBIOS.md); si alteran el estado descrito aquí, actualiza también este documento.
 
 ## Qué problema queremos resolver
 
@@ -11,7 +11,8 @@ La plataforma se llama **HPC Smart Guide**. Busca transformar la búsqueda de un
 ## Quién usa la plataforma
 
 - **Cliente:** escanea un QR, acerca su teléfono a una etiqueta NFC o abre un enlace; recibe asesoría y consulta el respaldo.
-- **Colaborador de tienda:** puede ver el código y modelo en la pantalla del cliente para ayudar a ubicarlo. Todavía no tiene un portal propio.
+- **Colaborador de tienda:** puede ver el código y modelo en la pantalla del cliente para ayudar a ubicarlo. Tiene un prototipo de portal interno para revisión (`prototipos/portal-interno.html`): consulta lo que recomendó la guía, hace las mismas preguntas si el cliente no tiene celular, registra cómo terminó la atención, pide reposición y consulta servicio y garantía.
+- **Mayorista o distribuidor:** en el mismo prototipo, catálogo con precios por volumen de ejemplo, pedidos, pedido sugerido y solicitudes de reposición de sus tiendas.
 - **Equipo de HPC:** necesitará mantener catálogo, reglas, tiendas y resultados del piloto. Ese portal administrativo está pendiente.
 - **Equipo del proyecto:** trabaja desde GitHub con distintos agentes y herramientas; comparte contexto mediante los documentos de este repositorio.
 
@@ -30,9 +31,10 @@ La guía empieza con la necesidad. No es una tienda de comercio electrónico ni 
 
 | Componente | Estado al actualizar este documento |
 |---|---|
-| Frontend del cliente | Prototipo interactivo en `dist/`; primera versión [PR #1](https://github.com/oliverlosen/HPC_portal/pull/1) y correcciones con recomendación por material [PR #3](https://github.com/oliverlosen/HPC_portal/pull/3), integrados en `main` |
+| Frontend del cliente | Prototipo interactivo en `dist/`; primera versión [PR #1](https://github.com/oliverlosen/HPC_portal/pull/1), correcciones con recomendación por material [PR #3](https://github.com/oliverlosen/HPC_portal/pull/3) y pendientes de revisión [PR #5](https://github.com/oliverlosen/HPC_portal/pull/5), integrados en `main` |
 | Vista portátil | `preview/HPC_Cliente_Mockup.html`, generada desde las mismas fuentes |
-| Versiones y Releases | Frontend preparado como `0.1.2`; política en [docs/versiones.md](docs/versiones.md); primeras etiquetas y Releases pendientes de publicación |
+| Portal interno (colaborador y mayorista) | Prototipo de un solo archivo en `prototipos/portal-interno.html`, fuera de `dist/` y sin publicar. Datos de ejemplo en `localStorage`; se pueden pasar a otra computadora con un archivo. Códigos de acceso de demostración, no seguros. Copia datos, reglas y textos de la guía; `scripts/check-portal-interno.cjs` comprueba que sigan iguales |
+| Versiones y Releases | Versión preparada `0.2.0` (guía de clientes y portal interno); política en [docs/versiones.md](docs/versiones.md); primeras etiquetas y Releases pendientes de publicación |
 | Preguntas y recomendación | Reglas de demostración en JavaScript, pendientes de validar con especialistas de HPC |
 | Productos y fotografías | Muestra basada en el catálogo HPC/Truper; las fotografías requieren conexión externa |
 | Precios | Valores de ejemplo identificados en pantalla |
@@ -70,7 +72,7 @@ Esta decisión se apoya en la [ficha de ROTI-20A3](https://www.truper.com/ficha_
 
 ## Arquitectura actual y fuentes de edición
 
-Sitio estático con HTML, CSS y JavaScript del navegador. No necesita instalar dependencias de aplicación ni ejecutar una compilación. La única generación adicional es la copia portátil.
+Sitio estático con HTML, CSS y JavaScript del navegador. No necesita instalar dependencias de aplicación ni ejecutar una compilación. La única generación adicional es la copia portátil. El portal interno es un HTML independiente, sin dependencias, que se abre directamente.
 
 | Archivo o carpeta | Responsabilidad |
 |---|---|
@@ -79,7 +81,10 @@ Sitio estático con HTML, CSS y JavaScript del navegador. No necesita instalar d
 | `dist/data.js` | Categorías, preguntas, catálogo de muestra y centros |
 | `dist/app.js` | Rutas, reglas, interacción, eventos y registros locales |
 | `scripts/export-preview.cjs` | Ensamblar el mockup portátil |
+| `scripts/check-guide.cjs` | Comprobar recomendaciones y eventos de la guía |
+| `scripts/check-portal-interno.cjs` | Comprobar que el portal interno use lo mismo que la guía, y sus funciones propias |
 | `preview/` | Copia portátil generada; editar las fuentes, no esta copia |
+| `prototipos/portal-interno.html` | Portal interno de colaborador y mayorista (prototipo) |
 | `.openai/hosting.json` | Identidad y configuración existentes de Sites |
 | `docs/alcance-cliente.md` | Alcance detallado del frontend |
 
@@ -91,7 +96,8 @@ Sitio estático con HTML, CSS y JavaScript del navegador. No necesita instalar d
 4. Diseñar backend, almacenamiento de facturas, consentimiento y acceso a los registros.
 5. Configurar medición del piloto, diferenciando intención, evidencia recibida y compra confirmada.
 6. Diseñar el portal administrativo y sus permisos.
-7. Priorizar búsqueda, kits y ubicación detallada después del piloto.
+7. Definir el futuro del portal interno: acceso real por usuario, datos compartidos entre tiendas y mayoristas, publicación y si debe leer las fuentes de `dist/` en lugar de copiarlas.
+8. Priorizar búsqueda, kits y ubicación detallada después del piloto.
 
 No se han elegido todavía proveedores para el backend o una autenticación comercial. No los presentes como decisiones tomadas.
 
