@@ -6,6 +6,16 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-10-21 - Accesibilidad del portal interno: estructura
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `feature/portal-interno` · [PR #6](https://github.com/oliverlosen/HPC_portal/pull/6).
+- **Qué se hizo:** en `prototipos/portal-interno.html`, el aviso del prototipo es una región con nombre y cada pantalla tiene un título principal (h1) para lectores de pantalla. La tarjeta del QR y el resumen del pedido dejan de marcarse como contenido complementario dentro del contenido principal. No cambia nada visible.
+- **Por qué:** una revisión automática de accesibilidad (axe-core 4.10.2) encontró esos problemas de estructura en las pantallas del portal.
+- **Archivos afectados:** `prototipos/portal-interno.html`.
+- **Comprobaciones:** axe-core en 26 pantallas (18 del portal y 8 de la guía): en el portal solo queda el contraste del texto blanco sobre el naranja de la marca (3:1). Prueba con teclado real en Chrome (Tab, Enter, Espacio, flechas y Escape): acceso, preguntas sin celular, registro de la atención, panel de datos, pestañas y reposición sin mouse, con foco siempre visible. Las pruebas de recorridos de la entrada anterior pasan en Edge y en Chrome. `node scripts/check-guide.cjs` y `node scripts/check-portal-interno.cjs` correctos.
+- **Pendientes/límites:** el contraste del naranja, que comparten el portal y la guía, espera la decisión de Oliver entre dos opciones. En la guía de clientes, fuera de este PR, quedan el contraste de grises y naranja, la etiqueta de la barra de progreso, el orden de los títulos, una sección complementaria anidada y el foco que se pierde al tocar «Continuar».
+
 ### 2026-10-21 - Portal interno de colaborador y mayorista (prototipo)
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.

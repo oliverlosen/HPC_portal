@@ -605,7 +605,8 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
   const share = (a, b) => b>0 ? pct(a/b) : '—';
 
   /* ---------- Vistas ---------- */
-  const demoBanner = () => `<div class="demo" role="note"><div class="demo-in">${icon('info')}<span><strong>Prototipo con datos de ejemplo.</strong> No es un sistema de HPC: precios mayoristas, existencias, pedidos y métricas son simulados y se guardan solo en este navegador. <button class="link-btn demo-link" data-action="data-open" aria-expanded="${state.dataOpen}">Pasar datos a otra computadora</button></span></div></div>`;
+  // Región con nombre: el aviso queda dentro de una zona de la página para los lectores de pantalla.
+  const demoBanner = () => `<section class="demo" aria-label="Aviso del prototipo"><div class="demo-in">${icon('info')}<span><strong>Prototipo con datos de ejemplo.</strong> No es un sistema de HPC: precios mayoristas, existencias, pedidos y métricas son simulados y se guardan solo en este navegador. <button class="link-btn demo-link" data-action="data-open" aria-expanded="${state.dataOpen}">Pasar datos a otra computadora</button></span></div></section>`;
   const brand = () => `<span class="brand"><span class="brand-mark">HPC</span><span>Smart Guide<small>Portal interno · prototipo</small></span></span>`;
 
   function loginView(){
@@ -658,7 +659,7 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
     const inOrder = state.draft.lines.reduce((n,l)=>n+l.boxes,0);
     const pending = state.requests.filter(r => r.status==='pendiente' && myStores().includes(r.store)).length;
     return `<header class="topbar"><div class="topbar-in">${brand()}<span class="mode-badge">${icon(collab?'user':'cart')} Modo ${collab?'colaborador':'mayorista'} · ${esc(who)}</span><div class="topbar-right"><button class="btn btn-ghost btn-sm" data-action="logout">${icon('logout')} Salir</button></div></div></header>${demoBanner()}
-    <main id="main" class="wrap" tabindex="-1"><nav class="tabs" aria-label="Secciones">${tabs.map(([id,label,ic])=>`<button class="tab" data-action="tab" data-tab="${id}"${state.tab===id?' aria-current="page"':''}>${icon(ic)}${label}${id==='pedido'&&inOrder?`<span class="count" aria-label="${inOrder} cajas">${inOrder}</span>`:''}${id==='reposicion'&&pending?`<span class="count" aria-label="${pending} pendientes">${pending}</span>`:''}</button>`).join('')}</nav>${state.dataOpen?dataPanel():''}${content}${footer()}</main>`;
+    <main id="main" class="wrap" tabindex="-1"><h1 class="sr-only">Portal interno · ${esc(TITLES[state.tab]||'Inicio')}</h1><nav class="tabs" aria-label="Secciones">${tabs.map(([id,label,ic])=>`<button class="tab" data-action="tab" data-tab="${id}"${state.tab===id?' aria-current="page"':''}>${icon(ic)}${label}${id==='pedido'&&inOrder?`<span class="count" aria-label="${inOrder} cajas">${inOrder}</span>`:''}${id==='reposicion'&&pending?`<span class="count" aria-label="${pending} pendientes">${pending}</span>`:''}</button>`).join('')}</nav>${state.dataOpen?dataPanel():''}${content}${footer()}</main>`;
   }
   const footer = () => `<p class="foot">Prototipo para revisión del equipo de HPC Smart Guide. Productos, códigos y reglas de recomendación vienen de la guía de clientes (versión ${GUIDE_VERSION}). Los precios mayoristas, existencias, pedidos y métricas son datos de ejemplo y se guardan solo en este navegador.</p>`;
 
@@ -805,7 +806,7 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
           <td class="num">${fmt(r.units)}</td><td class="num">${money(r.unit)}</td><td class="num">${r.disc?pct(r.disc):'—'}</td><td class="num"><strong>${money(r.total)}</strong></td>
           <td><button class="icon-btn" type="button" data-action="remove-line" data-id="${r.p.id}" aria-label="Quitar ${esc(r.p.name)}">${icon('trash')}</button></td></tr>`).join('')}
         </tbody></table></div></div>
-      <aside class="card order-summary" aria-labelledby="summary-title"><h3 id="summary-title">Resumen</h3>
+      <section class="card order-summary" aria-labelledby="summary-title"><h3 id="summary-title">Resumen</h3>
         <dl class="sum"><div><dt>Subtotal</dt><dd>${money(t.gross)}</dd></div><div><dt>Descuento por volumen</dt><dd>− ${money(t.discount)}</dd></div><div class="sum-total"><dt>Total de ejemplo (sin impuestos)</dt><dd>${money(t.net)}</dd></div></dl>
         <form id="order-form" class="stack" novalidate>
           <div class="field"><label for="o-point">Punto de entrega</label><select id="o-point" class="input"><option value="">Selecciona</option>${acc.points.map(pt=>`<option${d.point===pt?' selected':''}>${esc(pt)}</option>`).join('')}</select></div>
@@ -815,7 +816,7 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
           <button class="btn btn-primary btn-full" type="submit">${icon('check')} Confirmar pedido (demostración)</button>
           <p class="hint small">El borrador se guarda solo en este navegador. Al confirmar, el pedido no se envía a HPC ni reserva existencias.</p>
         </form>
-      </aside>
+      </section>
     </section>`;
   }
   const myOrders = () => state.orders.filter(o=>o.account===state.session.account);
@@ -935,7 +936,7 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
           <div class="field"><label for="qr-origin">Dónde se va a colocar</label><select id="qr-origin" class="input">${QR_ORIGIN.map(([id,label])=>`<option value="${id}"${state.qr.origin===id?' selected':''}>${esc(label)}</option>`).join('')}</select></div>
         </form>
       </div>
-      <aside class="card qr-box" id="qr-result" aria-live="polite">${qrResult()}</aside>
+      <section class="card qr-box" id="qr-result" aria-live="polite" aria-label="Código QR y enlace">${qrResult()}</section>
     </section>`;
   }
   function qrLink(){
