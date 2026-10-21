@@ -1,0 +1,41 @@
+# Comprobaciones automáticas en cada PR y en main: las mismas de AGENTS.md, sin instalar dependencias.
+# No sustituyen la revisión en un navegador (diseño, móvil, fotos externas o facturas).
+name: Comprobaciones
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  comprobaciones:
+    name: Comprobaciones del repositorio
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Sintaxis de JavaScript
+        run: |
+          node --check dist/app.js
+          node --check dist/data.js
+          for f in scripts/*.cjs; do node --check "$f"; done
+      - name: Recomendaciones, eventos y demás comprobaciones de scripts/
+        run: |
+          for f in scripts/check-*.cjs; do
+            echo "== $f"
+            node "$f"
+          done
+      - name: La copia portátil coincide con dist/
+        run: |
+          node scripts/export-preview.cjs
+          if ! git diff --quiet -- preview/; then
+            git diff --stat -- preview/
+            echo "::error::preview/HPC_Cliente_Mockup.html no coincide con dist/. Ejecuta node scripts/export-preview.cjs y sube el resultado."
+            exit 1
+          fi

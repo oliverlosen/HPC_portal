@@ -62,6 +62,7 @@ No añadas un framework, backend, dependencia o servicio solo para resolver una 
 - Si cambia cualquier fuente incluida en el HTML portátil, regenera `preview/HPC_Cliente_Mockup.html` y comprueba que abre.
 - Para cambios solo de documentación, revisa claridad, enlaces y coherencia con el código. No ejecutes toda la batería de interfaz por una corrección de texto.
 - No registres como aprobada una prueba que no ejecutaste. Describe las limitaciones y bloqueos concretos.
+- GitHub ejecuta automáticamente en cada PR y en `main` la sintaxis, los scripts `scripts/check-*.cjs` y la revisión de que la copia portátil esté al día (`.github/workflows/comprobaciones.yml`). Revisa su resultado en el PR antes de pedir la integración; que pasen no sustituye la revisión en un navegador.
 
 ## Registro obligatorio de cambios
 

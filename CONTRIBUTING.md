@@ -31,6 +31,6 @@ El [README.md](README.md) incluye un mensaje breve que puede copiarse a ChatGPT,
 
 ## Comprobación adecuada a la tarea
 
-Una modificación de texto necesita revisión de enlaces y coherencia. Una modificación de comportamiento necesita probar el recorrido que cambió; no basta con describirlo. Usa el procedimiento y los comandos de [AGENTS.md](AGENTS.md).
+Una modificación de texto necesita revisión de enlaces y coherencia. Una modificación de comportamiento necesita probar el recorrido que cambió; no basta con describirlo. Usa el procedimiento y los comandos de [AGENTS.md](AGENTS.md). En cada PR, GitHub ejecuta además las comprobaciones que no necesitan navegador; su resultado aparece en la pestaña **Checks** y, si fallan, se corrigen antes de pedir la integración.
 
 Las fotografías requieren conexión y el almacenamiento del prototipo es local a cada navegador. Al compartir la vista portátil, los datos de una persona no aparecen en la computadora de otra.

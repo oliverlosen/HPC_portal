@@ -6,6 +6,16 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-10-21 - Comprobaciones automáticas en cada PR
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `feature/comprobaciones-automaticas`.
+- **Qué se hizo:** `.github/workflows/comprobaciones.yml` ejecuta con GitHub Actions, en cada PR y en `main`, las comprobaciones que no necesitan navegador: `node --check` de `dist/app.js`, `dist/data.js` y los scripts; todos los `scripts/check-*.cjs`; y que `preview/HPC_Cliente_Mockup.html` coincida con `dist/` al regenerarla. `AGENTS.md`, `CONTRIBUTING.md` y `README.md` lo mencionan. No cambia la guía ni su versión.
+- **Por qué:** que un error de sintaxis, una regla rota o una copia portátil desactualizada se vea en el PR antes de que Oliver decida integrarlo.
+- **Archivos afectados:** `.github/workflows/comprobaciones.yml` (nuevo), `AGENTS.md`, `CONTRIBUTING.md`, `README.md`.
+- **Comprobaciones:** los mismos pasos del flujo, ejecutados con Bash en una copia limpia de esta rama: todos correctos. Con la copia portátil alterada a propósito, el último paso falla y muestra el archivo. Enlaces y estructura del README revisados.
+- **Pendientes/límites:** la ejecución real en GitHub se ve en el PR. Usa las acciones oficiales `actions/checkout@v4` y `actions/setup-node@v4` con Node 22. No sustituye las pruebas en un navegador. Si se integra después del PR #6, también correrá `scripts/check-portal-interno.cjs`.
+
 ### 2026-10-18 - Pendientes de la revisión: textos, navegación, registros y fecha
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
