@@ -1,6 +1,6 @@
 # HPC Smart Guide - Contexto compartido del proyecto
 
-Última actualización de este contexto: 2026-10-13. Los avances posteriores deben registrarse en [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBIOS.md); si alteran el estado descrito aquí, actualiza también este documento.
+Última actualización de este contexto: 2026-10-18. Los avances posteriores deben registrarse en [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBIOS.md); si alteran el estado descrito aquí, actualiza también este documento.
 
 ## Qué problema queremos resolver
 
@@ -32,7 +32,7 @@ La guía empieza con la necesidad. No es una tienda de comercio electrónico ni 
 |---|---|
 | Frontend del cliente | Prototipo interactivo en `dist/`; primera versión [PR #1](https://github.com/oliverlosen/HPC_portal/pull/1) y correcciones con recomendación por material [PR #3](https://github.com/oliverlosen/HPC_portal/pull/3), integrados en `main` |
 | Vista portátil | `preview/HPC_Cliente_Mockup.html`, generada desde las mismas fuentes |
-| Versiones y Releases | Frontend preparado como `0.1.1`; política en [docs/versiones.md](docs/versiones.md); primeras etiquetas y Releases pendientes de publicación |
+| Versiones y Releases | Frontend preparado como `0.1.2`; política en [docs/versiones.md](docs/versiones.md); primeras etiquetas y Releases pendientes de publicación |
 | Preguntas y recomendación | Reglas de demostración en JavaScript, pendientes de validar con especialistas de HPC |
 | Productos y fotografías | Muestra basada en el catálogo HPC/Truper; las fotografías requieren conexión externa |
 | Precios | Valores de ejemplo identificados en pantalla |

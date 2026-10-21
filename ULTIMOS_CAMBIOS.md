@@ -6,6 +6,16 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-10-18 - Pendientes de la revisión: textos, navegación, registros y fecha
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `fix/pendientes-revision`.
+- **Qué se hizo:** la explicación de hidrolavadora habla de "tu carro o moto" y "tu patio o terraza". Al volver con Atrás a una recomendación que no corresponde a las respuestas vigentes, la guía conserva solo la categoría del producto y ya no mezcla respuestas de otro recorrido; una alternativa elegida en el mismo recorrido conserva sus respuestas. Mis herramientas muestra una tarjeta por registro de compra, con su fecha, aunque sea del mismo producto, y el contador del menú cuenta esas tarjetas. La fecha máxima de compra y su validación usan la fecha local del dispositivo. `AGENTS.md` indica ejecutar `node scripts/check-guide.cjs`, y el script incorpora pruebas de estos casos. La versión pasa a `0.1.2` en `dist/data.js`, README, PROYECTO y las notas de `docs/versiones.md`.
+- **Por qué:** pendientes anotados en las revisiones del 2026-10-13 y comprobados en `main` (`9670324`): un segundo registro del mismo producto no se podía abrir ni borrar y, después de las 18:00 en Guatemala, el formulario aceptaba la fecha de mañana.
+- **Archivos afectados:** `dist/app.js`, `dist/data.js`, `scripts/check-guide.cjs`, `preview/HPC_Cliente_Mockup.html` (regenerado), `AGENTS.md`, `README.md`, `PROYECTO.md`, `docs/versiones.md`.
+- **Comprobaciones:** `node --check` de `dist/app.js`, `dist/data.js` y `scripts/check-guide.cjs`; `node scripts/check-guide.cjs` correcto, y cada prueba nueva falla con el código de `9670324`. En Edge sin interfaz, con marcos de ancho fijo: cuatro explicaciones de hidrolavadora; Atrás del navegador hacia una recomendación de otro recorrido; fecha máxima igual a la fecha local; dos registros del mismo producto con tarjetas, apertura y eliminación independientes; búsqueda; comparar, Me lo llevo, colaborador y tienda; sin desbordamiento horizontal a 360 y 390 px; tarjeta de portada sin superposición; sin errores de consola; copia portátil con versión `0.1.2`.
+- **Pendientes/límites:** no se probó en un teléfono real, con factura adjunta ni compartiendo por WhatsApp. Las Releases `v0.1.0`, `v0.1.1` y `v0.1.2` siguen pendientes de la aprobación de Oliver. Las reglas requieren validación comercial de HPC.
+
 ### 2026-10-13 - Revisión del PR #4, conflicto conservado y política de Releases
 
 - **Agente/herramienta:** Codex / ChatGPT, por solicitud de Oliver.
