@@ -6,6 +6,26 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-10-21 - Accesibilidad del portal interno: estructura
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `feature/portal-interno` · [PR #6](https://github.com/oliverlosen/HPC_portal/pull/6).
+- **Qué se hizo:** en `prototipos/portal-interno.html`, el aviso del prototipo es una región con nombre y cada pantalla tiene un título principal (h1) para lectores de pantalla. La tarjeta del QR y el resumen del pedido dejan de marcarse como contenido complementario dentro del contenido principal. No cambia nada visible.
+- **Por qué:** una revisión automática de accesibilidad (axe-core 4.10.2) encontró esos problemas de estructura en las pantallas del portal.
+- **Archivos afectados:** `prototipos/portal-interno.html`.
+- **Comprobaciones:** axe-core en 26 pantallas (18 del portal y 8 de la guía): en el portal solo queda el contraste del texto blanco sobre el naranja de la marca (3:1). Prueba con teclado real en Chrome (Tab, Enter, Espacio, flechas y Escape): acceso, preguntas sin celular, registro de la atención, panel de datos, pestañas y reposición sin mouse, con foco siempre visible. Las pruebas de recorridos de la entrada anterior pasan en Edge y en Chrome. `node scripts/check-guide.cjs` y `node scripts/check-portal-interno.cjs` correctos.
+- **Pendientes/límites:** el contraste del naranja, que comparten el portal y la guía, espera la decisión de Oliver entre dos opciones. En la guía de clientes, fuera de este PR, quedan el contraste de grises y naranja, la etiqueta de la barra de progreso, el orden de los títulos, una sección complementaria anidada y el foco que se pierde al tocar «Continuar».
+
+### 2026-10-21 - Portal interno de colaborador y mayorista (prototipo)
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `feature/portal-interno`.
+- **Qué se hizo:** se agrega `prototipos/portal-interno.html`, el prototipo que Oliver revisó como `dashboard-colaboradores.html`. Es un solo archivo, fuera de `dist/` y sin publicar, con dos modos. El colaborador consulta por código o le hace al cliente sin celular las cuatro preguntas de la guía, registra el resultado de la atención, ve los productos por agotarse y pide reposición, y consulta servicio y garantía, QR para anaquel y métricas de su tienda. El mayorista tiene catálogo con precios por volumen de ejemplo, pedido y pedido sugerido, solicitudes de reposición de sus tiendas, QR, servicio y garantía, y métricas. Los datos se guardan en el navegador y se pueden pasar a otra computadora con un archivo. `scripts/check-portal-interno.cjs` compara lo que el portal copia de la guía y prueba sus funciones propias. La versión pasa a `0.2.0` por ser una función nueva del prototipo; la guía de clientes no cambia salvo ese número. Se documentaron el portal, la comprobación y las notas de `v0.1.2` y `v0.2.0`.
+- **Por qué:** el colaborador y el mayorista necesitan herramientas distintas a las del cliente. Oliver revisó el prototipo y autorizó agregarlo al repositorio (aviso de tnt101ramirez-ctrl, 2026-10-21).
+- **Archivos afectados:** `prototipos/portal-interno.html` y `scripts/check-portal-interno.cjs` (nuevos), `dist/data.js`, `preview/HPC_Cliente_Mockup.html` (regenerado; solo cambia la versión), `AGENTS.md`, `PROYECTO.md`, `README.md`, `docs/versiones.md`.
+- **Comprobaciones:** `node --check` de `dist/app.js`, `dist/data.js`, ambos scripts y el script del portal. `node scripts/check-guide.cjs` correcto. `node scripts/check-portal-interno.cjs` correcto (144 combinaciones, 9 productos, 117 explicaciones y alternativas, centros, textos de garantía, categorías del QR, descuentos, copia de datos y capacidad del QR); también falla, como debe, con cambios introducidos a propósito en una copia. En Edge sin interfaz, con marcos de ancho fijo: 171 comprobaciones de recorridos de ambos modos, incluidas las 144 combinaciones respondidas en pantalla, la ida y vuelta de la copia de datos, archivos dañados y texto con HTML; QR de las versiones 1 a 10 leídos con un lector independiente (jsQR); sin desbordamiento horizontal a 360, 390 y 1280 px y sin errores de JavaScript. La guía y la copia portátil abren con la versión `0.2.0`, inician la Smart Guide y no desbordan a 360 y 390 px.
+- **Pendientes/límites:** precios mayoristas, existencias, pedidos, métricas y códigos de acceso son de ejemplo; los códigos no son seguros. Sin servidor, pasar datos entre computadoras es manual. El QR usa una dirección de ejemplo hasta que la guía esté publicada. Centros y horarios son los de la guía; conviene confirmarlos con HPC. No se probó en un teléfono real, con una impresora ni escaneando con una cámara. El portal copia datos y reglas de la guía en lugar de leer `dist/`; la comprobación detecta si dejan de coincidir. Las Releases `v0.1.0` a `v0.2.0` siguen pendientes de la aprobación de Oliver.
+
 ### 2026-10-18 - Pendientes de la revisión: textos, navegación, registros y fecha
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
