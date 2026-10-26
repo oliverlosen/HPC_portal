@@ -1,6 +1,6 @@
 # Versiones y Releases
 
-Oliver aprobó adoptar Releases para identificar entregas y facilitar la recuperación. El frontend preparado en los PR #3 y #4 usa `0.1.1` en `dist/data.js`; todavía no se ha publicado una Release. Una Release conserva un punto del código mediante una etiqueta y puede incluir el HTML portátil. Publicarla no despliega el sitio ni recupera registros locales de los clientes.
+Oliver aprobó adoptar Releases para identificar entregas y facilitar la recuperación. La versión de cada entrega está en `dist/data.js` (`0.2.0` al agregar el portal interno); todavía no se ha publicado una Release. Una Release conserva un punto del código mediante una etiqueta y puede incluir el HTML portátil. Publicarla no despliega el sitio ni recupera registros locales de los clientes.
 
 ## Convención del equipo
 
@@ -15,7 +15,7 @@ Oliver aprobó adoptar Releases para identificar entregas y facilitar la recuper
 | Etiqueta | Commit de referencia | Propósito |
 |---|---|---|
 | `v0.1.0` | `1e4523bd577a60fe21548507ac537bab953c767e` | Conservar la versión anterior a los PR #3 y #4 |
-| `v0.1.1` | El commit de `main` después de integrar ambos PR | Identificar la entrega revisada; copiar su SHA exacto desde GitHub |
+| `v0.1.1` | `9670324a828d6ec0befd1ffa081ddaa103d53946` (integración del PR #4, después del PR #3) | Identificar la entrega revisada |
 
 En [Releases del repositorio](https://github.com/oliverlosen/HPC_portal/releases), elegir **Draft a new release**, crear la etiqueta y seleccionar el commit indicado como **Target**. Revisar título, notas y archivos antes de publicar. Para `v0.1.0`, seleccionar el SHA de la tabla, no el `main` actual.
 
@@ -40,12 +40,27 @@ Comprobar además el recorrido afectado y la vista móvil en un navegador. El sc
 
 ### Notas preparadas para v0.1.2
 
-Si se integra la rama `fix/pendientes-revision`, publicar `v0.1.2` desde el commit de `main` que la contenga:
+La rama `fix/pendientes-revision` se integró en `main` con el [PR #5](https://github.com/oliverlosen/HPC_portal/pull/5). Publicar `v0.1.2` desde ese commit, `e57f2a3547d96c240981ea5b156a3cc54aed803e`:
 
 - La explicación de hidrolavadora habla de "tu carro o moto" y "tu patio o terraza".
 - Al volver con Atrás a una recomendación de otro recorrido, la guía ya no mezcla las respuestas.
 - Cada registro de compra tiene su propia tarjeta en Mis herramientas, aunque sea del mismo producto.
 - La fecha máxima de compra usa la fecha del dispositivo, no la hora UTC.
+
+### Notas preparadas para v0.2.0
+
+Si se integra la rama `feature/portal-interno`, publicar `v0.2.0` desde el commit de `main` que la contenga. Antes, ejecutar también `node scripts/check-portal-interno.cjs`.
+
+- Prototipo de portal interno en `prototipos/portal-interno.html`, con modo colaborador y modo mayorista:
+  - consulta por código o las preguntas de la guía para el cliente sin celular;
+  - resultado de la atención, productos por agotarse y solicitudes de reposición;
+  - servicio y garantía, y QR para anaquel;
+  - pedidos con precios por volumen y pedido sugerido;
+  - métricas de ejemplo.
+- Copia de los datos del portal en un archivo, para mostrarlo en dos computadoras sin servidor.
+- `scripts/check-portal-interno.cjs` comprueba que el portal use los mismos productos, reglas y textos que la guía.
+- La guía de clientes no cambia, salvo el número de versión.
+- Límites: datos y códigos de acceso de demostración; el portal no se publica con el sitio. Se puede adjuntar `prototipos/portal-interno.html` a la Release, junto con la copia portátil.
 
 ## Recuperarse si aparece un error
 

@@ -37,7 +37,16 @@ Para revisar la propuesta sin servidor, abre `preview/HPC_Cliente_Mockup.html`: 
 
 **Requisitos para colaborar:** Git para clonar el repositorio y trabajar en ramas. Node.js solo se usa para las comprobaciones de [AGENTS.md](AGENTS.md) (`node --check`) y para regenerar la copia portátil; no hay paquetes que instalar. Python es opcional y solo sirve para el servidor del ejemplo; sin Python, abre `preview/HPC_Cliente_Mockup.html` o `dist/index.html` directamente.
 
-`node scripts/check-guide.cjs` comprueba recomendaciones y eventos con un adaptador mínimo del navegador, sin dependencias. No sustituye la revisión visual ni comprueba fotos externas o facturas. Para identificar entregas y recuperarse de un error, sigue [Versiones y Releases](docs/versiones.md). La versión del frontend preparado es `0.1.2`; la publicación de las primeras Releases está pendiente.
+`node scripts/check-guide.cjs` comprueba recomendaciones y eventos con un adaptador mínimo del navegador, sin dependencias. No sustituye la revisión visual ni comprueba fotos externas o facturas. Para identificar entregas y recuperarse de un error, sigue [Versiones y Releases](docs/versiones.md). La versión preparada es `0.2.0`; la publicación de las primeras Releases está pendiente.
+
+## Portal interno (prototipo)
+
+`prototipos/portal-interno.html` es un prototipo, para revisión, de lo que verían el colaborador de tienda y el mayorista. Se abre con doble clic, sin servidor ni instalación, y no forma parte de `dist/` ni de la publicación. Los códigos de acceso de demostración aparecen en la misma pantalla de entrada y no protegen nada.
+
+- **Colaborador:** consulta por código lo que recomendó la guía o le hace al cliente las mismas cuatro preguntas si no tiene celular; argumentos de venta, existencias de ejemplo, resultado de la atención, productos por agotarse y solicitud de reposición, servicio y garantía, QR para anaquel y métricas de su tienda.
+- **Mayorista:** catálogo con precios por volumen de ejemplo, pedido y pedido sugerido, solicitudes de reposición de sus tiendas, QR, servicio y garantía, y métricas de sus tiendas.
+
+Precios mayoristas, existencias, pedidos y métricas son datos de ejemplo y se guardan en el navegador. Para mostrar los dos modos en computadoras distintas, el enlace «Pasar datos a otra computadora» descarga una copia en un archivo y la carga en la otra; no hay sincronización. El portal copia productos, reglas y textos de la guía; `node scripts/check-portal-interno.cjs` comprueba que sigan iguales.
 
 ## Recorridos incluidos
 
@@ -71,9 +80,12 @@ dist/
   assets/favicon.svg
 preview/
   HPC_Cliente_Mockup.html   # copia portátil generada; no se edita a mano
+prototipos/
+  portal-interno.html       # portal de colaborador y mayorista (prototipo de un solo archivo)
 scripts/
   export-preview.cjs        # genera la copia portátil desde dist/
   check-guide.cjs           # comprueba recomendaciones y eventos sin dependencias
+  check-portal-interno.cjs  # comprueba que el portal interno use lo mismo que la guía
 docs/
   alcance-cliente.md
   versiones.md              # entregas, Releases y recuperación

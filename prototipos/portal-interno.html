@@ -1,0 +1,1336 @@
+<!doctype html>
+<html lang="es-GT">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#fc641b">
+<title>Portal interno · HPC Smart Guide (prototipo)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+<style>
+:root{
+  --orange:#fc641b;--orange-hover:#e8550f;--orange-ink:#b4400b;--orange-soft:#fff1e8;
+  --ink:#191c1d;--ink-2:#454c50;--muted:#677176;--line:#e3e6e7;--paper:#f4f5f5;--surface:#ffffff;--radius:14px;
+  /* Gráficas: paleta de referencia de la guía de visualización, validada sobre #ffffff */
+  --series-1:#2a78d6;--ord-1:#86b6ef;--ord-2:#3987e5;--ord-3:#256abf;--ord-4:#104281;
+  --viz-text:#0b0b0b;--viz-text-2:#52514e;--viz-axis:#c3c2b7;
+  --good:#006300;--bad:#d03b3b;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:14px/1.5 "DM Sans",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+h1,h2,h3{font-family:Manrope,"DM Sans",system-ui,sans-serif;margin:0;letter-spacing:-.01em;line-height:1.25}
+button,input,select,textarea{font:inherit;color:inherit}
+a{color:var(--orange-ink)}
+p{margin:0}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.skip-link{position:absolute;left:-999px;top:8px;background:var(--ink);color:#fff;padding:8px 12px;border-radius:8px;z-index:70}
+.skip-link:focus{left:8px}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px}
+.icon{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.wrap{max-width:1180px;margin:0 auto;padding:22px 20px 40px}
+main:focus{outline:none}
+
+/* Barra superior y aviso de prototipo */
+.topbar{position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--line)}
+.topbar-in{max-width:1180px;margin:0 auto;padding:12px 20px;display:flex;align-items:center;gap:12px 16px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:10px;font:800 16px/1.1 Manrope,"DM Sans",sans-serif;color:var(--ink)}
+.brand-mark{background:var(--orange);color:#fff;border-radius:9px;padding:5px 8px;font-size:14px;letter-spacing:.03em}
+.brand small{display:block;font:600 10.5px/1.3 "DM Sans",sans-serif;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:2px}
+.mode-badge{display:inline-flex;align-items:center;gap:8px;background:var(--orange-soft);color:var(--orange-ink);border-radius:999px;padding:6px 12px;font-weight:600;font-size:12.5px}
+.topbar-right{margin-left:auto;display:flex;align-items:center;gap:8px}
+.demo{background:#fff8e6;border-bottom:1px solid #f1dfb2;color:#5a4300;font-size:12.5px}
+.demo-in{max-width:1180px;margin:0 auto;padding:8px 20px;display:flex;gap:8px;align-items:flex-start}
+
+/* Pestañas */
+.tabs{display:flex;gap:6px;overflow-x:auto;padding:2px 2px 8px;margin:0 0 16px}
+.tab{flex:none;display:inline-flex;align-items:center;gap:8px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:8px 14px;font-weight:600;cursor:pointer}
+.tab:hover{border-color:#c9cfd1}
+.tab[aria-current="page"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.count{background:var(--orange);color:#fff;border-radius:999px;font-size:11px;padding:1px 7px}
+
+/* Botones */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;border:1px solid transparent;padding:10px 16px;font-weight:600;cursor:pointer;text-decoration:none;line-height:1.2;text-align:center}
+.btn-primary{background:var(--orange);color:#fff}
+.btn-primary:hover{background:var(--orange-hover)}
+.btn-dark{background:var(--ink);color:#fff}
+.btn-secondary{background:var(--surface);border-color:var(--line);color:var(--ink)}
+.btn-secondary:hover{border-color:#c2c8cb}
+.btn-ghost{background:transparent;color:var(--ink-2)}
+.btn-ghost:hover{background:#eceeef}
+.btn-sm{padding:6px 10px;font-size:12.5px;border-radius:8px}
+.btn-full{width:100%}
+.link-btn{background:none;border:0;color:var(--ink-2);font-weight:600;font-size:12.5px;text-decoration:underline;text-underline-offset:3px;cursor:pointer;padding:4px;flex:none}
+.icon-btn{background:none;border:1px solid transparent;border-radius:8px;padding:6px;cursor:pointer;color:var(--ink-2)}
+.icon-btn:hover{background:#f3eded;color:#7a2e2e}
+
+/* Estructura */
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px}
+.stack{display:grid;grid-template-columns:minmax(0,1fr);gap:16px}
+.grid-2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.section-title{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.section-title h2{font-size:21px;margin-top:2px}
+.hint{color:var(--muted)}
+.small{font-size:12.5px}
+.eyebrow{color:var(--orange-ink);font-weight:700;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);background:var(--surface);border-radius:999px;padding:5px 12px;font-size:12.5px;cursor:pointer}
+.chip:hover{border-color:#c2c8cb}
+.chip[aria-pressed="true"]{border-color:var(--ink);background:var(--ink);color:#fff}
+.tag{display:inline-block;background:#eef1f2;border-radius:6px;padding:2px 8px;font-size:12px;color:var(--ink-2)}
+.badge{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;white-space:nowrap}
+.badge-ok{background:#e7f4e7;color:#145214}
+.badge-off{background:#f3eded;color:#7a2e2e}
+.field{display:grid;gap:6px}
+.field label,.field legend{font-weight:600;font-size:13px}
+.input{width:100%;border:1px solid #cdd3d6;border-radius:10px;padding:10px 12px;background:#fff}
+.input:focus{border-color:var(--ink);outline:none;box-shadow:0 0 0 3px rgba(25,28,29,.12)}
+.form-error{background:#fbeceb;color:#8a1f1f;border-radius:10px;padding:10px 12px;font-size:13px}
+.warn{display:inline-flex;gap:6px;align-items:center;color:#8a4b00;font-size:12px;margin-top:4px}
+.warn .icon{width:15px;height:15px}
+.empty{display:flex;gap:14px;align-items:flex-start}
+.empty-state{text-align:center;display:grid;justify-items:center;gap:10px;padding:40px 20px}
+.empty-state .icon{width:34px;height:34px;color:var(--orange)}
+.points{margin:8px 0 0;padding-left:18px;display:grid;gap:6px}
+.actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px}
+
+/* Tablas */
+.table-wrap{position:relative;overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+.table{width:100%;border-collapse:collapse;font-size:13px}
+.table th{text-align:left;font-weight:600;color:var(--ink-2);background:#f8f9f9;padding:10px 12px;border-bottom:1px solid var(--line);white-space:nowrap}
+.table td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.table tr:last-child td{border-bottom:0}
+.num,.table th.num{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.row-actions{display:flex;gap:4px;flex-wrap:wrap}
+.detail td{background:#fbfbfb}
+.detail-box{display:grid;gap:10px}
+.table.inner{border:1px solid var(--line);border-radius:8px}
+
+/* Acceso */
+.login-intro{max-width:720px;margin:10px 0 20px}
+.login-intro h1{font-size:30px;margin:6px 0 8px}
+.login-intro p{color:var(--ink-2);font-size:15px}
+.login-grid{display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);gap:16px;align-items:start}
+.login-card{display:grid;gap:14px}
+.role-pick{border:0;padding:0;margin:0;display:grid;gap:8px}
+.role-pick legend{margin-bottom:8px}
+.role{display:flex;gap:12px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:12px;cursor:pointer}
+.role input{margin-top:3px;accent-color:var(--orange)}
+.role.on{border-color:var(--orange);background:var(--orange-soft)}
+.role strong{display:block}
+.role small{display:block;color:var(--muted);font-size:12.5px}
+.compare-table td:first-child{font-weight:600}
+
+/* Atender cliente y productos */
+.lookup-form{display:flex;gap:8px;margin:12px 0}
+.lookup-form .input{max-width:360px}
+.product-head{display:grid;grid-template-columns:160px minmax(0,1fr);gap:20px}
+.product-img,.cat-img{background:#f6f6f4;border-radius:12px;display:grid;place-items:center;aspect-ratio:1/1;overflow:hidden}
+.product-img img,.cat-img img{width:100%;height:100%;object-fit:contain;mix-blend-mode:multiply;padding:10px}
+.brand-line{color:var(--orange-ink);font-weight:700;font-size:11.5px;letter-spacing:.06em;text-transform:uppercase}
+.product h2{font-size:22px;margin:4px 0}
+.facts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px 16px;margin:14px 0 0}
+.facts div{min-width:0}
+.facts dt{color:var(--muted);font-size:12px}
+.facts dd{margin:2px 0 0;font-weight:600}
+.facts.compact{grid-template-columns:1fr 1fr;gap:8px 12px;margin:10px 0}
+.product-body{margin-top:20px;padding-top:18px;border-top:1px solid var(--line)}
+.product-body h3,.alts h3{font-size:15px}
+.profiles{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:10px}
+.profiles li{display:grid;gap:6px}
+.alts{margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.alt-list{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px;margin-top:10px}
+.alt{border:1px solid var(--line);background:#fff;border-radius:10px;padding:10px 12px;text-align:left;cursor:pointer;display:grid;gap:2px}
+.alt:hover{border-color:#c2c8cb}
+.alt span{color:var(--muted);font-size:12.5px}
+.filters{display:flex;gap:10px 16px;flex-wrap:wrap;align-items:center;margin-bottom:14px}
+.search{position:relative;flex:1 1 260px;max-width:380px}
+.search .icon{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--muted)}
+.search .input{padding-left:38px}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.cat-card{border:1px solid var(--line);border-radius:12px;overflow:hidden;display:grid;grid-template-rows:auto 1fr;background:#fff}
+.cat-img{border-radius:0;aspect-ratio:16/10}
+.cat-body{padding:14px;display:grid;gap:4px;align-content:start}
+.cat-body h3{font-size:15px}
+.talk summary{cursor:pointer;font-weight:600;font-size:13px;margin:4px 0 8px}
+
+/* Pedido */
+.order-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:16px;align-items:start}
+.qty{display:inline-flex;align-items:center;border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.qty-btn{border:0;background:#f4f5f5;width:32px;height:34px;cursor:pointer;font-size:16px}
+.qty-input{width:52px;height:34px;border:0;text-align:center;-moz-appearance:textfield}
+.qty-input::-webkit-outer-spin-button,.qty-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.order-summary h3{font-size:16px;margin-bottom:10px}
+.sum{margin:0 0 16px;display:grid;gap:8px}
+.sum div{display:flex;justify-content:space-between;gap:12px}
+.sum dt{color:var(--ink-2)}
+.sum dd{margin:0;font-variant-numeric:tabular-nums;white-space:nowrap}
+.sum-total{border-top:1px solid var(--line);padding-top:10px;font-weight:700}
+
+/* Métricas */
+.metric-filters{display:flex;gap:10px 18px;flex-wrap:wrap;align-items:center;margin-bottom:16px}
+.metric-filters .label{font-weight:600;font-size:13px;margin-right:4px}
+.kpis{display:grid;grid-template-columns:minmax(230px,1.5fr) repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:16px}
+.kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px;min-width:0}
+.kpi .k-label{color:var(--viz-text-2);font-size:12.5px}
+.kpi .k-value{font:700 28px/1.15 "DM Sans",system-ui,sans-serif;color:var(--viz-text);margin-top:6px}
+.kpi .k-sub{color:var(--viz-text-2);font-size:12.5px;margin-top:2px}
+.kpi.hero .k-value{font-size:52px;line-height:1.05}
+.delta{font-size:12.5px;margin-top:6px;color:var(--viz-text-2)}
+.delta.good{color:var(--good)}
+.delta.bad{color:var(--bad)}
+.viz-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.viz-card{margin:0;background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 20px;min-width:0}
+.viz-card.wide{grid-column:1/-1}
+.viz-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+.viz-head h3{font-size:15.5px}
+.viz-head p{margin-top:2px;color:var(--viz-text-2);font-size:12.5px}
+.bars{display:grid;gap:8px}
+.bar-row{display:grid;grid-template-columns:minmax(120px,34%) minmax(0,1fr);gap:12px;align-items:center}
+.bar-label{color:var(--viz-text);font-size:13px;line-height:1.3;min-width:0}
+.bar-label small{display:block;color:var(--viz-text-2);font-size:12px}
+.bar-area{display:flex;align-items:center;min-height:30px;border-left:1px solid var(--viz-axis);border-radius:2px;cursor:default}
+.bar{flex:none;height:18px;width:calc((100% - 84px) * var(--w));border-radius:0 4px 4px 0}
+.bar-value{margin-left:8px;color:var(--viz-text);font-weight:600;font-size:13px;white-space:nowrap;font-variant-numeric:tabular-nums}
+.bar-area:hover .bar,.bar-area:focus-visible .bar{filter:brightness(1.12)}
+.data-table{margin-top:14px}
+figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
+.viz-tip{position:fixed;z-index:60;background:var(--ink);color:#fff;border-radius:8px;padding:7px 10px;font-size:12.5px;pointer-events:none;box-shadow:0 6px 18px rgba(0,0,0,.2);max-width:260px}
+.viz-tip strong{display:block;font-size:14px}
+.viz-tip span{color:#d5dadc}
+.att-list{list-style:none;margin:10px 0 0;padding:0;display:grid;gap:6px;font-size:13px}
+.att-list li{display:flex;justify-content:space-between;gap:10px;border-top:1px solid var(--line);padding-top:6px}
+
+.foot{margin-top:28px;color:var(--muted);font-size:12px;border-top:1px solid var(--line);padding-top:14px}
+.toast{position:fixed;left:50%;bottom:22px;transform:translate(-50%,20px);opacity:0;background:var(--ink);color:#fff;padding:10px 16px;border-radius:10px;font-size:13px;transition:.2s;pointer-events:none;z-index:80;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+
+/* Resultado de la atención y reposición */
+.inline-panel{margin-top:14px;border:1px solid var(--line);background:#fafbfb;border-radius:12px;padding:14px;display:grid;gap:10px}
+.low-stock{display:flex;align-items:center;gap:6px;color:#8a4b00;font-size:12.5px;font-weight:600}
+.low-stock .icon{width:16px;height:16px}
+.status{display:inline-flex;align-items:center;gap:6px;border-radius:999px;padding:3px 10px;font-size:12px;font-weight:600;white-space:nowrap;background:#eef1f2;color:var(--ink-2)}
+.status.pending{background:#fff4dc;color:#7a5200}
+.status.done{background:#e7f4e7;color:#145214}
+.status.off{background:#f3eded;color:#7a2e2e}
+
+/* QR para anaquel */
+.qr-layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px;align-items:start}
+.qr-box{display:grid;justify-items:center;gap:12px;text-align:center}
+.qr-box>svg{width:100%;max-width:260px;height:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+.qr-link{word-break:break-all;font-size:12.5px;background:#f4f5f5;border-radius:8px;padding:8px 10px;width:100%;text-align:left}
+#print-sheet{display:none}
+@media print{
+  body>*:not(#print-sheet){display:none!important}
+  #print-sheet{display:block;text-align:center;color:#000;padding:24px;font-family:"DM Sans",system-ui,sans-serif}
+  #print-sheet svg{width:70mm;height:70mm}
+  #print-sheet h1{font-size:22pt;margin:10px 0}
+}
+
+/* Tiempo hasta la recomendación */
+.time-stat{display:flex;align-items:baseline;gap:6px 10px;flex-wrap:wrap;margin-bottom:12px}
+.time-stat .k-value{font:700 32px/1 "DM Sans",system-ui,sans-serif;color:var(--viz-text)}
+.time-stat .k-sub{color:var(--viz-text-2);font-size:12.5px}
+.time-stat .delta{margin-top:0}
+
+/* Atender sin celular: las preguntas de la guía */
+.mode-switch{margin-top:10px}
+.mode-switch .chip{padding:7px 14px;font-size:13px}
+.questions{display:grid;gap:16px;margin-top:16px}
+.q-group{border:0;margin:0;padding:0;min-width:0}
+.q-group legend{display:flex;align-items:center;gap:8px;font-weight:600;font-size:14px;padding:0;margin-bottom:8px}
+.q-n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--ink);color:#fff;font-size:11.5px;flex:none}
+.opt{position:relative;display:inline-flex}
+.opt input{position:absolute;opacity:0;width:1px;height:1px;margin:0}
+.opt span{display:inline-flex;align-items:center;border:1px solid #cdd3d6;background:var(--surface);border-radius:999px;padding:7px 14px;font-size:13px;cursor:pointer}
+.opt span:hover{border-color:#9aa3a7}
+.opt input:checked+span{border-color:var(--orange);background:var(--orange-soft);color:var(--orange-ink);font-weight:600}
+.opt input:focus-visible+span{outline:2px solid var(--ink);outline-offset:2px}
+.assist-head{margin-bottom:16px;padding-bottom:14px;border-bottom:1px solid var(--line)}
+.why-text{margin-top:8px;color:var(--ink-2)}
+
+/* Servicio y garantía */
+.contact-row{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}
+.center-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:12px}
+.center{border:1px solid var(--line);border-radius:12px;padding:14px;display:grid;gap:6px;align-content:start}
+.center h3{font-size:15px;display:flex;align-items:center;gap:6px}
+.center h3 .icon{color:var(--orange)}
+.center .actions{margin-top:4px}
+.warranty-points{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px;margin-top:12px}
+.warranty-points div{background:#fafbfb;border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.warranty-points h3{font-size:14px;margin-bottom:4px}
+.faq{margin-top:12px}
+.faq details{border-top:1px solid var(--line);padding:10px 0}
+.faq summary{cursor:pointer;font-weight:600}
+.faq p{margin-top:6px;color:var(--ink-2)}
+.service-link{display:flex;align-items:center;gap:6px;margin-top:10px;font-size:12.5px;color:var(--ink-2)}
+.service-link .icon{width:16px;height:16px;color:var(--orange)}
+
+/* Lo que se está acabando */
+.low-list{list-style:none;margin:12px 0 0;padding:0;display:grid;gap:8px}
+.low-item{border:1px solid var(--line);border-radius:12px;padding:12px 14px}
+.low-row{display:flex;justify-content:space-between;align-items:center;gap:8px 12px;flex-wrap:wrap}
+.low-side{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.stock-tag{font-weight:600;font-size:12.5px;color:#8a4b00;white-space:nowrap}
+.stock-tag.out{color:#a52a2a}
+
+/* Datos de este navegador */
+.demo-link{color:#5a4300;font-size:12.5px;padding:0 0 0 4px}
+.data-panel{margin-bottom:16px;border-color:#cdd3d6}
+.data-panel h2{font-size:18px;margin-top:2px}
+.data-counts{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.data-result{margin-top:12px;font-size:13px;border-radius:10px;padding:10px 12px;background:#e7f4e7;color:#145214}
+.data-result.error{background:#fbeceb;color:#8a1f1f}
+
+@media (max-width:900px){
+  .login-grid,.order-layout,.viz-grid,.grid-2,.qr-layout{grid-template-columns:minmax(0,1fr)}
+  .kpis{grid-template-columns:repeat(auto-fit,minmax(150px,1fr))}
+  .kpi.hero{grid-column:1/-1}
+}
+@media (max-width:560px){
+  .wrap{padding:18px 16px 32px}
+  .topbar-in,.demo-in{padding-left:16px;padding-right:16px}
+  .mode-badge{order:3;width:100%;justify-content:center}
+  .login-intro h1{font-size:24px}
+  .product-head{grid-template-columns:minmax(0,1fr)}
+  .product-img{max-width:180px}
+  .lookup-form{flex-wrap:wrap}
+  .lookup-form .input{max-width:none;flex:1 1 200px}
+  .bar-row{grid-template-columns:minmax(0,1fr);gap:4px}
+  .kpis{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .kpi.hero{grid-column:1/-1}
+  .kpi .k-value{font-size:24px}
+  .kpi.hero .k-value{font-size:48px}
+  .card,.viz-card{padding:16px}
+  .facts.compact{grid-template-columns:minmax(0,1fr)}
+  /* Tablas de reposición y pedido sugerido: cada fila como tarjeta para no esconder las acciones */
+  .table.stacked thead{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap}
+  .table.stacked tr{display:block;padding:8px 0;border-bottom:1px solid var(--line)}
+  .table.stacked tr:last-child{border-bottom:0}
+  .table.stacked td{display:block;border:0;padding:3px 14px;text-align:right;white-space:normal}
+  .table.stacked td::before{content:attr(data-label);float:left;margin-right:12px;color:var(--ink-2);font-weight:600}
+  .table.stacked td:first-child{text-align:left;padding-bottom:6px}
+  .table.stacked td:first-child::before{content:none}
+  .table.stacked td:empty{display:none}
+  .table.stacked .row-actions{justify-content:flex-end}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<a class="skip-link" href="#main">Ir al contenido</a>
+<div id="app"></div>
+<div id="viz-tip" class="viz-tip" role="tooltip" hidden><strong></strong><span></span></div>
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+<div id="print-sheet" aria-hidden="true"></div>
+<noscript>Este prototipo necesita JavaScript.</noscript>
+<script>
+/* Portal interno de HPC Smart Guide: prototipo de los modos colaborador y mayorista.
+   Productos, reglas de recomendación, preguntas, explicaciones, centros de servicio y textos de garantía
+   copiados de la guía de clientes (dist/data.js y dist/app.js); scripts/check-portal-interno.cjs comprueba que sigan iguales.
+   Precios mayoristas, existencias, pedidos y métricas son datos de ejemplo; todo se guarda solo en este navegador. */
+(() => {
+  'use strict';
+  const GUIDE_VERSION = '0.2.0'; // Debe coincidir con HPC_DATA.version de dist/data.js
+
+  /* ---------- Muestra de la guía de clientes (dist/data.js) ---------- */
+  const PRODUCTS = [
+    {id:'drill-pro',category:'drill',code:'103246',model:'ROTI-20A3',brand:'TRUPER PRO',name:'Rotomartillo inalámbrico 20 V',subtitle:'Libertad para crear. Capacidad para resolver.',image:'ROTI-20A3',price:1249,tier:1,features:['20 V','Broquero de 1/2 pulgada','2 baterías de 2 Ah'],source:'https://www.hpcenlinea.com.gt/gt/products/103246-rotomartillo-12-20v-2-baterias-2ah-pro',area:'Herramientas eléctricas'},
+    {id:'drill-single',category:'drill',code:'103247',model:'ROTI-20A2',brand:'TRUPER PRO',name:'Rotomartillo 20 V · 1 batería',subtitle:'Una opción para proyectos ocasionales.',image:'ROTI-20A2',price:899,tier:0,features:['20 V','Broquero de 1/2 pulgada','1 batería de 2 Ah'],source:'https://www.hpcenlinea.com.gt/gt/products/103247-rotomartillo-12-20v-1-bateria-2ah-pro',area:'Herramientas eléctricas'},
+    {id:'drill-sds',category:'drill',code:'19320',model:'ROEL-50N2',brand:'TRUPER INDUSTRIAL',name:'Rotomartillo SDS Plus 1500 W',subtitle:'Una opción para trabajos en concreto.',image:'ROEL-50N2',price:1949,tier:2,features:['1500 W','SDS Plus','5 joules'],source:'https://www.hpcenlinea.com.gt/gt/products/19320-rotomartillo-sds-plus-5-joules-1500w-truper-industrial',area:'Herramientas eléctricas'},
+    {id:'wash-pretul',category:'wash',code:'29004',model:'HILA-1350P',brand:'PRETUL',name:'Hidrolavadora eléctrica 1350 PSI',subtitle:'Para las tareas de limpieza ocasionales.',image:'HILA-1350P',price:649,tier:0,features:['1350 PSI','Eléctrica','Diseño portátil'],source:'https://www.hpcenlinea.com.gt/gt/products/29004-hidrolavadora-electrica-1350-psi-pretul',area:'Limpieza y hogar'},
+    {id:'wash-pro',category:'wash',code:'101595',model:'HILA-2000',brand:'TRUPER',name:'Hidrolavadora eléctrica 2000 PSI',subtitle:'Más capacidad para tus proyectos de limpieza.',image:'HILA-2000',price:1399,tier:1,features:['2000 PSI','Eléctrica','Para distintas superficies'],source:'https://www.hpcenlinea.com.gt/gt/products/101595-hidrolavadora-electrica-2000-psi-truper',area:'Limpieza y hogar'},
+    {id:'wash-expert',category:'wash',code:'102111',model:'HILA-2000X',brand:'TRUPER EXPERT',name:'Hidrolavadora 2000 PSI Expert',subtitle:'Motor de inducción para un uso más exigente.',image:'HILA-2000X',price:2249,tier:2,features:['2000 PSI','Motor de inducción','Línea Expert'],source:'https://www.hpcenlinea.com.gt/gt/products/102111-hidrolavadora-electrica2000-psi-motor-de-induccion-expert',area:'Limpieza y hogar'},
+    {id:'vacuum-small',category:'vacuum',code:'12091',model:'ASPI-03',brand:'TRUPER',name:'Aspiradora de sólidos y líquidos',subtitle:'Compacta para casa, carro y espacios pequeños.',image:'ASP-03',price:549,tier:0,features:['3 galones','Sólidos y líquidos','Cuerpo plástico'],source:'https://www.hpcenlinea.com.gt/gt/products/12091-aspiradora-de-solidos-y-liquidos-de-3-gal-plastica-truper',area:'Limpieza y hogar'},
+    {id:'vacuum-large',category:'vacuum',code:'12093',model:'ASPI-12',brand:'TRUPER',name:'Aspiradora de 12 galones',subtitle:'Mayor capacidad para tu taller o negocio.',image:'ASP-12',price:1499,tier:2,features:['12 galones','Sólidos y líquidos','Soplador desmontable'],source:'https://www.hpcenlinea.com.gt/gt/products/12093-aspiradora-solidos-y-liquidos-12-gal-soplador-desmontable',area:'Limpieza y hogar'},
+    {id:'faucet-basic',category:'faucet',code:'49590',model:'M-048PB',brand:'FOSET BASIC',name:'Mezcladora de palanca para lavabo',subtitle:'Renueva tu lavamanos con una solución sencilla.',image:'M-048PB',price:179,tier:0,features:['Lavabo de 4 pulgadas','Manerales de palanca','Cuerpo ABS'],source:'https://www.hpcenlinea.com.gt/gt/products/49590-mezcladora-manerales-palanca-para-lavabo-foset-basic',area:'Plomería y grifería'}
+  ];
+  const PROJECTS = [
+    {id:'drill',name:'Perforar y fijar',materialQuestion:'¿Sobre qué material vas a trabajar?',materials:[['wood','Madera'],['metal','Metal'],['block','Pared de block o ladrillo'],['concrete','Concreto']]},
+    {id:'wash',name:'Lavar con presión',materialQuestion:'¿Qué quieres limpiar?',materials:[['car','Mi carro o moto'],['patio','Patio o terraza'],['both','Un poco de todo'],['heavy','Superficies muy sucias']]},
+    {id:'vacuum',name:'Aspirar y limpiar',materialQuestion:'¿Qué tipo de limpieza necesitas?',materials:[['home','Casa y espacios pequeños'],['car','El interior de mi carro'],['workshop','Mi taller o negocio'],['liquids','Sólidos y líquidos']]},
+    {id:'faucet',name:'Cambiar un grifo',materialQuestion:'¿Dónde vas a instalarlo?',materials:[['bathroom','Lavamanos del baño'],['kitchen','Lavatrastos de cocina'],['shower','Ducha o regadera'],['unknown','No estoy seguro']]}
+  ];
+  const FREQUENCY = [['occasional','De vez en cuando'],['regular','Varias veces al mes'],['daily','Todos los días']];
+  const PRIORITY = [['balance','Una buena combinación'],['economy','Cuidar mi presupuesto'],['power','Mayor capacidad']];
+  // Preguntas de la guía (dist/app.js, wizard); la segunda depende de la necesidad elegida.
+  const QUESTIONS = {project:'¿Qué necesitas hacer?', frequency:'¿Con qué frecuencia lo usarás?', priority:'¿Qué es más importante para ti?'};
+  const STORES = [{id:'cemaco',name:'CEMACO'},{id:'aki',name:'AKÍ'},{id:'ferreteria',name:'Mi ferretería'}];
+  const REASONS = ['El precio no se ajusta a mi presupuesto','Necesito mayor capacidad','No encuentro el producto en tienda','No resuelve lo que necesito','Solo estaba explorando'];
+  const productById = id => PRODUCTS.find(p => p.id === id);
+
+  // Misma regla que chooseProduct() de la guía de clientes (dist/app.js).
+  function chooseProduct(answers){
+    if(!answers.project)return null;
+    if(answers.project==='faucet')return answers.material==='bathroom'?productById('faucet-basic'):null;
+    let list=PRODUCTS.filter(p=>p.category===answers.project);
+    if(answers.project==='drill'&&answers.material==='concrete')return productById('drill-sds');
+    if(answers.project==='drill'&&['wood','metal'].includes(answers.material)){
+      list=list.filter(p=>p.id!=='drill-sds');
+      if(answers.frequency==='daily'||answers.priority==='power')return productById('drill-pro');
+    }
+    let tier=answers.priority==='economy'?0:answers.priority==='power'?2:1;
+    if(answers.frequency==='daily'&&answers.priority!=='economy')tier=2;
+    if(answers.project==='vacuum'&&answers.material==='workshop'&&answers.priority!=='economy')tier=2;
+    return list.slice().sort((a,b)=>Math.abs(a.tier-tier)-Math.abs(b.tier-tier)||a.price-b.price)[0];
+  }
+  // Lo que la guía le explica al cliente y las alternativas que le ofrece: reason() y candidatesFor() de la guía,
+  // con las respuestas como parámetro.
+  function reasonFor(p, answers){
+    const material=PROJECTS.find(x=>x.id===answers.project)?.materials.find(m=>m[0]===answers.material)?.[1];
+    if(p.category==='drill'&&answers.material==='concrete')return 'Elegiste trabajar sobre concreto. Por eso la guía prioriza un equipo SDS Plus en esta muestra. El diámetro y la profundidad de la perforación deben confirmarse con un asesor antes de elegir.';
+    if(p.id==='drill-sds')return `Para trabajar sobre ${String(material||'tu material').toLowerCase()}, la guía muestra un rotomartillo SDS Plus de 1500 W con cable, pensado para perforación y cincelado en mampostería. Confirma con un asesor el modo, la broca y la capacidad que requiere tu proyecto.`;
+    if(p.category==='drill'&&['wood','metal'].includes(answers.material))return `Buscas trabajar sobre ${String(material).toLowerCase()}. Esta opción permite perforar sin percusión y atornillar con el ajuste de torque adecuado. ${p.id==='drill-pro'?'El kit incluye dos baterías de 2 Ah para alternarlas entre tareas.':'El kit incluye una batería de 2 Ah.'} Confirma la broca, el diámetro y la profundidad; para uso intenso o continuo, consulta con HPC si necesitas otro equipo. Las baterías adicionales no aumentan la capacidad de perforación.`;
+    if(p.category==='drill')return `Buscas trabajar sobre ${String(material||'tu material').toLowerCase()}. Esta opción permite perforar y atornillar, y su formato inalámbrico facilita moverte entre tareas. Confirma la broca y la capacidad necesarias para tu material.`;
+    if(p.category==='wash')return `Quieres limpiar ${{car:'tu carro o moto',patio:'tu patio o terraza',both:'tu carro, el patio y otros espacios de la casa',heavy:'superficies muy sucias'}[answers.material]||'tus superficies'}. La guía compara la capacidad y tu frecuencia de uso para sugerir esta opción. Elige la boquilla y la presión adecuadas para la superficie según el manual.`;
+    if(p.category==='vacuum'){const use={home:'la limpieza de tu casa y espacios pequeños',car:'el interior de tu carro',workshop:'tu taller o negocio',liquids:'la limpieza de sólidos y líquidos'}[answers.material]||'tu limpieza';return p.id==='vacuum-small'?`Para ${use}, su depósito de 3 galones ofrece un formato compacto. Admite sólidos y líquidos según la configuración indicada por el fabricante.`:`Para ${use}, el depósito de 12 galones y el soplador desmontable dan más capacidad de limpieza. Verifica en el manual los materiales que admite.`;}
+    return 'Elegiste renovar el lavamanos de tu baño. Esta mezcladora está pensada para instalaciones de 4 pulgadas. Confirma la separación de los orificios y las conexiones antes de comprar.';
+  }
+  function candidatesFor(p, answers){let list=PRODUCTS.filter(x=>x.category===p.category&&x.id!==p.id);if(p.category==='drill'&&['wood','metal'].includes(answers.material))list=list.filter(x=>x.id!=='drill-sds');if(p.category==='drill'&&answers.material==='concrete')list=[];return list;}
+
+  // Argumentos de venta tomados de las características y explicaciones de la guía.
+  const TALK = {
+    'drill-pro':['Rotomartillo inalámbrico de 20 V con broquero de 1/2 pulgada.','El kit trae dos baterías de 2 Ah para alternarlas; las baterías extra no aumentan la capacidad de perforación.','En madera y metal se usa sin percusión, con el torque ajustado para atornillar.','Para uso intenso o continuo, consulta con HPC si el cliente necesita otro equipo.'],
+    'drill-single':['La misma familia de 20 V, con una batería de 2 Ah.','Pensado para proyectos ocasionales y para cuidar el presupuesto.','Sin percusión en madera y metal; confirma la broca y el diámetro.'],
+    'drill-sds':['Rotomartillo SDS Plus de 1500 W con cable y 5 joules.','Pensado para perforación y cincelado en concreto y mampostería.','Confirma con el cliente el modo, la broca, el diámetro y la profundidad.'],
+    'wash-pretul':['Hidrolavadora eléctrica de 1350 PSI, de diseño portátil.','Para tareas de limpieza ocasionales.','Recomienda elegir la boquilla y la presión según la superficie, como indica el manual.'],
+    'wash-pro':['Hidrolavadora eléctrica de 2000 PSI para distintas superficies.','Equilibrio entre capacidad y presupuesto.','Recomienda elegir la boquilla y la presión según la superficie, como indica el manual.'],
+    'wash-expert':['Hidrolavadora de 2000 PSI con motor de inducción, línea Expert.','Para un uso más exigente o frecuente.','Recomienda elegir la boquilla y la presión según la superficie, como indica el manual.'],
+    'vacuum-small':['Aspiradora de 3 galones para sólidos y líquidos, con cuerpo plástico.','Compacta para casa, carro y espacios pequeños.','Se configura para sólidos o líquidos según el manual.'],
+    'vacuum-large':['Aspiradora de 12 galones para sólidos y líquidos, con soplador desmontable.','Más capacidad para taller o negocio.','Verifica en el manual los materiales que admite.'],
+    'faucet-basic':['Mezcladora de palanca para lavabo de 4 pulgadas, con cuerpo ABS.','Solo cubre lavamanos de baño; para cocina o ducha, deriva a asesoría.','Confirma la separación de los orificios y las conexiones antes de la compra.']
+  };
+
+  // Respaldo de HPC: los mismos datos y textos de la guía de clientes (dist/data.js y las páginas
+  // «Garantía y respaldo» y «Ayuda y soporte» de dist/app.js).
+  const SUPPORT = {
+    phone:'2499-5000', tel:'+50224995000', email:'info@hpc.com.gt', hours:'Lun–vie 8:00–17:00 · Sáb 8:00–12:00',
+    policy:'https://www.hpcenlinea.com.gt/gt/politicasdegarantia', source:'https://www.hpcenlinea.com.gt/gt/centrosdeservicio',
+    centers:[
+      {city:'Guatemala',address:'27 Calle 41-55, zona 5, Bodega C, Guatemala',map:'https://www.google.com/maps/search/?api=1&query=HPC+27+Calle+41-55+Zona+5+Guatemala'},
+      {city:'Retalhuleu',address:'Centro Comercial La Trinidad, local L-91, 5ta avenida y 1a calle, zona 5',map:'https://www.google.com/maps/search/?api=1&query=Centro+Comercial+La+Trinidad+Retalhuleu'},
+      {city:'Quetzaltenango',address:'18 avenida 0-69, zona 3, Quetzaltenango',map:'https://www.google.com/maps/search/?api=1&query=18+avenida+0-69+zona+3+Quetzaltenango'},
+      {city:'Petén',address:'Metro Plaza Mundo Maya, locales 103 al 108, frente al aeropuerto, Flores',map:'https://www.google.com/maps/search/?api=1&query=Metro+Plaza+Mundo+Maya+Flores'}
+    ],
+    warranty:'HPC publica una extensión de garantía sin límite de tiempo, sujeta a sus condiciones. La cobertura de cada caso la determina un técnico autorizado.',
+    points:[
+      ['Cuida cómo la utilizas.','Sigue las indicaciones del manual y el uso previsto para tu herramienta.'],
+      ['Confía en servicio autorizado.','Las reparaciones deben realizarse con personal autorizado. Consulta las condiciones aplicables.'],
+      ['Pregunta por mantenimiento.','La política de HPC contempla mantenimiento preventivo gratuito. Confirma el servicio para tu equipo.']
+    ],
+    faq:[
+      ['¿Toda reparación está cubierta sin costo?','El centro de servicio evalúa el estado, el uso y las intervenciones del equipo antes de establecer la cobertura.'],
+      ['¿Qué ocurre con accesorios y consumibles?','Estos artículos tienen un tratamiento distinto en la política. Consulta el documento oficial para comprobar el alcance que corresponde a tu producto.']
+    ]
+  };
+
+  /* ---------- Datos de ejemplo del prototipo (no son datos de HPC) ---------- */
+  const CODES = {colaborador:'COLAB-2026', mayorista:'MAYOR-2026'};
+  // Cada mayorista abastece a sus tiendas: ve sus solicitudes de reposición, su pedido sugerido y sus métricas.
+  const ACCOUNTS = [
+    {id:'dist-norte',name:'Distribuidora de ejemplo Norte',stores:['cemaco','aki'],points:['Bodega principal (ejemplo)','Sucursal 2 (ejemplo)']},
+    {id:'ferre-centro',name:'Ferretería mayorista de ejemplo',stores:['ferreteria'],points:['Tienda centro (ejemplo)']}
+  ];
+  const OUTCOMES = [['compro','Compró este producto'],['otra','Se llevó otra opción'],['sin-existencias','No había existencias'],['asesor','Lo derivé a un asesor de HPC'],['consulta','Solo estaba consultando']];
+  // Valores de «categoria» y «origen» que acepta la guía de clientes en sus enlaces de entrada (README).
+  const QR_CATEGORY = [['','Sin categoría'],['barrenos','Perforar y fijar'],['hidrolavadoras','Lavar con presión'],['aspiradoras','Aspirar y limpiar'],['griferia','Cambiar un grifo']];
+  const QR_ORIGIN = [['qr','Código QR en el anaquel'],['nfc','Etiqueta NFC'],['enlace','Enlace en volante o redes']];
+  const TIME_BUCKETS = ['Menos de 30 s','30 a 59 s','1 a 2 min','Más de 2 min'];
+  const LOW_STOCK = 2; // «Lo que se está acabando»: 2 unidades o menos en la tienda
+  const REQUEST_STATES = ['pendiente','atendida','descartada'], ORDER_STATES = ['confirmado','cancelado'];
+  const ATTENTION_LIMIT = 500;
+  const WHOLESALE_RATE = 0.72;
+  const BOX = {'drill-pro':4,'drill-single':4,'drill-sds':2,'wash-pretul':2,'wash-pro':2,'wash-expert':1,'vacuum-small':4,'vacuum-large':2,'faucet-basic':12};
+  const TIERS = [{min:10,disc:.08,label:'10 cajas o más'},{min:5,disc:.04,label:'5 a 9 cajas'},{min:1,disc:0,label:'1 a 4 cajas'}];
+  const WAREHOUSE = {'drill-pro':96,'drill-single':120,'drill-sds':30,'wash-pretul':64,'wash-pro':40,'wash-expert':12,'vacuum-small':88,'vacuum-large':26,'faucet-basic':240};
+  const STORE_STOCK = {
+    cemaco:{'drill-pro':6,'drill-single':9,'drill-sds':2,'wash-pretul':5,'wash-pro':3,'wash-expert':1,'vacuum-small':7,'vacuum-large':2,'faucet-basic':14},
+    aki:{'drill-pro':4,'drill-single':6,'drill-sds':0,'wash-pretul':4,'wash-pro':2,'wash-expert':0,'vacuum-small':5,'vacuum-large':1,'faucet-basic':10},
+    ferreteria:{'drill-pro':2,'drill-single':3,'drill-sds':1,'wash-pretul':2,'wash-pro':1,'wash-expert':0,'vacuum-small':3,'vacuum-large':1,'faucet-basic':6}
+  };
+  const PRODUCT_WEIGHT = {'drill-pro':.42,'drill-single':.36,'drill-sds':.22,'wash-pretul':.34,'wash-pro':.44,'wash-expert':.22,'vacuum-small':.6,'vacuum-large':.4,'faucet-basic':1};
+  const CATEGORY_WEIGHT = {drill:.38,wash:.26,vacuum:.22,faucet:.14};
+
+  // Generador pseudoaleatorio con semilla: las métricas de ejemplo son siempre las mismas.
+  function rng(seed){return()=>{seed|=0;seed=seed+0x6D2B79F5|0;let t=Math.imul(seed^seed>>>15,1|seed);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
+  function split(total,weights,r){
+    const keys=Object.keys(weights);const raw=keys.map(k=>weights[k]*(.85+.3*r()));const sum=raw.reduce((a,b)=>a+b,0)||1;
+    const exact=raw.map(v=>v/sum*total);const out={};let used=0;
+    keys.forEach((k,i)=>{out[k]=Math.floor(exact[i]);used+=out[k];});
+    keys.map((k,i)=>[k,exact[i]-Math.floor(exact[i])]).sort((a,b)=>b[1]-a[1]).slice(0,total-used).forEach(([k])=>out[k]++);
+    return out;
+  }
+  const METRICS = (() => {
+    const rows=[],base={cemaco:46,aki:33,ferreteria:15},today=new Date();
+    STORES.forEach((s,si)=>{
+      const r=rng(20261018+si*977), rt=rng(7770+si*131); // rt: tiempos, con su propia semilla para no alterar las demás cifras
+      for(let ago=0;ago<180;ago++){
+        const d=new Date(today);d.setDate(d.getDate()-ago);
+        const wd=d.getDay(),weekday=wd===6?1.35:wd===0?1.25:wd===1?.85:1,trend=1+(180-ago)/180*.18;
+        const scans=Math.round(base[s.id]*weekday*trend*(.78+.44*r()));
+        const guides=Math.round(scans*(.6+.14*r()));
+        const recs=Math.round(guides*(.76+.12*r()));
+        const accepted=Math.round(recs*(.27+.1*r()));
+        const whatsapp=Math.round(recs*(.09+.06*r()));
+        const help=Math.round(recs*(.13+.07*r()));
+        const rejected=Math.round(recs*(.11+.07*r()));
+        const byCat=split(recs,CATEGORY_WEIGHT,r),byProduct={};
+        for(const c of Object.keys(byCat)){const w={};PRODUCTS.filter(p=>p.category===c).forEach(p=>{w[p.id]=PRODUCT_WEIGHT[p.id];});Object.assign(byProduct,split(byCat[c],w,r));}
+        const reasons=Object.values(split(rejected,{0:.29,1:.17,2:.23,3:.2,4:.11},r));
+        // Segundos hasta la recomendación (la guía los registra como elapsedSeconds); de ejemplo, mejoran con los días.
+        const time={sum:0,buckets:[0,0,0,0]},factor=.9+.2*ago/180;
+        for(let i=0;i<recs;i++){const sec=Math.round((25+95*Math.pow(rt(),1.8)+20*rt())*factor);time.sum+=sec;time.buckets[sec<30?0:sec<60?1:sec<120?2:3]++;}
+        rows.push({store:s.id,ago,scans,guides,recs,accepted,whatsapp,help,rejected,byCat,byProduct,reasons,time});
+      }
+    });
+    return rows;
+  })();
+
+  /* ---------- Utilidades ---------- */
+  const ICONS = {
+    search:'M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0m-2 5 6 6', box:'m3 7 9-4 9 4v10l-9 4-9-4V7m0 0 9 5 9-5m-9 5v9',
+    chart:'M4 20V11m6 9V5m6 15v-7m5 7H2', cart:'M3 4h2l2.4 11h11.2L21 7H6.2M9 20h.01M18 20h.01',
+    file:'M5 3h10l4 4v14H5V3m10 0v5h4M8 12h8m-8 4h8', user:'M16 7a4 4 0 1 1-8 0 4 4 0 0 1 8 0M4 21v-3a8 8 0 0 1 16 0v3',
+    logout:'M15 4h4v16h-4M10 8l-4 4 4 4M6 12h11', check:'m5 12 4 4L19 6',
+    info:'M12 11v6m0-10h.01M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0', external:'M14 3h7v7m0-7-11 11M10 3H3v18h18v-7',
+    copy:'M8 8h12v12H8V8M4 16V4h12', download:'M12 3v12m-5-5 5 5 5-5M4 21h16', trash:'M3 6h18M5 6v15h14V6M9 6V3h6v3M9 10v7m6-7v7',
+    plus:'M12 5v14M5 12h14', arrow:'M5 12h14m-6-6 6 6-6 6', store:'M3 9h18l-2-6H5L3 9m1 0v12h16V9M9 21v-6h6v6',
+    drill:'M3 5h14v8H3V5m14 2h4v4h-4M7 13v7h7v-7m-8 7h9', droplets:'M12 3C9 7 6 10 6 14a6 6 0 0 0 12 0c0-4-3-7-6-11',
+    vacuum:'M6 10h12l-1 10H7L6 10m0 0c0-3 1-5 6-5s6 2 6 5', faucet:'M4 17h16M9 17V8h10v4M9 8V5m-3 0h6',
+    refresh:'M20 7a8 8 0 1 0 0 10m0-14v5h-5', qr:'M4 4h6v6H4zM14 4h6v6h-6zM4 14h6v6H4zM14 14h2v2h-2zM18 14h2v2h-2zM14 18h2v2h-2zM18 18h2v2h-2z',
+    // Los mismos íconos de la guía de clientes
+    shield:'M12 3 3 7v6c0 5 9 9 9 9s9-4 9-9V7l-9-4m-4 9 3 3 5-5', location:'M20 10c0 6-8 12-8 12S4 16 4 10a8 8 0 1 1 16 0m-5 0a3 3 0 1 1-6 0 3 3 0 0 1 6 0',
+    phone:'M6 3h4l1 5-3 2c2 4 3 5 7 7l2-3 5 1v4c-8 6-24-10-16-16', mail:'M3 5h18v14H3V5m0 0 9 8 9-8',
+    headset:'M3 13v-1a9 9 0 0 1 18 0v1M3 13h3v7H3v-7m18 0h-3v7h3v-7m0 7c0 2-4 2-7 2', upload:'M12 16V3m-5 5 5-5 5 5M3 16v5h18v-5'
+  };
+  const CATEGORY_ICON = {drill:'drill',wash:'droplets',vacuum:'vacuum',faucet:'faucet'};
+  const icon = (name, cls='') => `<svg class="icon ${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${ICONS[name]||ICONS.info}"/></svg>`;
+  const esc = v => String(v ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const nf = new Intl.NumberFormat('es-GT');
+  const fmt = n => nf.format(Math.round(n));
+  const money = n => 'Q ' + Number(n).toLocaleString('es-GT', {minimumFractionDigits:2, maximumFractionDigits:2});
+  const pct = (n, digits=0) => (n*100).toLocaleString('es-GT', {maximumFractionDigits:digits}) + ' %';
+  const localDate = (d=new Date()) => `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;
+  const wholesale = p => Math.round(p.price*WHOLESALE_RATE);
+  const tierFor = boxes => TIERS.find(t => boxes >= t.min);
+  const units = n => `${fmt(n)} ${n===1?'unidad':'unidades'}`;
+  const stockText = n => n>0 ? units(n) : 'Agotado';
+  const storeName = id => (STORES.find(s => s.id===id)||{}).name || id;
+  const account = () => ACCOUNTS.find(a => a.id===state.session.account) || ACCOUNTS[0];
+  const myStores = () => state.session.mode==='colaborador' ? [state.session.store] : account().stores;
+  const supplierOf = store => ACCOUNTS.find(a => a.stores.includes(store)) || ACCOUNTS[0];
+  const outcomeLabel = a => a.outcome==='otra' ? `Se llevó otra: ${(productById(a.chosenId)||{}).model||'otra opción'}` : (OUTCOMES.find(o => o[0]===a.outcome)||[null,'Sin resultado registrado'])[1];
+  const seconds = n => {const s=Math.round(n);return s<60?`${s} s`:`${Math.floor(s/60)} min ${String(s%60).padStart(2,'0')} s`;};
+  const image = model => `https://www.hpcenlinea.com.gt/_next/image?q=75&url=${encodeURIComponent('https://www.truper.com/media/import/imagenes/'+model+'.jpg')}&w=828`;
+  const img = p => `<img src="${image(p.image)}" alt="${esc(p.name)}" loading="lazy" data-product="${p.id}">`;
+
+  const KEY = 'hpc-portal-interno:';
+  const load = (k, fallback) => {try{const v=JSON.parse(localStorage.getItem(KEY+k));return v ?? fallback;}catch{return fallback;}};
+  const save = (k, v) => {try{localStorage.setItem(KEY+k, JSON.stringify(v));return true;}catch{toast('No se pudo guardar en este navegador.');return false;}};
+  const drop = k => {try{localStorage.removeItem(KEY+k);}catch{}};
+
+  // Lo guardado en el navegador o cargado de otra computadora solo se acepta con la forma esperada.
+  const isStr = v => typeof v==='string', isNum = v => typeof v==='number' && Number.isFinite(v);
+  const isDate = v => isStr(v) && !Number.isNaN(Date.parse(v));
+  const validRequest = r => !!r && isStr(r.id) && /^R-\d{1,6}$/.test(r.id) && !!productById(r.productId) && STORES.some(x => x.id===r.store) && Number.isInteger(r.boxes) && r.boxes>=1 && r.boxes<=99 && isDate(r.at) && REQUEST_STATES.includes(r.status) && (r.note===undefined || isStr(r.note));
+  const validLine = l => !!l && !!productById(l.id) && isStr(l.code) && isStr(l.model) && isStr(l.name) && Number.isInteger(l.boxes) && l.boxes>=1 && l.boxes<=999 && [l.units,l.unit,l.disc,l.total].every(isNum);
+  const validOrder = o => !!o && isStr(o.id) && /^P-\d{1,6}$/.test(o.id) && isDate(o.createdAt) && ACCOUNTS.some(a => a.id===o.account) && isStr(o.point) && isStr(o.date) && ORDER_STATES.includes(o.status) && Array.isArray(o.lines) && o.lines.length>0 && o.lines.every(validLine) && [o.gross,o.discount,o.net].every(isNum) && (o.notes===undefined || isStr(o.notes));
+  const validAttention = a => !!a && isDate(a.at) && STORES.some(x => x.id===a.store) && (a.productId===null || !!productById(a.productId)) && (a.code===undefined || isStr(a.code)) && (a.outcome===undefined || OUTCOMES.some(o => o[0]===a.outcome)) && (a.chosenId===undefined || !!productById(a.chosenId)) && (a.via===undefined || a.via==='preguntas') && (a.answers===undefined || (!!a.answers && typeof a.answers==='object' && Object.keys(a.answers).length<=4 && Object.values(a.answers).every(isStr)));
+  // Cada registro lleva un identificador propio para reconocerlo al pasar los datos a otra computadora.
+  const newUid = () => (globalThis.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2,10);
+  const UID_FROM = {r:x => `r:${x.id}|${x.at}`, p:x => `p:${x.id}|${x.createdAt}`, a:x => `a:${x.at}|${x.productId||''}|${x.store}`};
+  const withUid = (x, kind) => isStr(x.uid) && x.uid && x.uid.length<=120 ? x : {...x, uid:UID_FROM[kind](x)};
+  const plural = (n, one, many) => `${fmt(n)} ${n===1?one:many}`;
+
+  /* ---------- Estado ---------- */
+  const validSession = s => s && ((s.mode==='colaborador'&&STORES.some(x=>x.id===s.store))||(s.mode==='mayorista'&&ACCOUNTS.some(x=>x.id===s.account)));
+  const savedSession = load('session', null), savedDraft = load('draft', null) || {};
+  const asList = v => Array.isArray(v) ? v : [];
+  const state = {
+    session: validSession(savedSession) ? savedSession : null,
+    tab: null, lookup: '', search: '', category: 'all', period: 30, storeFilter: 'mine',
+    // Lo guardado en el navegador puede venir dañado: se conserva solo lo que tiene la forma esperada.
+    draft: {lines: asList(savedDraft.lines).filter(l => l && productById(l.id) && Number.isInteger(l.boxes) && l.boxes >= 1 && l.boxes <= 999),
+      point: typeof savedDraft.point==='string' ? savedDraft.point : '', date: typeof savedDraft.date==='string' ? savedDraft.date : '', notes: typeof savedDraft.notes==='string' ? savedDraft.notes : ''},
+    orders: asList(load('orders', [])).filter(validOrder).map(o => withUid(o,'p')),
+    attentions: asList(load('attentions', [])).filter(validAttention).map(a => withUid(a,'a')),
+    requests: asList(load('requests', [])).filter(validRequest).map(r => withUid(r,'r')),
+    attendFor: null, restockFor: null, attendMode: 'codigo', answers: {},
+    dataOpen: false, confirmReset: false, dataMessage: null,
+    qr: (q => ({base: typeof q.base==='string' ? q.base : 'https://example.com/smart-guide/', store: typeof q.store==='string' ? q.store : '',
+      category: QR_CATEGORY.some(c => c[0]===q.category) ? q.category : '', origin: QR_ORIGIN.some(o => o[0]===q.origin) ? q.origin : 'qr'}))(load('qr', null) || {}),
+    openOrder: null, confirmCancel: null, orderError: '',
+    loginMode: 'colaborador', loginStore: 'cemaco', loginAccount: ACCOUNTS[0].id, loginError: ''
+  };
+  if(state.session)state.tab = state.session.mode==='colaborador' ? 'atender' : 'catalogo';
+
+  const root = document.getElementById('app');
+  const tip = document.getElementById('viz-tip');
+  let toastTimer;
+  function toast(text){const el=document.getElementById('toast');el.textContent=text;el.classList.add('show');clearTimeout(toastTimer);toastTimer=setTimeout(()=>el.classList.remove('show'),4200);}
+
+  /* ---------- Gráficas (barras horizontales, sin dependencias) ---------- */
+  function barChart({id, title, subtitle, rows, colors, note, wide, stat}){
+    const max = Math.max(1, ...rows.map(r => r.value));
+    const hasSub = rows.some(r => r.sub);
+    const bars = rows.map((r, i) => {
+      const label = r.label + (r.sub ? ' · ' + r.sub : '');
+      return `<div class="bar-row"><span class="bar-label">${esc(r.label)}${r.sub?`<small>${esc(r.sub)}</small>`:''}</span><div class="bar-area" tabindex="0" data-tip-value="${esc(fmt(r.value))}" data-tip-label="${esc(label)}" aria-label="${esc(label)}: ${esc(fmt(r.value))}"><span class="bar" style="--w:${(r.value/max).toFixed(4)};background:${colors?colors[i]:'var(--series-1)'}"></span><span class="bar-value">${esc(fmt(r.value))}</span></div></div>`;
+    }).join('');
+    const table = `<div class="table-wrap data-table" id="${id}-table" hidden><table class="table"><thead><tr><th scope="col">Categoría</th><th scope="col" class="num">Valor</th>${hasSub?'<th scope="col">Detalle</th>':''}</tr></thead><tbody>${rows.map(r=>`<tr><td>${esc(r.label)}</td><td class="num">${esc(fmt(r.value))}</td>${hasSub?`<td>${esc(r.sub||'')}</td>`:''}</tr>`).join('')}</tbody></table></div>`;
+    return `<figure class="viz-card${wide?' wide':''}" aria-labelledby="${id}-title"><div class="viz-head"><div><h3 id="${id}-title">${esc(title)}</h3>${subtitle?`<p>${esc(subtitle)}</p>`:''}</div><button class="link-btn" data-action="toggle-table" data-target="${id}-table" aria-expanded="false" aria-controls="${id}-table">Ver tabla</button></div>${stat||''}<div class="bars">${bars}</div>${table}${note?`<figcaption>${esc(note)}</figcaption>`:''}</figure>`;
+  }
+  function kpi({label, value, prev, sub, hero, goodWhenUp=true, period}){
+    let delta='';
+    if(prev>0){
+      const change=(value-prev)/prev, up=change>=0, cls=goodWhenUp===null?'':(up===goodWhenUp?'good':'bad');
+      delta=`<div class="delta ${cls}">${up?'▲':'▼'} ${pct(Math.abs(change))} vs. los ${period} días anteriores</div>`;
+    }
+    return `<div class="kpi${hero?' hero':''}"><div class="k-label">${esc(label)}</div><div class="k-value">${esc(fmt(value))}</div>${sub?`<div class="k-sub">${esc(sub)}</div>`:''}${delta}</div>`;
+  }
+  // stores: lista de tiendas o 'all'; from/to: días hacia atrás (desde hoy).
+  function aggregate(stores, from, to){
+    const z={scans:0,guides:0,recs:0,accepted:0,whatsapp:0,help:0,rejected:0,byCat:{},byProduct:{},reasons:REASONS.map(()=>0),time:{sum:0,buckets:[0,0,0,0]}};
+    for(const r of METRICS){
+      if((stores!=='all'&&!stores.includes(r.store))||r.ago<from||r.ago>=to)continue;
+      for(const k of ['scans','guides','recs','accepted','whatsapp','help','rejected'])z[k]+=r[k];
+      for(const k in r.byCat)z.byCat[k]=(z.byCat[k]||0)+r.byCat[k];
+      for(const k in r.byProduct)z.byProduct[k]=(z.byProduct[k]||0)+r.byProduct[k];
+      r.reasons.forEach((v,i)=>{z.reasons[i]+=v;});
+      z.time.sum+=r.time.sum;r.time.buckets.forEach((v,i)=>{z.time.buckets[i]+=v;});
+    }
+    return z;
+  }
+  const share = (a, b) => b>0 ? pct(a/b) : '—';
+
+  /* ---------- Vistas ---------- */
+  // Región con nombre: el aviso queda dentro de una zona de la página para los lectores de pantalla.
+  const demoBanner = () => `<section class="demo" aria-label="Aviso del prototipo"><div class="demo-in">${icon('info')}<span><strong>Prototipo con datos de ejemplo.</strong> No es un sistema de HPC: precios mayoristas, existencias, pedidos y métricas son simulados y se guardan solo en este navegador. <button class="link-btn demo-link" data-action="data-open" aria-expanded="${state.dataOpen}">Pasar datos a otra computadora</button></span></div></section>`;
+  const brand = () => `<span class="brand"><span class="brand-mark">HPC</span><span>Smart Guide<small>Portal interno · prototipo</small></span></span>`;
+
+  function loginView(){
+    const m = state.loginMode;
+    const rows = [
+      ['Guía de recomendación','Sí','Consulta lo que la guía recomendó, por código','No'],
+      ['Atender sin celular','Usa la guía en su celular','Le hace las preguntas de la guía','No'],
+      ['Precio al público (ejemplo)','Sí','Sí','Como precio sugerido'],
+      ['Existencias (ejemplo)','No','De su tienda y de la bodega','De la bodega de HPC'],
+      ['Argumentos de venta','No','Sí','Sí'],
+      ['Servicio y garantía','Sí','Sí','Sí'],
+      ['Resultado de cada atención','No','Lo registra','No'],
+      ['Reposición','No','Ve lo que se acaba y la pide','La atiende'],
+      ['Precios mayoristas, pedidos y pedido sugerido','No','No','Sí'],
+      ['QR para anaquel','No','De su tienda','De sus tiendas'],
+      ['Métricas del piloto','No','De su tienda','De sus tiendas']
+    ];
+    return `<header class="topbar"><div class="topbar-in">${brand()}</div></header>${demoBanner()}
+    <main id="main" class="wrap" tabindex="-1">${state.dataOpen?dataPanel():''}
+      <section class="login-intro"><div class="eyebrow">Para el equipo de venta</div><h1>Un portal distinto para quien vende.</h1><p>El cliente recibe orientación. El colaborador de tienda y el mayorista necesitan otras herramientas: ver lo que la guía recomendó, existencias, precios por volumen, pedidos y las métricas del piloto.</p></section>
+      <div class="login-grid">
+        <form class="card login-card" id="login-form" novalidate>
+          <h2>Entrar</h2>
+          <fieldset class="role-pick field"><legend>¿Cómo vas a usar el portal?</legend>
+            ${[['colaborador','Colaborador de tienda','Atiende clientes en CEMACO, AKÍ o una ferretería.','user'],['mayorista','Mayorista o distribuidor','Le compra a HPC para revender: precios por volumen y pedidos.','cart']].map(([id,title,text,ic])=>`<label class="role${m===id?' on':''}"><input type="radio" name="mode" value="${id}"${m===id?' checked':''}><span><strong>${icon(ic)} ${title}</strong><small>${text}</small></span></label>`).join('')}
+          </fieldset>
+          ${m==='colaborador'
+            ? `<div class="field"><label for="login-store">Tienda donde trabajas</label><select id="login-store" class="input">${STORES.map(s=>`<option value="${s.id}"${state.loginStore===s.id?' selected':''}>${esc(s.name)} (ejemplo)</option>`).join('')}</select></div>`
+            : `<div class="field"><label for="login-account">Cuenta</label><select id="login-account" class="input">${ACCOUNTS.map(a=>`<option value="${a.id}"${state.loginAccount===a.id?' selected':''}>${esc(a.name)}</option>`).join('')}</select></div>`}
+          <div class="field"><label for="login-code">Código de acceso</label><input id="login-code" class="input" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="Escribe el código"></div>
+          ${state.loginError?`<p class="form-error" role="alert">${esc(state.loginError)}</p>`:''}
+          <button class="btn btn-primary btn-full" type="submit">Entrar al modo ${m==='colaborador'?'colaborador':'mayorista'} ${icon('arrow')}</button>
+          <p class="hint small">Códigos de demostración: <strong>COLAB-2026</strong> para colaboradores y <strong>MAYOR-2026</strong> para mayoristas. Este acceso no es seguro: la versión real necesitará usuarios, contraseñas y un servidor, que siguen pendientes.</p>
+        </form>
+        <section class="card" aria-labelledby="compare-title"><h2 id="compare-title" style="font-size:18px;margin-bottom:12px">Qué ve cada quien</h2>
+          <div class="table-wrap"><table class="table compare-table"><thead><tr><th scope="col">Función</th><th scope="col">Cliente</th><th scope="col">Colaborador</th><th scope="col">Mayorista</th></tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${esc(c)}</td>`).join('')}</tr>`).join('')}</tbody></table></div>
+          <p class="hint small" style="margin-top:12px">El cliente sigue usando la guía actual. Este portal es solo para el equipo de venta.</p>
+        </section>
+      </div>
+      ${footer()}
+    </main>`;
+  }
+
+  function shell(content){
+    const s = state.session, collab = s.mode==='colaborador';
+    const who = collab ? `${storeName(s.store)} (ejemplo)` : account().name;
+    const tabs = collab
+      ? [['atender','Atender cliente','search'],['productos','Productos','box'],['servicio','Servicio y garantía','shield'],['reposicion','Reposición','refresh'],['qr','QR para anaquel','qr'],['metricas','Métricas de mi tienda','chart']]
+      : [['catalogo','Catálogo mayorista','box'],['pedido','Nuevo pedido','cart'],['pedidos','Mis pedidos','file'],['reposicion','Reposición','refresh'],['qr','QR para anaquel','qr'],['servicio','Servicio y garantía','shield'],['metricas','Métricas','chart']];
+    const inOrder = state.draft.lines.reduce((n,l)=>n+l.boxes,0);
+    const pending = state.requests.filter(r => r.status==='pendiente' && myStores().includes(r.store)).length;
+    return `<header class="topbar"><div class="topbar-in">${brand()}<span class="mode-badge">${icon(collab?'user':'cart')} Modo ${collab?'colaborador':'mayorista'} · ${esc(who)}</span><div class="topbar-right"><button class="btn btn-ghost btn-sm" data-action="logout">${icon('logout')} Salir</button></div></div></header>${demoBanner()}
+    <main id="main" class="wrap" tabindex="-1"><h1 class="sr-only">Portal interno · ${esc(TITLES[state.tab]||'Inicio')}</h1><nav class="tabs" aria-label="Secciones">${tabs.map(([id,label,ic])=>`<button class="tab" data-action="tab" data-tab="${id}"${state.tab===id?' aria-current="page"':''}>${icon(ic)}${label}${id==='pedido'&&inOrder?`<span class="count" aria-label="${inOrder} cajas">${inOrder}</span>`:''}${id==='reposicion'&&pending?`<span class="count" aria-label="${pending} pendientes">${pending}</span>`:''}</button>`).join('')}</nav>${state.dataOpen?dataPanel():''}${content}${footer()}</main>`;
+  }
+  const footer = () => `<p class="foot">Prototipo para revisión del equipo de HPC Smart Guide. Productos, códigos y reglas de recomendación vienen de la guía de clientes (versión ${GUIDE_VERSION}). Los precios mayoristas, existencias, pedidos y métricas son datos de ejemplo y se guardan solo en este navegador.</p>`;
+
+  function view(){
+    switch(state.tab){
+      case 'atender': return attendView();
+      case 'productos': return productsView();
+      case 'catalogo': return catalogView();
+      case 'pedido': return orderView();
+      case 'pedidos': return ordersView();
+      case 'metricas': return metricsView();
+      case 'reposicion': return restockView();
+      case 'qr': return qrView();
+      case 'servicio': return serviceView();
+      default: return '';
+    }
+  }
+
+  // Modo colaborador: atender cliente
+  const findProduct = q => {const k=q.trim().toLowerCase().replace(/\s+/g,'');return PRODUCTS.find(p=>p.code===k||p.model.toLowerCase()===k);};
+  function attendView(){
+    const switcher = `<div class="chips mode-switch" role="group" aria-label="Cómo llega el cliente">${[['codigo','Trae el código de la guía'],['preguntas','No tiene celular: hacer las preguntas']].map(([id,label])=>`<button class="chip" data-action="attend-mode" data-mode="${id}" aria-pressed="${state.attendMode===id}">${label}</button>`).join('')}</div>`;
+    if(state.attendMode==='preguntas')return `<section class="stack">
+      <div class="card"><div class="eyebrow">Atender cliente</div>${switcher}<h2 style="font-size:21px;margin-top:12px">Hazle al cliente las preguntas de la guía</h2>
+        <p class="hint" style="margin-top:4px">Son las mismas cuatro preguntas y la misma regla de la guía de clientes, para quien no tiene celular o no escaneó el QR.</p>
+        ${questionsForm()}
+      </div>
+      ${assistResult()}
+    </section>`;
+    const q = state.lookup.trim(), p = q ? findProduct(q) : null;
+    return `<section class="stack">
+      <div class="card"><div class="eyebrow">Atender cliente</div>${switcher}<h2 style="font-size:21px;margin-top:12px">¿Qué le recomendó la guía al cliente?</h2>
+        <p class="hint" style="margin-top:4px">Escribe el código que el cliente te muestra en «Muéstrale esta pantalla», o el modelo.</p>
+        <form id="lookup-form" class="lookup-form" role="search"><label class="sr-only" for="lookup">Código o modelo</label><input id="lookup" class="input" autocomplete="off" placeholder="Por ejemplo: 103246 o ROTI-20A3" value="${esc(q)}"><button class="btn btn-dark" type="submit">${icon('search')} Buscar</button></form>
+        <div class="chips" role="group" aria-label="Códigos para probar"><span class="hint small" style="align-self:center">Prueba con:</span>${['103246','19320','101595','12093','49590'].map(c=>`<button class="chip" data-action="try-code" data-code="${c}">${c}</button>`).join('')}</div>
+      </div>
+      ${q ? (p ? productPanel(p) : `<div class="card empty">${icon('info')}<div><h3 style="font-size:16px">No encontramos «${esc(q)}» en la muestra.</h3><p class="hint" style="margin-top:4px">Revisa el código. La muestra del prototipo tiene ${PRODUCTS.length} productos; si el cliente busca otro, oriéntalo con un asesor de HPC.</p></div></div>`) : ''}
+    </section>`;
+  }
+  // Atender sin celular: las cuatro preguntas de la guía y la misma regla (chooseProduct).
+  function questionsForm(){
+    const a = state.answers, proj = PROJECTS.find(x=>x.id===a.project);
+    const group = (n, key, title, opts, empty) => `<fieldset class="q-group"><legend><span class="q-n" aria-hidden="true">${n}</span>${esc(title)}</legend>${opts
+      ? `<div class="chips">${opts.map(([id,label])=>`<label class="opt"><input type="radio" name="q-${key}" value="${id}"${a[key]===id?' checked':''}><span>${esc(label)}</span></label>`).join('')}</div>`
+      : `<p class="hint small">${esc(empty)}</p>`}</fieldset>`;
+    return `<form id="questions-form" class="questions" novalidate>
+      ${group(1,'project',QUESTIONS.project,PROJECTS.map(x=>[x.id,x.name]))}
+      ${group(2,'material',proj?proj.materialQuestion:'Material o lugar',proj?proj.materials:null,'Esta pregunta depende de lo que necesite hacer.')}
+      ${group(3,'frequency',QUESTIONS.frequency,FREQUENCY)}
+      ${group(4,'priority',QUESTIONS.priority,PRIORITY)}
+      ${Object.keys(a).length?`<div><button class="btn btn-ghost btn-sm" type="button" data-action="answers-reset">${icon('refresh')} Empezar con otro cliente</button></div>`:''}
+    </form>`;
+  }
+  const answersComplete = a => !!(a.project && a.material && a.frequency && a.priority);
+  function assistResult(){
+    const a = state.answers;
+    if(!answersComplete(a))return '';
+    const proj = PROJECTS.find(x=>x.id===a.project), p = chooseProduct(a);
+    const chosen = [proj.name, proj.materials.find(m=>m[0]===a.material)[1], FREQUENCY.find(f=>f[0]===a.frequency)[1], PRIORITY.find(x=>x[0]===a.priority)[1]];
+    const head = `<div class="assist-head"><div class="eyebrow">${p?'La guía le recomendaría':'Resultado de la guía'}</div><div class="chips" style="margin-top:8px" role="group" aria-label="Respuestas del cliente">${chosen.map(c=>`<span class="tag">${esc(c)}</span>`).join('')}</div></div>`;
+    if(p)return productPanel(p, {head, reason:reasonFor(p,a), alts:candidatesFor(p,a)});
+    return `<article class="card" aria-labelledby="nomatch-title">${head}<div class="empty">${icon('headset')}<div><h2 id="nomatch-title" style="font-size:18px">La muestra no tiene una opción para esta necesidad.</h2>
+      <p class="hint" style="margin-top:4px">La muestra de grifería incluye un modelo para lavamanos de baño. Para cocina, ducha u otra instalación, deriva al cliente con un asesor de HPC para confirmar la opción adecuada; no la sustituyas por otro producto de la muestra.</p>
+      <div class="actions"><a class="btn btn-secondary" href="tel:${SUPPORT.tel}">${icon('phone')} Asesoría de HPC: ${SUPPORT.phone}</a></div>
+      <div class="inline-panel" role="group" aria-labelledby="nomatch-outcome"><strong id="nomatch-outcome">¿Cómo terminó la atención?</strong><div class="chips"><button class="chip" data-action="attend-save" data-id="" data-outcome="asesor">Lo derivé a un asesor de HPC</button><button class="chip" data-action="attend-save" data-id="" data-outcome="consulta">Solo estaba consultando</button></div></div>
+    </div></div></article>`;
+  }
+  function profiles(p){
+    const proj = PROJECTS.find(x=>x.id===p.category);
+    const rows = proj.materials.map(([mid,mlabel])=>{
+      const hits=[];
+      FREQUENCY.forEach(([fid,fl])=>PRIORITY.forEach(([pid,pl])=>{const c=chooseProduct({project:p.category,material:mid,frequency:fid,priority:pid});if(c&&c.id===p.id)hits.push(`${fl} · ${pl}`);}));
+      return {mlabel,hits};
+    }).filter(r=>r.hits.length);
+    if(!rows.length)return `<p class="hint" style="margin-top:8px">La guía no lo elige automáticamente; aparece como alternativa en la comparación.</p>`;
+    return `<ul class="profiles">${rows.map(r=>`<li><strong>«${esc(r.mlabel)}»</strong>${r.hits.length===9?'<span class="hint small">Con cualquier frecuencia y prioridad.</span>':`<div class="chips">${r.hits.map(h=>`<span class="tag">${esc(h)}</span>`).join('')}</div>`}</li>`).join('')}</ul>`;
+  }
+  // opts (al atender sin celular): head con las respuestas, reason de la guía y alts = alternativas adecuadas según las respuestas.
+  function productPanel(p, opts={}){
+    const st = state.session.store, proj = PROJECTS.find(x=>x.id===p.category);
+    const alts = PRODUCTS.filter(x=>x.category===p.category&&x.id!==p.id), shown = opts.alts || alts;
+    return `<article class="card product" aria-labelledby="product-title">${opts.head||''}
+      <div class="product-head"><div class="product-img">${img(p)}</div>
+        <div><span class="brand-line">${esc(p.brand)} · ${esc(proj.name)}</span><h2 id="product-title">${esc(p.name)}</h2><p class="hint">${esc(p.subtitle)}</p>
+          <div class="chips" style="margin-top:10px">${p.features.map(f=>`<span class="tag">${esc(f)}</span>`).join('')}</div>
+          <dl class="facts"><div><dt>Modelo</dt><dd>${esc(p.model)}</dd></div><div><dt>Código</dt><dd>${esc(p.code)}</dd></div><div><dt>Precio al público (ejemplo)</dt><dd>${money(p.price)}</dd></div><div><dt>Área orientativa</dt><dd>${esc(p.area)}</dd></div><div><dt>En ${esc(storeName(st))} (ejemplo)</dt><dd>${stockText(STORE_STOCK[st][p.id])}</dd></div><div><dt>Bodega de HPC (ejemplo)</dt><dd>${stockText(WAREHOUSE[p.id])}</dd></div></dl>
+          ${STORE_STOCK[st][p.id]<=LOW_STOCK?`<p class="low-stock" style="margin-top:12px">${icon('info')} ${STORE_STOCK[st][p.id]?'Quedan pocas unidades':'Está agotado'} en ${esc(storeName(st))}: puedes pedir reposición.</p>`:''}
+          <div class="actions"><button class="btn btn-primary" data-action="attend-open" data-id="${p.id}" aria-expanded="${state.attendFor===p.id}">${icon('check')} Registrar atención</button><button class="btn btn-secondary" data-action="restock-open" data-id="${p.id}" aria-expanded="${state.restockFor===p.id}">${icon('refresh')} Pedir reposición</button><button class="btn btn-secondary" data-action="copy" data-text="${esc(`${p.name} · modelo ${p.model} · código ${p.code}`)}">${icon('copy')} Copiar modelo y código</button><a class="btn btn-ghost" href="${p.source}" target="_blank" rel="noopener noreferrer">Ficha oficial ${icon('external')}</a></div>
+          ${state.attendFor===p.id?outcomePanel(p,alts):''}${state.restockFor===p.id?restockPanel(p):''}
+          <p class="service-link">${icon('shield')} ¿Pregunta por garantía o servicio? <button class="link-btn" data-action="tab" data-tab="servicio">Ver servicio y garantía</button></p>
+        </div>
+      </div>
+      <div class="grid-2 product-body">${opts.reason?`<section><h3>Lo que la guía le explica al cliente</h3><p class="why-text">${esc(opts.reason)}</p></section>`:`<section><h3>La guía lo recomienda cuando el cliente elige</h3>${profiles(p)}</section>`}<section><h3>Cómo explicarlo</h3><ul class="points">${TALK[p.id].map(t=>`<li>${esc(t)}</li>`).join('')}</ul></section></div>
+      ${shown.length?`<section class="alts"><h3>${opts.alts?'Otras opciones adecuadas de la muestra':'Otras opciones de la muestra'}</h3><div class="alt-list">${shown.map(a=>`<button class="alt" data-action="try-code" data-code="${a.code}"><strong>${esc(a.name)}</strong><span>${esc(a.model)} · ${money(a.price)} · ${stockText(STORE_STOCK[st][a.id])} en tienda</span></button>`).join('')}</div></section>`
+        :opts.alts?`<section class="alts"><h3>Otras opciones de la muestra</h3><p class="hint" style="margin-top:6px">La muestra no incluye otra herramienta adecuada para esta necesidad. Si el cliente duda, consulta con un asesor de HPC.</p></section>`:''}
+    </article>`;
+  }
+
+  // Búsqueda y filtros compartidos (productos del colaborador y catálogo mayorista)
+  const filtered = () => {const q=state.search.trim().toLowerCase();return PRODUCTS.filter(p=>(state.category==='all'||p.category===state.category)&&(!q||`${p.name} ${p.model} ${p.code} ${p.brand}`.toLowerCase().includes(q)));};
+  const filters = () => `<div class="filters"><label class="search"><span class="sr-only">Buscar productos</span>${icon('search')}<input id="search" class="input" placeholder="Buscar por nombre, modelo o código" value="${esc(state.search)}" autocomplete="off"></label><div class="chips" role="group" aria-label="Necesidad">${[['all','Todas'],...PROJECTS.map(p=>[p.id,p.name])].map(([id,label])=>`<button class="chip" data-action="category" data-category="${id}" aria-pressed="${state.category===id}">${esc(label)}</button>`).join('')}</div></div>`;
+  const results = () => state.session.mode==='colaborador' ? productsTable(filtered()) : catalogCards(filtered());
+
+  function productsView(){
+    return `<section class="card"><div class="section-title"><div><div class="eyebrow">Productos</div><h2>Muestra del catálogo</h2><p class="hint">Existencias de ${esc(storeName(state.session.store))} y precios al público de ejemplo.</p></div></div>${filters()}<div id="results">${results()}</div></section>`;
+  }
+  function productsTable(list){
+    const st = state.session.store;
+    return `<div class="table-wrap"><table class="table"><thead><tr><th scope="col">Producto</th><th scope="col">Modelo</th><th scope="col">Código</th><th scope="col">Área</th><th scope="col" class="num">En tienda</th><th scope="col" class="num">Precio público</th><th scope="col"><span class="sr-only">Acción</span></th></tr></thead><tbody>${list.map(p=>`<tr><td><strong>${esc(p.name)}</strong><br><span class="hint">${esc(p.brand)}</span></td><td>${esc(p.model)}</td><td>${esc(p.code)}</td><td>${esc(p.area)}</td><td class="num">${fmt(STORE_STOCK[st][p.id])}</td><td class="num">${money(p.price)}</td><td><button class="btn btn-secondary btn-sm" data-action="open-product" data-code="${p.code}">Ver ficha</button></td></tr>`).join('')||'<tr><td colspan="7">No hay coincidencias.</td></tr>'}</tbody></table></div>`;
+  }
+
+  // Modo mayorista: catálogo, pedido y pedidos
+  function catalogView(){
+    const lines = state.draft.lines.length;
+    return `<section class="card"><div class="section-title"><div><div class="eyebrow">Catálogo mayorista</div><h2>Precios por volumen</h2><p class="hint">Precio mayorista de ejemplo: ${pct(WHOLESALE_RATE)} del precio público de ejemplo. Descuento por producto: ${TIERS.filter(t=>t.disc).reverse().map(t=>`${t.label}, ${pct(t.disc)}`).join(' · ')}.</p></div><button class="btn btn-dark" data-action="tab" data-tab="pedido">${icon('cart')} Ver pedido${lines?` (${lines} ${lines===1?'producto':'productos'})`:''}</button></div>${filters()}<div id="results">${results()}</div></section>`;
+  }
+  function catalogCards(list){
+    if(!list.length)return '<p class="hint">No hay coincidencias.</p>';
+    return `<div class="cat-grid">${list.map(p=>{
+      const w=wholesale(p), box=BOX[p.id], line=state.draft.lines.find(l=>l.id===p.id);
+      return `<article class="cat-card"><div class="cat-img">${img(p)}</div><div class="cat-body"><span class="brand-line">${esc(p.brand)}</span><h3>${esc(p.name)}</h3><p class="hint small">${esc(p.model)} · código ${esc(p.code)}</p>
+        <dl class="facts compact"><div><dt>Precio mayorista (ejemplo)</dt><dd>${money(w)} c/u</dd></div><div><dt>Caja</dt><dd>${box} ${box===1?'unidad':'unidades'} · ${money(w*box)}</dd></div><div><dt>Precio público sugerido</dt><dd>${money(p.price)}</dd></div><div><dt>Margen estimado</dt><dd>${pct((p.price-w)/p.price)}</dd></div><div><dt>Bodega de HPC (ejemplo)</dt><dd>${stockText(WAREHOUSE[p.id])}</dd></div></dl>
+        <details class="talk"><summary>Argumentos de venta</summary><ul class="points">${TALK[p.id].map(t=>`<li>${esc(t)}</li>`).join('')}</ul></details>
+        <button class="btn ${line?'btn-secondary':'btn-primary'} btn-full" data-action="add-line" data-id="${p.id}">${icon('plus')} ${line?`Agregar otra caja (${line.boxes} en el pedido)`:'Agregar 1 caja al pedido'}</button></div></article>`;
+    }).join('')}</div>`;
+  }
+  function totals(lines){
+    const rows=lines.map(l=>{const p=productById(l.id),box=BOX[l.id],u=l.boxes*box,unit=wholesale(p),disc=tierFor(l.boxes).disc,gross=u*unit,total=Math.round(gross*(1-disc)*100)/100;return {p,box,boxes:l.boxes,units:u,unit,disc,gross,total};});
+    const gross=rows.reduce((s,r)=>s+r.gross,0), net=Math.round(rows.reduce((s,r)=>s+r.total,0)*100)/100;
+    return {rows,gross,net,discount:Math.round((gross-net)*100)/100};
+  }
+  function orderView(){
+    return `<div class="stack">${suggestionCard()}${orderBody()}</div>`;
+  }
+  function orderBody(){
+    const d = state.draft, acc = account();
+    if(!d.lines.length)return `<section class="card empty-state">${icon('cart')}<h2>Tu pedido está vacío.</h2><p class="hint">Agrega productos desde el catálogo mayorista.</p><button class="btn btn-primary" data-action="tab" data-tab="catalogo">Ir al catálogo</button></section>`;
+    const t = totals(d.lines);
+    return `<section class="order-layout">
+      <div class="card"><div class="section-title"><div><div class="eyebrow">Nuevo pedido</div><h2>${esc(acc.name)}</h2><p class="hint">Cantidades por caja. El descuento por volumen se aplica a cada producto.</p></div><button class="link-btn" data-action="clear-draft">Vaciar pedido</button></div>
+        <div class="table-wrap"><table class="table"><thead><tr><th scope="col">Producto</th><th scope="col">Cajas</th><th scope="col" class="num">Unidades</th><th scope="col" class="num">Precio c/u</th><th scope="col" class="num">Descuento</th><th scope="col" class="num">Total</th><th scope="col"><span class="sr-only">Quitar</span></th></tr></thead><tbody>
+        ${t.rows.map(r=>`<tr><td><strong>${esc(r.p.name)}</strong><br><span class="hint small">${esc(r.p.model)} · ${r.box} por caja</span>${r.units>WAREHOUSE[r.p.id]?`<br><span class="warn">${icon('info')} Supera la bodega de ejemplo (${fmt(WAREHOUSE[r.p.id])})</span>`:''}</td>
+          <td><div class="qty"><button class="qty-btn" type="button" data-action="qty" data-id="${r.p.id}" data-delta="-1" aria-label="Una caja menos de ${esc(r.p.name)}"${r.boxes<=1?' disabled':''}>−</button><input class="qty-input" type="number" inputmode="numeric" min="1" max="999" step="1" value="${r.boxes}" data-qty="${r.p.id}" aria-label="Cajas de ${esc(r.p.name)}"><button class="qty-btn" type="button" data-action="qty" data-id="${r.p.id}" data-delta="1" aria-label="Una caja más de ${esc(r.p.name)}">+</button></div></td>
+          <td class="num">${fmt(r.units)}</td><td class="num">${money(r.unit)}</td><td class="num">${r.disc?pct(r.disc):'—'}</td><td class="num"><strong>${money(r.total)}</strong></td>
+          <td><button class="icon-btn" type="button" data-action="remove-line" data-id="${r.p.id}" aria-label="Quitar ${esc(r.p.name)}">${icon('trash')}</button></td></tr>`).join('')}
+        </tbody></table></div></div>
+      <section class="card order-summary" aria-labelledby="summary-title"><h3 id="summary-title">Resumen</h3>
+        <dl class="sum"><div><dt>Subtotal</dt><dd>${money(t.gross)}</dd></div><div><dt>Descuento por volumen</dt><dd>− ${money(t.discount)}</dd></div><div class="sum-total"><dt>Total de ejemplo (sin impuestos)</dt><dd>${money(t.net)}</dd></div></dl>
+        <form id="order-form" class="stack" novalidate>
+          <div class="field"><label for="o-point">Punto de entrega</label><select id="o-point" class="input"><option value="">Selecciona</option>${acc.points.map(pt=>`<option${d.point===pt?' selected':''}>${esc(pt)}</option>`).join('')}</select></div>
+          <div class="field"><label for="o-date">Fecha deseada</label><input id="o-date" class="input" type="date" min="${localDate()}" value="${esc(d.date)}"></div>
+          <div class="field"><label for="o-notes">Notas <span class="hint">(opcional)</span></label><textarea id="o-notes" class="input" rows="3" maxlength="300">${esc(d.notes)}</textarea></div>
+          ${state.orderError?`<p class="form-error" role="alert">${esc(state.orderError)}</p>`:''}
+          <button class="btn btn-primary btn-full" type="submit">${icon('check')} Confirmar pedido (demostración)</button>
+          <p class="hint small">El borrador se guarda solo en este navegador. Al confirmar, el pedido no se envía a HPC ni reserva existencias.</p>
+        </form>
+      </section>
+    </section>`;
+  }
+  const myOrders = () => state.orders.filter(o=>o.account===state.session.account);
+  function ordersView(){
+    const list = myOrders().slice().reverse();
+    if(!list.length)return `<section class="card empty-state">${icon('file')}<h2>Todavía no hay pedidos.</h2><p class="hint">Los pedidos que confirmes en este navegador aparecerán aquí.</p><button class="btn btn-primary" data-action="tab" data-tab="catalogo">Ir al catálogo</button></section>`;
+    return `<section class="card"><div class="section-title"><div><div class="eyebrow">Mis pedidos</div><h2>${list.length} ${list.length===1?'pedido':'pedidos'} en este navegador</h2><p class="hint">Pedidos de demostración: no se enviaron a HPC.</p></div><button class="btn btn-secondary" data-action="csv-all">${icon('download')} Descargar CSV</button></div>
+      <div class="table-wrap"><table class="table"><thead><tr><th scope="col">Pedido</th><th scope="col">Fecha</th><th scope="col">Entrega</th><th scope="col" class="num">Cajas</th><th scope="col" class="num">Total</th><th scope="col">Estado</th><th scope="col"><span class="sr-only">Acciones</span></th></tr></thead><tbody>
+      ${list.map(o=>{const open=state.openOrder===o.id,cancelled=o.status==='cancelado';return `<tr><td><strong>${esc(o.id)}</strong></td><td>${esc(localDate(new Date(o.createdAt)))}</td><td>${esc(o.point)}<br><span class="hint small">Para el ${esc(o.date)}</span></td><td class="num">${fmt(o.lines.reduce((s,l)=>s+l.boxes,0))}</td><td class="num">${money(o.net)}</td><td><span class="badge ${cancelled?'badge-off':'badge-ok'}">${cancelled?'Cancelado':'Confirmado (demostración)'}</span></td>
+        <td><div class="row-actions"><button class="btn btn-secondary btn-sm" data-action="view-order" data-id="${o.id}" aria-expanded="${open}">${open?'Ocultar':'Ver'}</button><button class="btn btn-ghost btn-sm" data-action="repeat-order" data-id="${o.id}">Repetir</button>${cancelled?'':(state.confirmCancel===o.id?`<button class="btn btn-ghost btn-sm" data-action="cancel-order" data-id="${o.id}" style="color:var(--bad)">Sí, cancelar</button>`:`<button class="btn btn-ghost btn-sm" data-action="ask-cancel" data-id="${o.id}">Cancelar</button>`)}</div></td></tr>${open?`<tr class="detail"><td colspan="7">${orderDetail(o)}</td></tr>`:''}`;}).join('')}
+      </tbody></table></div></section>`;
+  }
+  function orderDetail(o){
+    return `<div class="detail-box"><div class="table-wrap"><table class="table inner"><thead><tr><th scope="col">Producto</th><th scope="col" class="num">Cajas</th><th scope="col" class="num">Unidades</th><th scope="col" class="num">Precio c/u</th><th scope="col" class="num">Descuento</th><th scope="col" class="num">Total</th></tr></thead><tbody>${o.lines.map(l=>`<tr><td>${esc(l.name)} <span class="hint small">${esc(l.model)}</span></td><td class="num">${fmt(l.boxes)}</td><td class="num">${fmt(l.units)}</td><td class="num">${money(l.unit)}</td><td class="num">${l.disc?pct(l.disc):'—'}</td><td class="num">${money(l.total)}</td></tr>`).join('')}</tbody></table></div>${o.notes?`<p><strong>Notas:</strong> ${esc(o.notes)}</p>`:''}<div class="actions" style="margin-top:0"><button class="btn btn-secondary btn-sm" data-action="copy-order" data-id="${o.id}">${icon('copy')} Copiar resumen</button><button class="btn btn-secondary btn-sm" data-action="csv-order" data-id="${o.id}">${icon('download')} CSV de este pedido</button></div></div>`;
+  }
+  function orderText(o){
+    return [`Pedido ${o.id} (demostración, no enviado a HPC)`,`${account().name} · entrega: ${o.point} · para el ${o.date}`,...o.lines.map(l=>`- ${l.name} (${l.model}): ${l.boxes} ${l.boxes===1?'caja':'cajas'}, ${l.units} unidades, ${money(l.total)}`),`Total de ejemplo sin impuestos: ${money(o.net)}`,o.notes?`Notas: ${o.notes}`:''].filter(Boolean).join('\n');
+  }
+  function csv(orders){
+    const q=v=>{const s=String(v??'');return /[",\n;]/.test(s)?`"${s.replace(/"/g,'""')}"`:s;};
+    const head=['pedido','fecha','estado','entrega','fecha_deseada','codigo','modelo','producto','cajas','unidades','precio_unitario','descuento','total_linea'];
+    const rows=orders.flatMap(o=>o.lines.map(l=>[o.id,localDate(new Date(o.createdAt)),o.status,o.point,o.date,l.code,l.model,l.name,l.boxes,l.units,l.unit.toFixed(2),l.disc,l.total.toFixed(2)]));
+    return [head,...rows].map(r=>r.map(q).join(',')).join('\r\n');
+  }
+  function download(name, text){
+    const url=URL.createObjectURL(new Blob(['﻿'+text],{type:'text/csv;charset=utf-8'}));
+    const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);toast(`Descargado: ${name}`);
+  }
+  async function copyText(text){
+    try{await navigator.clipboard.writeText(text);toast('Copiado.');}
+    catch{const ta=document.createElement('textarea');ta.value=text;ta.setAttribute('readonly','');ta.style.position='fixed';ta.style.opacity='0';document.body.append(ta);ta.select();let ok=false;try{ok=document.execCommand('copy');}catch{}ta.remove();toast(ok?'Copiado.':'No se pudo copiar en este navegador.');}
+  }
+
+  // Resultado de la atención y reposición (el colaborador pide; el mayorista atiende)
+  function outcomePanel(p, alts){
+    const buttons = OUTCOMES.flatMap(([id,label]) => id==='otra'
+      ? alts.map(a => `<button class="chip" data-action="attend-save" data-id="${p.id}" data-outcome="otra" data-chosen="${a.id}">Se llevó otra: ${esc(a.model)}</button>`)
+      : [`<button class="chip" data-action="attend-save" data-id="${p.id}" data-outcome="${id}">${esc(label)}</button>`]).join('');
+    return `<div class="inline-panel" role="group" aria-labelledby="outcome-title"><strong id="outcome-title">¿Cómo terminó la atención?</strong><div class="chips">${buttons}</div><p class="hint small">«Compró» lo registra el colaborador: no es una compra verificada con factura.</p></div>`;
+  }
+  function restockPanel(p){
+    return `<form class="inline-panel" id="restock-form" data-id="${p.id}" novalidate><strong>Pedir reposición a ${esc(supplierOf(state.session.store).name)}</strong>
+      <div class="field"><label for="restock-boxes">Cajas de ${BOX[p.id]} ${BOX[p.id]===1?'unidad':'unidades'}</label><input id="restock-boxes" class="input" type="number" inputmode="numeric" min="1" max="99" value="1" style="max-width:120px"></div>
+      <div class="field"><label for="restock-note">Nota <span class="hint">(opcional)</span></label><input id="restock-note" class="input" maxlength="140" placeholder="Por ejemplo: los clientes lo piden cada semana"></div>
+      <div class="actions" style="margin-top:0"><button class="btn btn-primary" type="submit">Enviar solicitud</button><button class="btn btn-ghost" type="button" data-action="restock-close">Cancelar</button></div>
+      <p class="hint small">La solicitud se guarda en este navegador. El mayorista la ve aquí o en su computadora, si le pasas una copia de los datos. No se envía a HPC.</p></form>`;
+  }
+  function submitRestock(form){
+    const p=productById(form.dataset.id), boxes=Math.max(1,Math.min(99,parseInt(form.querySelector('#restock-boxes').value,10)||1)), note=form.querySelector('#restock-note').value.trim().slice(0,140);
+    const n=state.requests.reduce((m,r)=>Math.max(m,parseInt(r.id.slice(2),10)||0),0)+1;
+    const req={id:'R-'+String(n).padStart(4,'0'),uid:newUid(),productId:p.id,store:state.session.store,boxes,note,at:new Date().toISOString(),status:'pendiente'};
+    const list=[...state.requests,req];
+    if(!save('requests',list))return;
+    state.requests=list;state.restockFor=null;render();
+    toast(`Solicitud ${req.id} enviada a ${supplierOf(req.store).name} (demostración).`);
+  }
+  const REQUEST_STATUS = {pendiente:['pending','Pendiente'], atendida:['done','Agregada al pedido del mayorista'], descartada:['off','Descartada']};
+  function restockView(){
+    const s=state.session, collab=s.mode==='colaborador', stores=myStores(), low=collab?lowStockCard():'';
+    const list=state.requests.filter(r=>stores.includes(r.store)).sort((a,b)=>(a.status==='pendiente'?0:1)-(b.status==='pendiente'?0:1)||b.at.localeCompare(a.at));
+    if(!list.length)return `<div class="stack">${low}<section class="card empty-state">${icon('refresh')}<h2>Todavía no hay solicitudes de reposición.</h2><p class="hint">${collab?'Pídela desde «Lo que se está acabando» o desde la ficha del producto en «Atender cliente».':'Aquí verás lo que te pidan los colaboradores de tus tiendas.'}</p></section></div>`;
+    const head = collab
+      ? `<h2>Solicitudes de ${esc(storeName(s.store))}</h2><p class="hint">Las atiende ${esc(supplierOf(s.store).name)}.</p>`
+      : `<h2>Solicitudes de tus tiendas</h2><p class="hint">${esc(stores.map(storeName).join(' y '))} (ejemplo). Al agregar una solicitud, sus cajas pasan a tu nuevo pedido.</p>`;
+    return `<div class="stack">${low}<section class="card"><div class="section-title"><div><div class="eyebrow">Reposición</div>${head}</div></div>
+      <div class="table-wrap"><table class="table stacked"><thead><tr><th scope="col">Solicitud</th>${collab?'':'<th scope="col">Tienda</th>'}<th scope="col">Producto</th><th scope="col" class="num">Cajas</th><th scope="col">Fecha</th><th scope="col">Nota</th><th scope="col">Estado</th>${collab?'':'<th scope="col"><span class="sr-only">Acciones</span></th>'}</tr></thead><tbody>
+      ${list.map(r=>{const p=productById(r.productId),[cls,label]=REQUEST_STATUS[r.status]||REQUEST_STATUS.pendiente;return `<tr><td><strong>${esc(r.id)}</strong></td>${collab?'':`<td data-label="Tienda">${esc(storeName(r.store))}</td>`}<td data-label="Producto">${esc(p.name)}<br><span class="hint small">${esc(p.model)} · ${BOX[p.id]} por caja</span></td><td class="num" data-label="Cajas">${fmt(r.boxes)}</td><td data-label="Fecha">${esc(new Date(r.at).toLocaleString('es-GT',{dateStyle:'short',timeStyle:'short'}))}</td><td data-label="Nota">${esc(r.note||'—')}</td><td data-label="Estado"><span class="status ${cls}">${label}</span></td>${collab?'':`<td data-label="">${r.status==='pendiente'?`<div class="row-actions"><button class="btn btn-primary btn-sm" data-action="restock-accept" data-id="${r.id}">Agregar al pedido</button><button class="btn btn-ghost btn-sm" data-action="restock-reject" data-id="${r.id}">Descartar</button></div>`:''}</td>`}</tr>`;}).join('')}
+      </tbody></table></div></section></div>`;
+  }
+  // Lo que se está acabando (colaborador): existencias de ejemplo bajas en su tienda, con reposición desde la lista.
+  function lowStockCard(){
+    const st=state.session.store, stock=id=>STORE_STOCK[st][id];
+    const list=PRODUCTS.filter(p=>stock(p.id)<=LOW_STOCK).sort((a,b)=>stock(a.id)-stock(b.id)||a.name.localeCompare(b.name,'es'));
+    if(!list.length)return '';
+    return `<section class="card" aria-labelledby="low-title"><div class="eyebrow">Lo que se está acabando</div><h2 id="low-title" style="font-size:18px;margin-top:2px">${plural(list.length,'producto','productos')} con ${LOW_STOCK} unidades o menos en ${esc(storeName(st))}</h2>
+      <p class="hint small">Existencias de ejemplo. La solicitud le llega a ${esc(supplierOf(st).name)}.</p>
+      <ul class="low-list">${list.map(p=>{const n=stock(p.id),pend=state.requests.find(r=>r.store===st&&r.productId===p.id&&r.status==='pendiente');
+        return `<li class="low-item"><div class="low-row"><div><strong>${esc(p.name)}</strong><br><span class="hint small">${esc(p.model)} · código ${esc(p.code)} · ${BOX[p.id]} por caja</span></div><div class="low-side"><span class="stock-tag${n?'':' out'}">${!n?'Agotado':n===1?'Queda 1 unidad':`Quedan ${units(n)}`}</span>${pend?`<span class="status pending">${esc(pend.id)} pendiente</span>`:`<button class="btn btn-secondary btn-sm" data-action="restock-open" data-id="${p.id}" aria-expanded="${state.restockFor===p.id}">${icon('refresh')} Pedir reposición</button>`}</div></div>${state.restockFor===p.id?restockPanel(p):''}</li>`;}).join('')}</ul></section>`;
+  }
+
+  // Pedido sugerido (mayorista): estimación de ejemplo con las métricas de sus tiendas
+  function suggestions(){
+    const acc=account(), cur=aggregate(acc.stores,0,30), rate=cur.recs?cur.accepted/cur.recs:0;
+    return PRODUCTS.map(p=>{
+      const recs=cur.byProduct[p.id]||0, demand=Math.round(recs*rate), stock=acc.stores.reduce((n,st)=>n+STORE_STOCK[st][p.id],0);
+      const maxBoxes=Math.floor(WAREHOUSE[p.id]/BOX[p.id]), wanted=Math.ceil(Math.max(0,demand-stock)/BOX[p.id]);
+      return {p,recs,demand,stock,boxes:Math.min(wanted,maxBoxes),capped:wanted>maxBoxes};
+    }).filter(s=>s.boxes>0).sort((a,b)=>b.boxes*BOX[b.p.id]-a.boxes*BOX[a.p.id]);
+  }
+  const boxesInDraft = id => (state.draft.lines.find(l => l.id===id)||{boxes:0}).boxes;
+  function ensureBoxes(id, boxes){const line=state.draft.lines.find(l=>l.id===id);if(line)line.boxes=Math.min(999,Math.max(line.boxes,boxes));else state.draft.lines.push({id,boxes:Math.min(999,boxes)});}
+  function addBoxes(id, boxes){const line=state.draft.lines.find(l=>l.id===id);if(line)line.boxes=Math.min(999,line.boxes+boxes);else state.draft.lines.push({id,boxes:Math.min(999,boxes)});}
+  function suggestionCard(){
+    const list=suggestions(), acc=account();
+    if(!list.length)return '';
+    const missing=list.filter(s=>boxesInDraft(s.p.id)<s.boxes).length;
+    return `<section class="card" aria-labelledby="suggest-title"><div class="section-title"><div><div class="eyebrow">Pedido sugerido</div><h2 id="suggest-title" style="font-size:18px">Para ${esc(acc.stores.map(storeName).join(' y '))} (ejemplo)</h2><p class="hint small">Estimación de ejemplo: recomendaciones de los últimos 30 días por la tasa de «Me lo llevo», menos las existencias de tus tiendas; en cajas completas y sin pasar la bodega.</p></div>${missing?`<button class="btn btn-primary" data-action="suggest-all">${icon('plus')} Agregar todo lo sugerido</button>`:'<span class="status done">Todo lo sugerido ya está en el pedido</span>'}</div>
+      <div class="table-wrap"><table class="table stacked"><thead><tr><th scope="col">Producto</th><th scope="col" class="num">Recomendaciones</th><th scope="col" class="num">Demanda estimada</th><th scope="col" class="num">En tus tiendas</th><th scope="col" class="num">Sugerido</th><th scope="col"><span class="sr-only">Acción</span></th></tr></thead><tbody>
+      ${list.map(s=>`<tr><td><strong>${esc(s.p.name)}</strong><br><span class="hint small">${esc(s.p.model)} · ${BOX[s.p.id]} por caja</span></td><td class="num" data-label="Recomendaciones">${fmt(s.recs)}</td><td class="num" data-label="Demanda estimada">${units(s.demand)}</td><td class="num" data-label="En tus tiendas">${units(s.stock)}</td><td class="num" data-label="Sugerido"><strong>${fmt(s.boxes)} ${s.boxes===1?'caja':'cajas'}</strong>${s.capped?'<br><span class="hint small">Limitado por la bodega</span>':''}</td><td data-label="">${boxesInDraft(s.p.id)>=s.boxes?'<span class="status done">En el pedido</span>':`<button class="btn btn-secondary btn-sm" data-action="suggest-add" data-id="${s.p.id}">Agregar</button>`}</td></tr>`).join('')}
+      </tbody></table></div></section>`;
+  }
+
+  // QR para anaquel (ambos modos): enlaces de entrada de la guía con tienda, categoría y origen
+  function qrView(){
+    const s=state.session, collab=s.mode==='colaborador', stores=myStores();
+    if(!stores.includes(state.qr.store))state.qr.store=stores[0];
+    return `<section class="qr-layout">
+      <div class="card"><div class="eyebrow">QR para anaquel</div><h2 style="font-size:21px;margin-top:2px">Enlace de entrada a la guía</h2>
+        <p class="hint" style="margin-top:4px">Arma el enlace que abre la guía de clientes con la tienda, la categoría y el origen ya puestos, como describe el README de la guía.</p>
+        <form id="qr-form" class="stack" style="margin-top:14px" novalidate>
+          <div class="field"><label for="qr-base">Dirección de la guía publicada</label><input id="qr-base" class="input" inputmode="url" autocomplete="off" spellcheck="false" value="${esc(state.qr.base)}"><span class="hint small">La guía todavía no está publicada: cambia esta dirección de ejemplo por la real cuando exista.</span></div>
+          <div class="grid-2">
+            <div class="field"><label for="qr-store">Tienda</label>${collab?`<input id="qr-store" class="input" value="${esc(storeName(s.store))} (ejemplo)" disabled>`:`<select id="qr-store" class="input">${stores.map(id=>`<option value="${id}"${state.qr.store===id?' selected':''}>${esc(storeName(id))} (ejemplo)</option>`).join('')}</select>`}</div>
+            <div class="field"><label for="qr-category">Categoría</label><select id="qr-category" class="input">${QR_CATEGORY.map(([id,label])=>`<option value="${id}"${state.qr.category===id?' selected':''}>${esc(label)}</option>`).join('')}</select></div>
+          </div>
+          <div class="field"><label for="qr-origin">Dónde se va a colocar</label><select id="qr-origin" class="input">${QR_ORIGIN.map(([id,label])=>`<option value="${id}"${state.qr.origin===id?' selected':''}>${esc(label)}</option>`).join('')}</select></div>
+        </form>
+      </div>
+      <section class="card qr-box" id="qr-result" aria-live="polite" aria-label="Código QR y enlace">${qrResult()}</section>
+    </section>`;
+  }
+  function qrLink(){
+    try{
+      const u=new URL(state.qr.base.trim());
+      if(!/^https?:$/.test(u.protocol))return null;
+      u.searchParams.set('tienda',state.qr.store);
+      if(state.qr.category)u.searchParams.set('categoria',state.qr.category);else u.searchParams.delete('categoria');
+      u.searchParams.set('origen',state.qr.origin);
+      return u.toString();
+    }catch{return null;}
+  }
+  function qrResult(){
+    const link=qrLink();
+    if(!link)return `<p class="form-error" role="alert">Escribe una dirección válida que empiece con https://</p>`;
+    let svg;try{svg=QR.svg(link);}catch(e){return `<p class="form-error" role="alert">${esc(e.message)}</p>`;}
+    return `${svg}<p class="hint small">${state.qr.origin==='nfc'?'Para una etiqueta NFC, graba este enlace en la etiqueta. El QR sirve para probarlo con el celular.':'Escanéalo con el celular para probarlo antes de imprimir.'}</p><div class="qr-link" id="qr-url">${esc(link)}</div>
+      <div class="actions" style="margin-top:0;justify-content:center"><button class="btn btn-secondary btn-sm" data-action="copy" data-text="${esc(link)}">${icon('copy')} Copiar enlace</button><button class="btn btn-secondary btn-sm" data-action="qr-download">${icon('download')} Descargar SVG</button><button class="btn btn-primary btn-sm" data-action="qr-print">Imprimir etiqueta</button></div>`;
+  }
+  function updateQr(){save('qr',state.qr);const box=document.getElementById('qr-result');if(box)box.innerHTML=qrResult();}
+  const qrFileName = () => `qr-${state.qr.store}-${state.qr.category||'general'}-${state.qr.origin}.svg`;
+  function printLabel(){
+    const link=qrLink();if(!link)return;
+    const cat=QR_CATEGORY.find(c=>c[0]===state.qr.category);
+    document.getElementById('print-sheet').innerHTML=`${QR.svg(link)}<h1>¿Qué necesitas hacer?</h1><p style="font-size:14pt">Escanea el código y te ayudamos a elegir la herramienta para tu proyecto.</p><p style="font-size:11pt">HPC Smart Guide · ${esc(storeName(state.qr.store))}${state.qr.category?' · '+esc(cat[1]):''}</p><p style="font-size:8pt;word-break:break-all">${esc(link)}</p>`;
+    window.print();
+  }
+  function downloadFile(name, text, type){
+    const url=URL.createObjectURL(new Blob([text],{type}));
+    const a=document.createElement('a');a.href=url;a.download=name;document.body.append(a);a.click();a.remove();
+    setTimeout(()=>URL.revokeObjectURL(url),1000);toast(`Descargado: ${name}`);
+  }
+
+  // Generador de códigos QR sin dependencias: modo byte, corrección M, versiones 1 a 10
+  // (sigue el estándar ISO/IEC 18004, con la misma estructura del generador de referencia de Nayuki).
+  const QR = (() => {
+    const ECC_PER_BLOCK = [0,10,16,26,18,24,16,18,22,22,26];
+    const BLOCKS = [0,1,1,1,2,2,4,4,4,5,5];
+    const rawModules = v => {let r=(16*v+128)*v+64;if(v>=2){const n=Math.floor(v/7)+2;r-=(25*n-10)*n-55;if(v>=7)r-=36;}return r;};
+    const dataCodewords = v => Math.floor(rawModules(v)/8)-ECC_PER_BLOCK[v]*BLOCKS[v];
+    const mul = (x,y) => {let z=0;for(let i=7;i>=0;i--){z=(z<<1)^((z>>>7)*0x11D);z^=((y>>>i)&1)*x;}return z;};
+    const divisor = d => {const r=new Array(d).fill(0);r[d-1]=1;let root=1;for(let i=0;i<d;i++){for(let j=0;j<d;j++){r[j]=mul(r[j],root);if(j+1<d)r[j]^=r[j+1];}root=mul(root,2);}return r;};
+    const remainder = (data,div) => {const r=div.map(()=>0);for(const b of data){const f=b^r.shift();r.push(0);div.forEach((c,i)=>{r[i]^=mul(c,f);});}return r;};
+    const alignment = v => {if(v===1)return [];const n=Math.floor(v/7)+2,size=v*4+17,step=Math.ceil((v*4+4)/(n*2-2))*2,res=[6];for(let pos=size-7;res.length<n;pos-=step)res.splice(1,0,pos);return res;};
+    const MASKS=[(x,y)=>(x+y)%2===0,(x,y)=>y%2===0,(x,y)=>x%3===0,(x,y)=>(x+y)%3===0,(x,y)=>(Math.floor(x/3)+Math.floor(y/2))%2===0,(x,y)=>x*y%2+x*y%3===0,(x,y)=>(x*y%2+x*y%3)%2===0,(x,y)=>((x+y)%2+x*y%3)%2===0];
+    function penalty(mod,size){
+      let score=0;
+      const runs=get=>{for(let a=0;a<size;a++){let run=1;for(let b=1;b<size;b++){if(get(a,b)===get(a,b-1)){run++;if(run===5)score+=3;else if(run>5)score++;}else run=1;}}};
+      runs((a,b)=>mod[a][b]);runs((a,b)=>mod[b][a]);
+      for(let y=0;y<size-1;y++)for(let x=0;x<size-1;x++){const c=mod[y][x];if(c===mod[y][x+1]&&c===mod[y+1][x]&&c===mod[y+1][x+1])score+=3;}
+      const pat=[true,false,true,true,true,false,true];
+      const finderLike=(get,a,b)=>{for(let k=0;k<7;k++)if(get(a,b+k)!==pat[k])return false;const before=b>=4&&[1,2,3,4].every(k=>!get(a,b-k)),after=b+10<size&&[7,8,9,10].every(k=>!get(a,b+k));return before||after;};
+      for(let a=0;a<size;a++)for(let b=0;b+7<=size;b++){if(finderLike((r,c)=>mod[r][c],a,b))score+=40;if(finderLike((r,c)=>mod[c][r],a,b))score+=40;}
+      let dark=0;mod.forEach(row=>row.forEach(c=>{if(c)dark++;}));
+      return score+Math.floor(Math.abs(dark*20-size*size*10)/(size*size))*10;
+    }
+    function encode(text){
+      const bytes=Array.from(new TextEncoder().encode(text));
+      let v=1;for(;v<=10;v++)if(4+(v<10?8:16)+bytes.length*8<=dataCodewords(v)*8)break;
+      if(v>10)throw new Error('El enlace es demasiado largo para el código QR; usa una dirección más corta.');
+      const bits=[],put=(val,len)=>{for(let i=len-1;i>=0;i--)bits.push((val>>>i)&1);};
+      put(4,4);put(bytes.length,v<10?8:16);bytes.forEach(b=>put(b,8));
+      const cap=dataCodewords(v)*8;put(0,Math.min(4,cap-bits.length));put(0,(8-bits.length%8)%8);
+      for(let pad=0xEC;bits.length<cap;pad^=0xEC^0x11)put(pad,8);
+      const data=[];for(let i=0;i<bits.length;i+=8){let b=0;for(let j=0;j<8;j++)b=(b<<1)|bits[i+j];data.push(b);}
+      // Bloques con su corrección de errores, intercalados
+      const nb=BLOCKS[v],ecl=ECC_PER_BLOCK[v],raw=Math.floor(rawModules(v)/8),nShort=nb-raw%nb,shortLen=Math.floor(raw/nb),div=divisor(ecl),blocks=[];
+      for(let i=0,k=0;i<nb;i++){const dat=data.slice(k,k+shortLen-ecl+(i<nShort?0:1));k+=dat.length;const ecc=remainder(dat,div);if(i<nShort)dat.push(0);blocks.push(dat.concat(ecc));}
+      const codewords=[];for(let i=0;i<blocks[0].length;i++)blocks.forEach((blk,j)=>{if(i!==shortLen-ecl||j>=nShort)codewords.push(blk[i]);});
+      // Patrones fijos
+      const size=v*4+17,mod=[...Array(size)].map(()=>Array(size).fill(false)),fn=[...Array(size)].map(()=>Array(size).fill(false));
+      const set=(x,y,d)=>{mod[y][x]=d;fn[y][x]=true;};
+      for(let i=0;i<size;i++){set(6,i,i%2===0);set(i,6,i%2===0);}
+      const finder=(x,y)=>{for(let dy=-4;dy<=4;dy++)for(let dx=-4;dx<=4;dx++){const d=Math.max(Math.abs(dx),Math.abs(dy)),xx=x+dx,yy=y+dy;if(xx>=0&&xx<size&&yy>=0&&yy<size)set(xx,yy,d!==2&&d!==4);}};
+      finder(3,3);finder(size-4,3);finder(3,size-4);
+      const al=alignment(v),na=al.length;
+      for(let i=0;i<na;i++)for(let j=0;j<na;j++){if(i===0&&j===0||i===0&&j===na-1||i===na-1&&j===0)continue;for(let dy=-2;dy<=2;dy++)for(let dx=-2;dx<=2;dx++)set(al[i]+dx,al[j]+dy,Math.max(Math.abs(dx),Math.abs(dy))!==1);}
+      const format=mask=>{const dat=mask;let rem=dat;for(let i=0;i<10;i++)rem=(rem<<1)^((rem>>>9)*0x537);const b=((dat<<10)|rem)^0x5412,g=i=>((b>>>i)&1)===1;
+        for(let i=0;i<=5;i++)set(8,i,g(i));set(8,7,g(6));set(8,8,g(7));set(7,8,g(8));for(let i=9;i<15;i++)set(14-i,8,g(i));
+        for(let i=0;i<8;i++)set(size-1-i,8,g(i));for(let i=8;i<15;i++)set(8,size-15+i,g(i));set(8,size-8,true);};
+      format(0);
+      if(v>=7){let rem=v;for(let i=0;i<12;i++)rem=(rem<<1)^((rem>>>11)*0x1F25);const b=(v<<12)|rem;for(let i=0;i<18;i++){const c=((b>>>i)&1)===1,a=size-11+i%3,bb=Math.floor(i/3);set(a,bb,c);set(bb,a,c);}}
+      // Datos en zigzag
+      let bi=0;
+      for(let right=size-1;right>=1;right-=2){if(right===6)right=5;for(let vert=0;vert<size;vert++)for(let j=0;j<2;j++){const x=right-j,up=((right+1)&2)===0,y=up?size-1-vert:vert;if(!fn[y][x]&&bi<codewords.length*8){mod[y][x]=((codewords[bi>>>3]>>>(7-(bi&7)))&1)===1;bi++;}}}
+      // Máscara con menor penalización
+      const apply=m=>{for(let y=0;y<size;y++)for(let x=0;x<size;x++)if(!fn[y][x]&&MASKS[m](x,y))mod[y][x]=!mod[y][x];};
+      let best=0,bestScore=Infinity;
+      for(let m=0;m<8;m++){apply(m);format(m);const sc=penalty(mod,size);if(sc<bestScore){bestScore=sc;best=m;}apply(m);}
+      apply(best);format(best);
+      return {modules:mod,version:v,mask:best};
+    }
+    function svg(text){
+      const m=encode(text).modules,n=m.length,q=4;let d='';
+      for(let y=0;y<n;y++)for(let x=0;x<n;x++)if(m[y][x])d+=`M${x+q} ${y+q}h1v1h-1z`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${n+2*q} ${n+2*q}" shape-rendering="crispEdges" role="img" aria-label="Código QR del enlace"><rect width="100%" height="100%" fill="#fff"/><path d="${d}" fill="#000"/></svg>`;
+    }
+    return {encode, svg};
+  })();
+
+  // Servicio y garantía (ambos modos): el respaldo de HPC que muestra la guía de clientes
+  function serviceView(){
+    const forClient = ['Respaldo HPC',`Teléfono: ${SUPPORT.phone}`,`Correo: ${SUPPORT.email}`,'Centros de servicio:',...SUPPORT.centers.map(c=>`- ${c.city}: ${c.address}`),`Horario publicado: ${SUPPORT.hours}`,`Política de garantía: ${SUPPORT.policy}`].join('\n');
+    return `<section class="stack">
+      <div class="card"><div class="section-title" style="margin-bottom:0"><div><div class="eyebrow">Servicio y garantía</div><h2>El respaldo de HPC para el cliente</h2><p class="hint">Lo mismo que muestra la guía de clientes en «Garantía y respaldo» y «Ayuda y soporte».</p></div><button class="btn btn-secondary" data-action="copy" data-text="${esc(forClient)}">${icon('copy')} Copiar para enviar al cliente</button></div>
+        <div class="contact-row"><a class="btn btn-primary" href="tel:${SUPPORT.tel}">${icon('phone')} ${SUPPORT.phone}</a><a class="btn btn-secondary" href="mailto:${SUPPORT.email}">${icon('mail')} ${SUPPORT.email}</a><a class="btn btn-ghost" href="${esc(SUPPORT.policy)}" target="_blank" rel="noopener noreferrer">Política de garantía ${icon('external')}</a></div></div>
+      <div class="card" aria-labelledby="centers-title"><h3 id="centers-title" style="font-size:17px">Centros de servicio</h3><p class="hint small" style="margin-top:2px">Direcciones y horarios publicados por HPC; pide al cliente que confirme la atención antes de su visita. <a href="${esc(SUPPORT.source)}" target="_blank" rel="noopener noreferrer">Ver fuente oficial</a></p>
+        <div class="center-grid">${SUPPORT.centers.map(c=>`<article class="center"><h3>${icon('location')}${esc(c.city)}</h3><p>${esc(c.address)}</p><span class="hint small">${esc(SUPPORT.hours)}</span><div class="actions"><a class="btn btn-secondary btn-sm" href="${esc(c.map)}" target="_blank" rel="noopener noreferrer">Cómo llegar ${icon('external')}</a><button class="btn btn-ghost btn-sm" data-action="copy" data-text="${esc(`HPC ${c.city}: ${c.address}`)}">${icon('copy')} Copiar dirección</button></div></article>`).join('')}</div></div>
+      <div class="card" aria-labelledby="warranty-title"><h3 id="warranty-title" style="font-size:17px">Qué decirle sobre la garantía</h3><p style="margin-top:6px">${esc(SUPPORT.warranty)}</p>
+        <div class="warranty-points">${SUPPORT.points.map(([t,d])=>`<div><h3>${esc(t)}</h3><p class="hint">${esc(d)}</p></div>`).join('')}</div>
+        <div class="faq">${SUPPORT.faq.map(([q,ans])=>`<details><summary>${esc(q)}</summary><p>${esc(ans)}</p></details>`).join('')}</div>
+        <p class="hint small" style="margin-top:4px">Este portal no activa ni valida garantías: la cobertura de cada caso la determina un técnico autorizado.</p></div>
+    </section>`;
+  }
+
+  // Datos de este navegador: copia para pasarlos a otra computadora y borrado de la demostración
+  function dataPanel(){
+    const c={r:state.requests.length,o:state.orders.length,a:state.attentions.length}, total=c.r+c.o+c.a, m=state.dataMessage;
+    return `<section class="card data-panel" id="data-panel" aria-labelledby="data-title" tabindex="-1">
+      <div class="section-title" style="margin-bottom:6px"><div><div class="eyebrow">Datos de este navegador</div><h2 id="data-title">Pasar los datos a otra computadora</h2></div><button class="link-btn" data-action="data-close">Cerrar</button></div>
+      <p class="hint">Todo se guarda solo en este navegador. Para mostrar el colaborador en una computadora y el mayorista en otra, descarga una copia y cárgala en la otra, por ejemplo después de enviarla por correo o WhatsApp. Al cargarla se suma a lo que ya hay y lo repetido no se duplica.</p>
+      <div class="data-counts"><span class="tag">${plural(c.r,'solicitud de reposición','solicitudes de reposición')}</span><span class="tag">${plural(c.o,'pedido','pedidos')}</span><span class="tag">${plural(c.a,'atención','atenciones')}</span></div>
+      <div class="actions" style="margin-top:0"><button class="btn btn-secondary" data-action="data-export"${total?'':' disabled'}>${icon('download')} Descargar copia</button><button class="btn btn-secondary" data-action="data-import">${icon('upload')} Cargar copia</button><input type="file" id="data-file" accept=".json,application/json" hidden>
+        ${state.confirmReset?`<button class="btn btn-ghost" data-action="data-reset" style="color:var(--bad)">Sí, borrar todo</button><button class="btn btn-ghost" data-action="data-reset-cancel">No borrar</button>`:`<button class="btn btn-ghost" data-action="data-reset-ask">${icon('trash')} Borrar datos de demostración</button>`}</div>
+      ${state.confirmReset?`<p class="form-error" role="alert" style="margin-top:12px">Se borrarán de este navegador las solicitudes, los pedidos, las atenciones, el pedido en preparación y la configuración del QR. No se puede deshacer.</p>`:''}
+      ${m?`<p class="data-result${m.error?' error':''}" role="${m.error?'alert':'status'}">${esc(m.text)}</p>`:''}
+    </section>`;
+  }
+  function exportData(){
+    const s=state.session;
+    const payload={formato:'hpc-portal-interno',version:1,exportado:new Date().toISOString(),
+      desde:!s?'Pantalla de acceso':s.mode==='colaborador'?`Colaborador · ${storeName(s.store)}`:`Mayorista · ${account().name}`,
+      requests:state.requests,orders:state.orders,attentions:state.attentions};
+    downloadFile(`portal-interno-datos-${localDate()}.json`,JSON.stringify(payload,null,1),'application/json');
+  }
+  // Suma registros de otra computadora. Lo repetido (mismo uid) no se duplica y gana el estado más avanzado:
+  // una solicitud atendida o descartada, un pedido cancelado. Si el número ya existe aquí, el registro nuevo recibe otro.
+  function mergeRecords(local, incoming, prefix, rank){
+    const list=local.slice(), index=new Map(list.map((x,i)=>[x.uid,i])), res={added:0,updated:0,renamed:[]};
+    const num=id=>parseInt(String(id).slice(2),10)||0;
+    for(const x of incoming){
+      const i=index.get(x.uid);
+      if(i!==undefined){if(rank&&rank(x)>rank(list[i])){list[i]={...x,id:list[i].id};res.updated++;}continue;}
+      let y=x;
+      if(prefix&&list.some(z=>z.id===x.id)){y={...x,id:prefix+String(list.reduce((m,z)=>Math.max(m,num(z.id)),0)+1).padStart(4,'0')};res.renamed.push(`${x.id} → ${y.id}`);}
+      list.push(y);index.set(y.uid,list.length-1);res.added++;
+    }
+    return {list,...res};
+  }
+  async function importData(file){
+    let msg;
+    try{
+      if(file.size>5e6)throw new Error('El archivo es demasiado grande para ser una copia del portal.');
+      let data;try{data=JSON.parse(await file.text());}catch{throw new Error('No se pudo leer el archivo: no es una copia del portal interno.');}
+      if(!data||data.formato!=='hpc-portal-interno')throw new Error('El archivo no es una copia del portal interno.');
+      const raw={r:asList(data.requests),o:asList(data.orders),a:asList(data.attentions)};
+      const inc={r:raw.r.filter(validRequest).map(x=>withUid(x,'r')),o:raw.o.filter(validOrder).map(x=>withUid(x,'p')),a:raw.a.filter(validAttention).map(x=>withUid(x,'a'))};
+      const ignored=raw.r.length+raw.o.length+raw.a.length-inc.r.length-inc.o.length-inc.a.length;
+      const r=mergeRecords(state.requests,inc.r,'R-',x=>x.status==='pendiente'?0:1);
+      const o=mergeRecords(state.orders,inc.o,'P-',x=>x.status==='cancelado'?1:0);
+      const a=mergeRecords(state.attentions,inc.a);
+      r.list.sort((x,y)=>x.at.localeCompare(y.at));o.list.sort((x,y)=>x.createdAt.localeCompare(y.createdAt));a.list.sort((x,y)=>x.at.localeCompare(y.at));
+      const attentions=a.list.slice(-ATTENTION_LIMIT);
+      if(!save('requests',r.list)||!save('orders',o.list)||!save('attentions',attentions))throw new Error('No se pudo guardar en este navegador.');
+      state.requests=r.list;state.orders=o.list;state.attentions=attentions;
+      const parts=[];
+      if(r.added)parts.push(plural(r.added,'solicitud nueva','solicitudes nuevas'));
+      if(r.updated)parts.push(plural(r.updated,'solicitud actualizada','solicitudes actualizadas'));
+      if(o.added)parts.push(plural(o.added,'pedido nuevo','pedidos nuevos'));
+      if(o.updated)parts.push(plural(o.updated,'pedido actualizado','pedidos actualizados'));
+      if(a.added)parts.push(plural(a.added,'atención nueva','atenciones nuevas'));
+      let text=parts.length?`Copia cargada: ${parts.join(', ')}.`:'La copia no traía nada nuevo: todo ya estaba en este navegador.';
+      const renamed=[...r.renamed,...o.renamed];
+      if(renamed.length)text+=` Cambiaron de número porque ese número ya existía aquí: ${renamed.join(', ')}.`;
+      if(ignored)text+=` Se ${ignored===1?'ignoró':'ignoraron'} ${plural(ignored,'registro con datos incompletos','registros con datos incompletos')}.`;
+      msg={text};
+    }catch(e){msg={error:true,text:e&&e.message?e.message:'No se pudo cargar la copia.'};}
+    state.dataMessage=msg;state.dataOpen=true;state.confirmReset=false;render();
+    document.getElementById('data-panel')?.focus();
+    toast(msg.text);
+  }
+  function resetData(){
+    for(const k of ['requests','orders','attentions','draft','qr'])drop(k);
+    state.requests=[];state.orders=[];state.attentions=[];state.draft={lines:[],point:'',date:'',notes:''};
+    state.qr={base:'https://example.com/smart-guide/',store:'',category:'',origin:'qr'};
+    state.openOrder=null;state.confirmCancel=null;state.attendFor=null;state.restockFor=null;state.confirmReset=false;
+    state.dataMessage={text:'Se borraron los datos de demostración de este navegador.'};render();
+    document.getElementById('data-panel')?.focus();
+  }
+
+  // Métricas (ambos modos)
+  function metricsView(){
+    const s = state.session, collab = s.mode==='colaborador', P = state.period;
+    const acc = collab ? null : account();
+    if(!collab && state.storeFilter!=='mine' && !acc.stores.includes(state.storeFilter)) state.storeFilter='mine';
+    const scopeStores = collab ? [s.store] : state.storeFilter==='mine' ? acc.stores : [state.storeFilter];
+    const cur = aggregate(scopeStores, 0, P), prev = aggregate(scopeStores, P, 2*P);
+    const scope = `${scopeStores.map(storeName).join(' y ')} (ejemplo)`;
+    const since = Date.now() - P*864e5;
+    const mine = collab ? state.attentions.filter(a=>a.store===s.store&&Date.parse(a.at)>=since) : [];
+    const filtersRow = `<div class="metric-filters"><div class="chips" role="group" aria-label="Periodo"><span class="label">Periodo</span>${[7,30,90].map(n=>`<button class="chip" data-action="period" data-period="${n}" aria-pressed="${P===n}">Últimos ${n} días</button>`).join('')}</div>${collab?`<span class="badge" style="background:#eef1f2;color:var(--ink-2)">${icon('store')} ${esc(scope)}</span>`:`<label class="chips" style="align-items:center"><span class="label">Tienda</span><select id="store-filter" class="input" style="width:auto">${[['mine',acc.stores.length>1?'Todas mis tiendas':`${storeName(acc.stores[0])} (ejemplo)`],...(acc.stores.length>1?acc.stores.map(x=>[x,`${storeName(x)} (ejemplo)`]):[])].map(([id,l])=>`<option value="${id}"${state.storeFilter===id?' selected':''}>${esc(l)}</option>`).join('')}</select></label>`}</div>`;
+    const kpis = `<div class="kpis">
+      ${kpi({label:'Recomendaciones mostradas',value:cur.recs,prev:prev.recs,hero:true,period:P,sub:`${scope} · últimos ${P} días`})}
+      ${kpi({label:'Escaneos de QR y NFC',value:cur.scans,prev:prev.scans,period:P})}
+      ${kpi({label:'Guías iniciadas',value:cur.guides,prev:prev.guides,period:P,sub:`${share(cur.guides,cur.scans)} de los escaneos`})}
+      ${kpi({label:'«Me lo llevo» (intención)',value:cur.accepted,prev:prev.accepted,period:P,sub:`${share(cur.accepted,cur.recs)} de las recomendaciones`})}
+      ${kpi({label:'Ayuda de colaborador',value:cur.help,prev:prev.help,period:P,goodWhenUp:null})}
+      ${kpi({label:'WhatsApp abierto',value:cur.whatsapp,prev:prev.whatsapp,period:P})}
+    </div>`;
+    const funnel = barChart({id:'funnel',wide:true,title:'Del escaneo al «Me lo llevo»',subtitle:'Cada etapa como parte de la anterior',colors:['var(--ord-1)','var(--ord-2)','var(--ord-3)','var(--ord-4)'],rows:[
+      {label:'Escaneos de QR y NFC',value:cur.scans},
+      {label:'Guías iniciadas',value:cur.guides,sub:`${share(cur.guides,cur.scans)} de los escaneos`},
+      {label:'Recomendaciones mostradas',value:cur.recs,sub:`${share(cur.recs,cur.guides)} de las guías`},
+      {label:'«Me lo llevo»',value:cur.accepted,sub:`${share(cur.accepted,cur.recs)} de las recomendaciones`}
+    ],note:'«Me lo llevo» y WhatsApp son señales de intención, no compras confirmadas.'});
+    const byNeed = barChart({id:'need',title:'Recomendaciones por necesidad',rows:PROJECTS.map(p=>({label:p.name,value:cur.byCat[p.id]||0})).sort((a,b)=>b.value-a.value)});
+    const byReason = barChart({id:'reasons',title:'Motivos de «No es lo que busco»',subtitle:`${fmt(cur.rejected)} respuestas`,rows:REASONS.map((r,i)=>({label:r,value:cur.reasons[i]})).sort((a,b)=>b.value-a.value)});
+    const byProduct = collab ? '' : barChart({id:'products',wide:true,title:'Productos recomendados',subtitle:'Para planear compras por volumen',rows:PRODUCTS.map(p=>({label:`${p.name} · ${p.model}`,value:cur.byProduct[p.id]||0})).sort((a,b)=>b.value-a.value)});
+    const count = t => t.buckets.reduce((x,y)=>x+y,0);
+    const avgCur = count(cur.time) ? cur.time.sum/count(cur.time) : 0, avgPrev = count(prev.time) ? prev.time.sum/count(prev.time) : 0;
+    const tDelta = avgPrev ? (avgCur-avgPrev)/avgPrev : 0;
+    const timeCard = barChart({id:'time',title:'Tiempo hasta la recomendación',subtitle:'Recomendaciones según cuánto tardó el cliente en recibirla',colors:['var(--ord-1)','var(--ord-2)','var(--ord-3)','var(--ord-4)'],rows:TIME_BUCKETS.map((label,i)=>({label,value:cur.time.buckets[i]})),
+      stat:`<div class="time-stat"><span class="k-value">${seconds(avgCur)}</span><span class="k-sub">en promedio</span>${avgPrev?`<span class="delta ${tDelta<=0?'good':'bad'}">${tDelta<=0?'▼':'▲'} ${pct(Math.abs(tDelta))} vs. los ${P} días anteriores</span>`:''}</div>`,
+      note:'Desde que el cliente inicia la guía hasta que ve su recomendación; la guía ya registra este dato (elapsedSeconds).'});
+    const outcomeRows = collab ? [...OUTCOMES.map(([id,label])=>({label,value:mine.filter(a=>a.outcome===id).length})),{label:'Sin resultado registrado',value:mine.filter(a=>!a.outcome).length}].filter((r,i)=>i<OUTCOMES.length||r.value>0).sort((a,b)=>b.value-a.value) : [];
+    const outcomesChart = collab ? barChart({id:'outcomes',title:'Cómo terminaron tus atenciones',subtitle:`${fmt(mine.length)} ${mine.length===1?'atención':'atenciones'} en este navegador`,rows:outcomeRows,note:'«Compró» lo registra el colaborador; no es una compra verificada con factura.'}) : '';
+    const assisted = mine.filter(a=>a.via==='preguntas').length;
+    const attentions = collab ? `<section class="card"><div class="section-title" style="margin-bottom:0"><div><h3 style="font-size:15.5px">Atenciones que registraste</h3><p class="hint small">Solo en este navegador, últimos ${P} días${assisted?` · ${fmt(assisted)} sin celular`:''}.</p></div><div class="k-value" style="font:700 28px/1 'DM Sans',sans-serif">${fmt(mine.length)}</div></div>${mine.length?`<ul class="att-list">${mine.slice(-5).reverse().map(a=>{const p=productById(a.productId);return `<li><span>${esc(p?p.name:'Sin opción en la muestra')} <span class="hint small">${p?`${esc(a.code)} · `:''}${esc(outcomeLabel(a))}${a.via==='preguntas'?' · sin celular':''}</span></span><span class="hint small">${esc(new Date(a.at).toLocaleString('es-GT',{dateStyle:'short',timeStyle:'short'}))}</span></li>`;}).join('')}</ul>`:'<p class="hint small" style="margin-top:8px">Usa «Registrar atención» en Atender cliente para sumarlas aquí.</p>'}</section>` : '';
+    return `<section><div class="section-title"><div><div class="eyebrow">Métricas del piloto</div><h2>${collab?'Cómo va tu tienda':'Cómo van tus tiendas'}</h2><p class="hint">Datos de ejemplo generados para el prototipo; la medición real del piloto sigue pendiente.</p></div></div>
+      ${filtersRow}${kpis}<div class="viz-grid">${funnel}${timeCard}${byNeed}${byReason}${outcomesChart}${byProduct}</div>${attentions?`<div style="margin-top:16px">${attentions}</div>`:''}</section>`;
+  }
+
+  /* ---------- Render y eventos ---------- */
+  const TITLES = {atender:'Atender cliente',productos:'Productos',catalogo:'Catálogo mayorista',pedido:'Nuevo pedido',pedidos:'Mis pedidos',reposicion:'Reposición',qr:'QR para anaquel',servicio:'Servicio y garantía',metricas:'Métricas'};
+  function render(){
+    tip.hidden = true;
+    root.innerHTML = state.session ? shell(view()) : loginView();
+    document.title = (state.session ? `${TITLES[state.tab]||'Portal'} · ` : '') + 'Portal interno · HPC Smart Guide (prototipo)';
+    const active = document.querySelector('.tab[aria-current="page"]'), bar = active && active.parentElement;
+    if(bar && bar.scrollWidth > bar.clientWidth) bar.scrollLeft += active.getBoundingClientRect().left - bar.getBoundingClientRect().left - (bar.clientWidth - active.offsetWidth) / 2;
+  }
+  function setTab(tab){state.tab=tab;state.orderError='';state.confirmCancel=null;state.attendFor=null;state.restockFor=null;state.dataOpen=false;state.confirmReset=false;state.dataMessage=null;render();window.scrollTo(0,0);document.getElementById('main')?.focus({preventScroll:true});}
+  function persistDraft(){save('draft', state.draft);}
+  function addLine(id){
+    const line=state.draft.lines.find(l=>l.id===id);
+    if(line)line.boxes=Math.min(999,line.boxes+1);else state.draft.lines.push({id,boxes:1});
+    persistDraft();
+    const n=state.draft.lines.find(l=>l.id===id).boxes;
+    render();
+    document.querySelector(`[data-action="add-line"][data-id="${id}"]`)?.focus();
+    toast(`${productById(id).name}: ${n} ${n===1?'caja':'cajas'} en el pedido.`);
+  }
+  function setQty(id, n, refocus){
+    const line=state.draft.lines.find(l=>l.id===id);if(!line)return;
+    line.boxes=Math.max(1,Math.min(999,Number.isFinite(n)?Math.round(n):1));
+    persistDraft();render();
+    if(refocus)document.querySelector(refocus)?.focus();
+  }
+  function login(){
+    const mode=state.loginMode, code=(document.getElementById('login-code')?.value||'').trim().toUpperCase();
+    if(code!==CODES[mode]){state.loginError='El código no es válido para este modo. Usa el código de demostración que aparece abajo.';render();document.getElementById('login-code')?.focus();return;}
+    const session={mode,since:new Date().toISOString()};
+    if(mode==='colaborador')session.store=state.loginStore;else session.account=state.loginAccount;
+    if(!save('session',session))return;
+    state.session=session;state.loginError='';state.search='';state.category='all';state.lookup='';state.storeFilter='mine';state.attendMode='codigo';state.answers={};
+    setTab(mode==='colaborador'?'atender':'catalogo');
+  }
+  function confirmOrder(){
+    const d=state.draft;
+    state.orderError=!d.lines.length?'Agrega al menos un producto.':!d.point?'Selecciona el punto de entrega.':(!d.date||d.date<localDate())?'Elige una fecha de entrega de hoy en adelante.':'';
+    if(state.orderError){render();document.querySelector('.form-error')?.scrollIntoView({block:'center'});return;}
+    const t=totals(d.lines), n=state.orders.reduce((m,o)=>Math.max(m,parseInt(o.id.slice(2),10)||0),0)+1;
+    const order={id:'P-'+String(n).padStart(4,'0'),uid:newUid(),createdAt:new Date().toISOString(),account:state.session.account,point:d.point,date:d.date,notes:d.notes.trim(),status:'confirmado',
+      lines:t.rows.map(r=>({id:r.p.id,code:r.p.code,model:r.p.model,name:r.p.name,boxes:r.boxes,units:r.units,unit:r.unit,disc:r.disc,total:r.total})),gross:t.gross,discount:t.discount,net:t.net};
+    const orders=[...state.orders,order];
+    if(!save('orders',orders))return;
+    state.orders=orders;state.draft={lines:[],point:'',date:'',notes:''};persistDraft();state.openOrder=order.id;
+    setTab('pedidos');toast(`Pedido ${order.id} guardado en este navegador. No se envió a HPC.`);
+  }
+
+  document.addEventListener('click', e => {
+    const b = e.target.closest('[data-action]'); if(!b) return;
+    const id = b.dataset.id, a = b.dataset.action;
+    if(a==='tab')setTab(b.dataset.tab);
+    else if(a==='logout'){state.session=null;drop('session');state.tab=null;state.loginError='';state.dataOpen=false;state.confirmReset=false;state.dataMessage=null;render();}
+    else if(a==='try-code'||a==='open-product'){state.lookup=b.dataset.code;state.attendMode='codigo';if(state.tab!=='atender')setTab('atender');else{render();document.getElementById('product-title')?.scrollIntoView({block:'start'});}}
+    else if(a==='attend-open'){state.attendFor=state.attendFor===id?null:id;state.restockFor=null;render();document.querySelector('[data-action="attend-save"]')?.focus();}
+    else if(a==='attend-mode'){state.attendMode=b.dataset.mode;state.attendFor=null;state.restockFor=null;render();document.querySelector(`[data-action="attend-mode"][data-mode="${state.attendMode}"]`)?.focus();}
+    else if(a==='answers-reset'){state.answers={};state.attendFor=null;state.restockFor=null;render();document.querySelector('input[name="q-project"]')?.focus();}
+    else if(a==='attend-save'){
+      // Sin producto cuando la muestra no cubre la necesidad (atención sin celular derivada a un asesor)
+      const p=productById(id),entry={uid:newUid(),productId:p?p.id:null,code:p?p.code:'',store:state.session.store,at:new Date().toISOString(),outcome:b.dataset.outcome};
+      if(b.dataset.chosen)entry.chosenId=b.dataset.chosen;
+      if(state.attendMode==='preguntas'){const s=state.answers;entry.via='preguntas';entry.answers={project:s.project,material:s.material,frequency:s.frequency,priority:s.priority};}
+      const list=[...state.attentions,entry].slice(-ATTENTION_LIMIT);
+      if(save('attentions',list)){
+        state.attentions=list;state.attendFor=null;if(entry.outcome==='sin-existencias'&&p)state.restockFor=p.id;
+        render();if(state.restockFor)document.getElementById('restock-boxes')?.focus();
+        toast(`Atención registrada: ${outcomeLabel(entry)}.${entry.outcome==='sin-existencias'?' Puedes pedir reposición aquí mismo.':''}`);
+      }
+    }
+    else if(a==='restock-open'){state.restockFor=state.restockFor===id?null:id;state.attendFor=null;render();document.getElementById('restock-boxes')?.focus();}
+    else if(a==='restock-close'){state.restockFor=null;render();}
+    else if(a==='restock-accept'){
+      const req=state.requests.find(r=>r.id===id);
+      if(req&&req.status==='pendiente'){
+        const list=state.requests.map(r=>r.id===id?{...r,status:'atendida',handledAt:new Date().toISOString(),account:state.session.account}:r);
+        if(save('requests',list)){state.requests=list;addBoxes(req.productId,req.boxes);persistDraft();render();toast(`${req.id}: ${req.boxes} ${req.boxes===1?'caja agregada':'cajas agregadas'} a tu nuevo pedido.`);}
+      }
+    }
+    else if(a==='restock-reject'){const list=state.requests.map(r=>r.id===id?{...r,status:'descartada',handledAt:new Date().toISOString(),account:state.session.account}:r);if(save('requests',list)){state.requests=list;render();toast(`Solicitud ${id} descartada.`);}}
+    else if(a==='suggest-add'){const s=suggestions().find(x=>x.p.id===id);if(s){ensureBoxes(id,s.boxes);persistDraft();render();toast(`${s.p.name}: ${boxesInDraft(id)} ${boxesInDraft(id)===1?'caja':'cajas'} en el pedido.`);}}
+    else if(a==='suggest-all'){const list=suggestions();list.forEach(s=>ensureBoxes(s.p.id,s.boxes));persistDraft();render();toast(`Se agregó lo sugerido: ${list.length} ${list.length===1?'producto':'productos'}.`);}
+    else if(a==='qr-download'){const link=qrLink();if(link)downloadFile(qrFileName(),'<?xml version="1.0" encoding="UTF-8"?>\n'+QR.svg(link),'image/svg+xml');}
+    else if(a==='qr-print')printLabel();
+    else if(a==='data-open'){state.dataOpen=!state.dataOpen;state.confirmReset=false;state.dataMessage=null;render();if(state.dataOpen)document.getElementById('data-panel')?.focus();}
+    else if(a==='data-close'){state.dataOpen=false;state.confirmReset=false;state.dataMessage=null;render();document.querySelector('[data-action="data-open"]')?.focus();}
+    else if(a==='data-export')exportData();
+    else if(a==='data-import')document.getElementById('data-file')?.click();
+    else if(a==='data-reset-ask'){state.confirmReset=true;state.dataMessage=null;render();document.querySelector('[data-action="data-reset"]')?.focus();}
+    else if(a==='data-reset-cancel'){state.confirmReset=false;render();document.querySelector('[data-action="data-reset-ask"]')?.focus();}
+    else if(a==='data-reset')resetData();
+    else if(a==='copy')copyText(b.dataset.text);
+    else if(a==='category'){state.category=b.dataset.category;document.querySelectorAll('[data-action="category"]').forEach(c=>c.setAttribute('aria-pressed',String(c.dataset.category===state.category)));document.getElementById('results').innerHTML=results();}
+    else if(a==='add-line')addLine(id);
+    else if(a==='qty'){const line=state.draft.lines.find(l=>l.id===id);if(line)setQty(id,line.boxes+Number(b.dataset.delta),`[data-action="qty"][data-id="${id}"][data-delta="${b.dataset.delta}"]`);}
+    else if(a==='remove-line'){const p=productById(id);state.draft.lines=state.draft.lines.filter(l=>l.id!==id);persistDraft();render();toast(`${p.name} se quitó del pedido.`);}
+    else if(a==='clear-draft'){state.draft={lines:[],point:'',date:'',notes:''};persistDraft();render();toast('Pedido vaciado.');}
+    else if(a==='view-order'){state.openOrder=state.openOrder===id?null:id;render();}
+    else if(a==='repeat-order'){const o=state.orders.find(x=>x.id===id);state.draft.lines=o.lines.filter(l=>productById(l.id)).map(l=>({id:l.id,boxes:l.boxes}));persistDraft();setTab('pedido');toast(`Pedido ${id} copiado al nuevo pedido.`);}
+    else if(a==='ask-cancel'){state.confirmCancel=id;render();document.querySelector(`[data-action="cancel-order"][data-id="${id}"]`)?.focus();}
+    else if(a==='cancel-order'){const orders=state.orders.map(o=>o.id===id?{...o,status:'cancelado'}:o);if(save('orders',orders)){state.orders=orders;state.confirmCancel=null;render();toast(`Pedido ${id} cancelado.`);}}
+    else if(a==='copy-order')copyText(orderText(state.orders.find(o=>o.id===id)));
+    else if(a==='csv-order')download(`pedido-${id}.csv`,csv([state.orders.find(o=>o.id===id)]));
+    else if(a==='csv-all')download('pedidos-demostracion.csv',csv(myOrders()));
+    else if(a==='period'){state.period=Number(b.dataset.period);render();document.querySelector(`[data-action="period"][data-period="${state.period}"]`)?.focus();}
+    else if(a==='toggle-table'){const t=document.getElementById(b.dataset.target),open=t.hidden;t.hidden=!open;b.setAttribute('aria-expanded',String(open));b.textContent=open?'Ocultar tabla':'Ver tabla';}
+  });
+  document.addEventListener('change', e => {
+    const t = e.target;
+    if(t.name==='mode'){state.loginMode=t.value;state.loginError='';render();document.querySelector(`input[name="mode"][value="${t.value}"]`)?.focus();}
+    else if(t.id==='login-store')state.loginStore=t.value;
+    else if(t.id==='login-account')state.loginAccount=t.value;
+    else if(t.id==='store-filter'){state.storeFilter=t.value;render();document.getElementById('store-filter')?.focus();}
+    else if(t.dataset.qty)setQty(t.dataset.qty,parseInt(t.value,10),`[data-qty="${t.dataset.qty}"]`);
+    else if(t.id==='o-point'){state.draft.point=t.value;persistDraft();}
+    else if(t.id==='o-date'){state.draft.date=t.value;persistDraft();}
+    else if(t.id==='qr-store'||t.id==='qr-category'||t.id==='qr-origin'){state.qr[t.id.slice(3)]=t.value;updateQr();}
+    else if(t.name&&t.name.startsWith('q-')){
+      // Respuestas de la atención sin celular; cambiar la necesidad borra el material, como en la guía
+      const key=t.name.slice(2), before=answersComplete(state.answers)?(chooseProduct(state.answers)||{id:'ninguno'}).id:null;
+      if(key==='project'&&state.answers.project!==t.value){state.answers={...state.answers,project:t.value};delete state.answers.material;}
+      else state.answers={...state.answers,[key]:t.value};
+      state.attendFor=null;state.restockFor=null;render();
+      document.querySelector(`input[name="${t.name}"][value="${t.value}"]`)?.focus();
+      if(answersComplete(state.answers)){const p=chooseProduct(state.answers);if((p?p.id:'ninguno')!==before)toast(p?`La guía recomienda: ${p.name} (${p.model}).`:'La muestra no tiene una opción para esta necesidad: deriva al cliente con un asesor de HPC.');}
+    }
+    else if(t.id==='data-file'){const f=t.files&&t.files[0];if(f)importData(f);}
+  });
+  document.addEventListener('input', e => {
+    const t = e.target;
+    if(t.id==='search'){state.search=t.value;document.getElementById('results').innerHTML=results();}
+    else if(t.id==='o-notes'){state.draft.notes=t.value;persistDraft();}
+    else if(t.id==='qr-base'){state.qr.base=t.value;updateQr();}
+  });
+  document.addEventListener('submit', e => {
+    e.preventDefault();
+    if(e.target.id==='login-form')login();
+    else if(e.target.id==='lookup-form'){state.lookup=document.getElementById('lookup').value;render();document.getElementById(findProduct(state.lookup)?'product-title':'lookup')?.focus();}
+    else if(e.target.id==='order-form')confirmOrder();
+    else if(e.target.id==='restock-form')submitRestock(e.target);
+  });
+  // Tooltip de las gráficas: el valor primero y la etiqueta después; también con el teclado.
+  function showTip(el){
+    tip.querySelector('strong').textContent=el.dataset.tipValue;tip.querySelector('span').textContent=el.dataset.tipLabel;tip.hidden=false;
+    const r=el.getBoundingClientRect(),w=tip.offsetWidth,h=tip.offsetHeight;
+    tip.style.left=Math.max(8,Math.min(r.left+Math.min(r.width,220)/2-w/2,innerWidth-w-8))+'px';
+    tip.style.top=(r.top-h-8<8?r.bottom+8:r.top-h-8)+'px';
+  }
+  document.addEventListener('pointerover', e => {const el=e.target.closest('[data-tip-value]');if(el)showTip(el);});
+  document.addEventListener('pointerout', e => {if(e.target.closest('[data-tip-value]'))tip.hidden=true;});
+  document.addEventListener('focusin', e => {const el=e.target.closest('[data-tip-value]');if(el)showTip(el);else tip.hidden=true;});
+  document.addEventListener('scroll', () => {tip.hidden=true;}, {passive:true});
+  // Si una foto externa no carga, se muestra el icono de su categoría.
+  document.addEventListener('error', e => {
+    const im=e.target;if(!(im instanceof HTMLImageElement)||im.dataset.fallback)return;im.dataset.fallback='1';
+    const p=productById(im.dataset.product);
+    im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="120" height="120" fill="none" stroke="#e57b45" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONS[CATEGORY_ICON[p&&p.category]]||ICONS.box}"/></svg>`);
+  }, true);
+
+  window.HPC_PORTAL = {chooseProduct, reasonFor, candidatesFor, mergeRecords, totals, csv, aggregate, products:PRODUCTS, projects:PROJECTS, frequency:FREQUENCY, priority:PRIORITY, questions:QUESTIONS, support:SUPPORT, stores:STORES, qrCategories:QR_CATEGORY, qr:QR,
+    suggestions:()=>state.session&&state.session.mode==='mayorista'?suggestions():[], version:GUIDE_VERSION};
+  render();
+})();
+</script>
+</body>
+</html>
