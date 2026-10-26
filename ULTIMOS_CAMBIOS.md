@@ -10,6 +10,7 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
 - **Rama:** `fix/accesibilidad-guia`, preparada el 2026-10-21 sobre el PR #6 y actualizada sobre `main` cuando ese PR se integró.
+- **Referencia:** [PR #8](https://github.com/oliverlosen/HPC_portal/pull/8).
 - **Qué se hizo:**
   - Al tocar «Continuar» o «Anterior», el foco pasa al título de la nueva pregunta; al cambiar de página, al título principal. Antes se perdía y había que recorrer la página desde arriba.
   - Cada pregunta y la pantalla «sin opción en la muestra» tienen h1, y ya no se salta de h1 a h3 (columna de contexto, «¿Por qué esta herramienta?», ayuda y Mis herramientas). Los estilos no cambian.
