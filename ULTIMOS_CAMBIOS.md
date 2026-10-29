@@ -10,6 +10,7 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
 - **Rama:** `fix/naranja-contraste`, creada desde `main` después de integrarse los PR #7 y #8.
+- **Referencia:** [PR #10](https://github.com/oliverlosen/HPC_portal/pull/10).
 - **Qué se hizo:**
   - En la guía de clientes, `#C2410C`, un naranja más oscuro, reemplaza a `#FC641B` donde hay texto. Se agrega la variable `--orange-text` en `dist/styles.css`. Cubre:
     - etiquetas, enlaces, marca del producto y paso de la guía;
