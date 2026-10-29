@@ -150,6 +150,31 @@ b.click('compare');
 b.click('select-alternative',{id:'drill-single'});
 assert.match(b.html(),/Buscas trabajar sobre madera/,'An alternative keeps the answers of its own guide');
 
+// The attention code summarizes the four answers; it only appears with the answers of the guide that chose the product.
+const attentionCodes=new Set();
+for(const project of b.window.HPC_DATA.projects)for(const [material] of project.materials)for(const frequency of frequencies)for(const priority of priorities)
+  attentionCodes.add(b.window.HPC_GUIDE.attentionCode({project:project.id,material,frequency,priority}));
+assert.equal(attentionCodes.size,144,'Each combination needs its own attention code');
+assert.ok([...attentionCodes].every(code=>/^[PLAG][1-4][1-3][1-3][ACDEFHJKLMNPRTUVWXY]$/.test(code)));
+assert.equal(b.window.HPC_GUIDE.attentionCode({project:'drill',material:'wood'}),null);
+b.guide('drill','concrete','occasional','economy');
+b.click('colleague');
+const attentionCodeShown=code=>`CÓDIGO DE ATENCIÓN</small><strong>${code}</strong>`;
+assert.ok(b.overlay().includes(attentionCodeShown('P412L')),'Colleague screen must show the attention code');
+b.click('close');
+b.guide('drill','wood','daily','power');
+b.click('compare');
+b.click('select-alternative',{id:'drill-single'});
+b.click('colleague');
+assert.ok(b.overlay().includes(attentionCodeShown('P133T')),'An alternative keeps the attention code of its guide');
+b.click('close');
+assert.ok(b.guide('faucet','kitchen','occasional','balance').includes(attentionCodeShown('G211M')),'No-match page must show the attention code');
+const direct=browser();
+direct.navigate('recomendacion/drill-single');
+direct.click('colleague');
+assert.match(direct.overlay(),/CÓDIGO DE PRODUCTO/);
+assert.doesNotMatch(direct.overlay(),/CÓDIGO DE ATENCIÓN/,'A direct link has no answers to summarize');
+
 // Each purchase record gets its own card, even for the same product.
 const record=(id,date)=>({id,productId:'drill-pro',date,store:'Tienda',serial:'',receiptId:null,receiptName:null,createdAt:'2026-10-18T00:00:00.000Z'});
 const tools=browser({'hpc-records':JSON.stringify([record('r1','2026-10-01'),record('r2','2026-10-05')]),'hpc-saved':JSON.stringify([{id:'drill-pro',at:'2026-10-01T00:00:00.000Z',store:'cemaco'}])});
@@ -164,4 +189,4 @@ evening.navigate('herramientas');
 evening.click('register');
 assert.match(evening.overlay(),/max="2026-10-12"/,'Purchase date limit must use the local date');
 
-console.log(`OK: ${drillChecks} drill combinations; 144 valid guide combinations; rendered controls, alternative events, 8 vacuum and 4 wash explanations, back navigation, one card per purchase record and local purchase date. Layout, external images and receipts require a real browser.`);
+console.log(`OK: ${drillChecks} drill combinations; 144 valid guide combinations; rendered controls, alternative events, 8 vacuum and 4 wash explanations, back navigation, 144 attention codes, one card per purchase record and local purchase date. Layout, external images and receipts require a real browser.`);

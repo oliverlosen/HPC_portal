@@ -1,6 +1,6 @@
 # HPC Smart Guide - Contexto compartido del proyecto
 
-Última actualización de este contexto: 2026-10-26. Los avances posteriores deben registrarse en [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBIOS.md); si alteran el estado descrito aquí, actualiza también este documento.
+Última actualización de este contexto: 2026-10-29. Los avances posteriores deben registrarse en [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBIOS.md); si alteran el estado descrito aquí, actualiza también este documento.
 
 ## Qué problema queremos resolver
 
@@ -11,7 +11,7 @@ La plataforma se llama **HPC Smart Guide**. Busca transformar la búsqueda de un
 ## Quién usa la plataforma
 
 - **Cliente:** escanea un QR, acerca su teléfono a una etiqueta NFC o abre un enlace; recibe asesoría y consulta el respaldo.
-- **Colaborador de tienda:** puede ver el código y modelo en la pantalla del cliente para ayudar a ubicarlo. Tiene un prototipo de portal interno para revisión (`prototipos/portal-interno.html`): consulta lo que recomendó la guía, hace las mismas preguntas si el cliente no tiene celular, registra cómo terminó la atención, pide reposición y consulta servicio y garantía.
+- **Colaborador de tienda:** puede ver el código y modelo en la pantalla del cliente para ayudar a ubicarlo, y un código de atención que resume sus cuatro respuestas. Tiene un prototipo de portal interno para revisión (`prototipos/portal-interno.html`): con ese código consulta lo que recomendó la guía y por qué, hace las mismas preguntas si el cliente no tiene celular, registra cómo terminó la atención, pide reposición y consulta servicio y garantía.
 - **Mayorista o distribuidor:** en el mismo prototipo, catálogo con precios por volumen de ejemplo, pedidos, pedido sugerido y solicitudes de reposición de sus tiendas.
 - **Equipo de HPC:** necesitará mantener catálogo, reglas, tiendas y resultados del piloto. Ese portal administrativo está pendiente.
 - **Equipo del proyecto:** trabaja desde GitHub con distintos agentes y herramientas; comparte contexto mediante los documentos de este repositorio.
@@ -22,7 +22,7 @@ La plataforma se llama **HPC Smart Guide**. Busca transformar la búsqueda de un
 2. Elige qué necesita hacer: perforar/fijar, lavar con presión, aspirar/limpiar o cambiar un grifo.
 3. Responde preguntas sobre material o superficie, frecuencia de uso y prioridad.
 4. Recibe una recomendación con imagen, modelo, código, características y explicación.
-5. Puede comparar una alternativa, guardar su elección, abrir el selector de WhatsApp o mostrar el código a un colaborador.
+5. Puede comparar una alternativa, guardar su elección, abrir el selector de WhatsApp o mostrar a un colaborador el código del producto y el código de atención.
 6. Consulta garantía y servicio local; después de comprar, puede conservar los datos y la factura en la demostración.
 
 La guía empieza con la necesidad. No es una tienda de comercio electrónico ni registra ventas verificadas en su estado actual.
@@ -34,13 +34,14 @@ La guía empieza con la necesidad. No es una tienda de comercio electrónico ni 
 | Frontend del cliente | Prototipo interactivo en `dist/`; primera versión [PR #1](https://github.com/oliverlosen/HPC_portal/pull/1), correcciones con recomendación por material [PR #3](https://github.com/oliverlosen/HPC_portal/pull/3) y pendientes de revisión [PR #5](https://github.com/oliverlosen/HPC_portal/pull/5), integrados en `main` |
 | Vista portátil | `preview/HPC_Cliente_Mockup.html`, generada desde las mismas fuentes |
 | Portal interno (colaborador y mayorista) | Prototipo de un solo archivo en `prototipos/portal-interno.html`, fuera de `dist/` y sin publicar. Datos de ejemplo en `localStorage`; se pueden pasar a otra computadora con un archivo. Códigos de acceso de demostración, no seguros. Copia datos, reglas y textos de la guía; `scripts/check-portal-interno.cjs` comprueba que sigan iguales |
-| Versiones y Releases | Versión preparada `0.2.1` (guía de clientes y portal interno); política en [docs/versiones.md](docs/versiones.md); primeras etiquetas y Releases pendientes de publicación |
+| Versiones y Releases | Versión preparada `0.3.0` (guía de clientes y portal interno); política en [docs/versiones.md](docs/versiones.md); primeras etiquetas y Releases pendientes de publicación |
 | Preguntas y recomendación | Reglas de demostración en JavaScript, pendientes de validar con especialistas de HPC |
 | Productos y fotografías | Muestra basada en el catálogo HPC/Truper; las fotografías requieren conexión externa |
 | Precios | Valores de ejemplo identificados en pantalla |
 | Tiendas e inventario | Puntos de venta de ejemplo; sin inventario ni pasillos exactos conectados |
 | Garantía y servicio | Resumen y enlaces oficiales; la cobertura la confirma HPC |
 | Recomendaciones y registros | `localStorage` en el navegador; no se comparten entre computadoras |
+| Código de atención | La guía lo muestra en «Muéstrale esta pantalla» y cuando la muestra no tiene una opción. Resume las cuatro respuestas, sin datos personales; el colaborador lo escribe en el portal interno. No se envía ni se guarda en un servidor. Cambiar el orden o la cantidad de las opciones cambia los códigos |
 | Facturas | Archivos locales en `IndexedDB`, con consentimiento; no se envían a HPC |
 | WhatsApp | Abre el selector para que la persona decida a quién compartir; no envía automáticamente |
 | Medición | Eventos locales y `CustomEvent('hpc:event')`; sin Google Analytics configurado |

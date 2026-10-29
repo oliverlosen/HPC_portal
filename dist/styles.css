@@ -14,3 +14,4 @@
 .price-label{font-size:11px}.result-note,.demo-note{font-size:11px}.nav-button{font-family:var(--body)}.footer-links a{font-size:10px}.project-card p{font-size:11px}
 @media(max-width:520px){.field input,.field select,.field textarea,.search-field input{font-size:16px}.hero-copy>p{font-size:11px}.project-card p{font-size:11px}.project-card h3{font-size:13px}.option strong{font-size:13px}.option small,.center-hours,.field-help,.price-label{font-size:11px}.result-note,.demo-note{font-size:11px}.intro p,.section-heading p{font-size:12px}.hero-floating strong{font-size:9px}.hero-floating span{font-size:8px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+.attention-code{margin-top:12px}.no-match .attention-code{margin:0 0 18px}.no-match .big-code p{color:#a7b8c0;margin-bottom:0}

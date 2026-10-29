@@ -16,7 +16,7 @@ Naranja `#FC641B` para acciones principales y Smart Guide; negro `#191C1D` para 
 | Smart Guide | Cuatro preguntas breves | Reglas de ejemplo |
 | Recomendación | Producto, explicación y siguiente paso | Catálogo real con precio de ejemplo |
 | Alternativa | Comparar dos opciones | Según productos incluidos en la muestra |
-| Colaborador | Mostrar código de producto | Sin integración con inventario |
+| Colaborador | Mostrar el código de producto y el código de atención (las cuatro respuestas, sin datos personales) | Sin integración con inventario; el colaborador escribe el código en el portal interno (prototipo) |
 | Garantía | Condiciones y respaldo local | Enlaces a información oficial |
 | Registro de compra | Guardar datos y factura | Solo en el navegador, con consentimiento |
 | Mis herramientas | Consultar recomendaciones y compras | Almacenamiento local |
