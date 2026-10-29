@@ -62,8 +62,8 @@ for (const p of data.products) {
   if (!mine) { problems.push(`falta el producto ${p.id}`); continue; }
   for (const field of fields) same(`${p.id}.${field}`, mine[field], p[field]);
 }
-const needs = list => list.map(p => [p.id, p.name, p.materialQuestion, p.materials.map(m => m.slice(0, 2))]);
-same('necesidades, materiales y su pregunta', needs(portal.projects), needs(data.projects));
+const needs = list => list.map(p => [p.id, p.name, p.letter, p.materialQuestion, p.materials.map(m => m.slice(0, 2))]);
+same('necesidades, letras del código, materiales y su pregunta', needs(portal.projects), needs(data.projects));
 same('frecuencias', portal.frequency.map(f => f.slice(0, 2)), data.frequency.map(f => f.slice(0, 2)));
 same('prioridades', portal.priority.map(f => f.slice(0, 2)), data.priorities.map(f => f.slice(0, 2)));
 same('tiendas', portal.stores.map(s => [s.id, s.name]), data.stores.map(s => [s.id, s.name]));
@@ -137,6 +137,29 @@ const sample = portal.qr.encode('https://example.com/smart-guide/?tienda=aki&ori
 const digest = crypto.createHash('sha256').update(sample.modules.map(row => row.map(Number).join('')).join('\n')).digest('hex').slice(0, 16);
 same('QR de referencia', [sample.version, sample.mask, digest], [4, 2, '8e0f5437a96c768d']);
 
+// Código de atención: el portal lee el mismo código que muestra la guía y rechaza los errores de escritura más comunes.
+const attentionCodes = new Set();
+let typos = 0;
+for (const answers of combinations) {
+  const code = guide.attentionCode(answers);
+  attentionCodes.add(code);
+  same(`código de atención de ${JSON.stringify(answers)}`, portal.encodeAttention(answers), code);
+  for (const typed of [code, code.toLowerCase(), ` ${code[0]}-${code.slice(1, 4)} ${code[4]} `])
+    same(`leer el código «${typed}»`, portal.decodeAttention(typed), answers);
+  // Un carácter cambiado o dos caracteres vecinos intercambiados
+  const variants = [];
+  for (let i = 0; i < code.length; i++)
+    for (const c of /[A-Z]/.test(code[i]) ? 'ABCDEFGHIJKLMNOPQRSTUVWXYZ' : '0123456789') variants.push(code.slice(0, i) + c + code.slice(i + 1));
+  for (let i = 0; i < code.length - 1; i++) variants.push(code.slice(0, i) + code[i + 1] + code[i] + code.slice(i + 2));
+  for (const typo of variants) if (typo !== code) {
+    typos++;
+    if (portal.decodeAttention(typo)) problems.push(`el código de atención «${typo}» (error de ${code}) se acepta como válido`);
+  }
+}
+same('códigos de atención distintos', attentionCodes.size, combinations.length);
+for (const p of data.products) for (const value of [p.code, p.model])
+  if (portal.decodeAttention(value)) problems.push(`el código o modelo ${value} se confunde con un código de atención`);
+
 // 7. Versión declarada: se revisa al final para saber si lo copiado sigue igual
 if (portal.version !== data.version)
   problems.push(`${PORTAL} declara la versión ${portal.version} de la guía y dist/data.js tiene ${data.version}; si las demás comprobaciones pasan, actualiza GUIDE_VERSION en el portal`);
@@ -145,4 +168,4 @@ if (problems.length) {
   console.error(`${problems.length} diferencia(s) en el portal interno:\n- ${problems.slice(0, 30).join('\n- ')}`);
   process.exit(1);
 }
-console.log(`OK: el portal interno coincide con la guía ${data.version}: ${combinations.length} combinaciones de la regla, ${data.products.length} productos, preguntas y tiendas, ${explained} explicaciones y alternativas, ${S.centers.length} centros y ${texts.length} textos de servicio y garantía, categorías del QR. Funciones del portal: descuentos por volumen, copia de datos y generador de QR (versiones 1 a 10). El diseño y los recorridos se revisan en un navegador.`);
+console.log(`OK: el portal interno coincide con la guía ${data.version}: ${combinations.length} combinaciones de la regla, ${data.products.length} productos, preguntas y tiendas, ${explained} explicaciones y alternativas, ${S.centers.length} centros y ${texts.length} textos de servicio y garantía, categorías del QR. Código de atención: ${attentionCodes.size} códigos y ${typos} errores de escritura rechazados. Funciones del portal: descuentos por volumen, copia de datos y generador de QR (versiones 1 a 10). El diseño y los recorridos se revisan en un navegador.`);

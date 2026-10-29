@@ -37,13 +37,13 @@ Para revisar la propuesta sin servidor, abre `preview/HPC_Cliente_Mockup.html`: 
 
 **Requisitos para colaborar:** Git para clonar el repositorio y trabajar en ramas. Node.js solo se usa para las comprobaciones de [AGENTS.md](AGENTS.md) (`node --check`) y para regenerar la copia portátil; no hay paquetes que instalar. Python es opcional y solo sirve para el servidor del ejemplo; sin Python, abre `preview/HPC_Cliente_Mockup.html` o `dist/index.html` directamente.
 
-`node scripts/check-guide.cjs` comprueba recomendaciones y eventos con un adaptador mínimo del navegador, sin dependencias. No sustituye la revisión visual ni comprueba fotos externas o facturas. Para identificar entregas y recuperarse de un error, sigue [Versiones y Releases](docs/versiones.md). La versión preparada es `0.2.1`; la publicación de las primeras Releases está pendiente.
+`node scripts/check-guide.cjs` comprueba recomendaciones y eventos con un adaptador mínimo del navegador, sin dependencias. No sustituye la revisión visual ni comprueba fotos externas o facturas. Para identificar entregas y recuperarse de un error, sigue [Versiones y Releases](docs/versiones.md). La versión preparada es `0.3.0`; la publicación de las primeras Releases está pendiente.
 
 ## Portal interno (prototipo)
 
 `prototipos/portal-interno.html` es un prototipo, para revisión, de lo que verían el colaborador de tienda y el mayorista. Se abre con doble clic, sin servidor ni instalación, y no forma parte de `dist/` ni de la publicación. Los códigos de acceso de demostración aparecen en la misma pantalla de entrada y no protegen nada.
 
-- **Colaborador:** consulta por código lo que recomendó la guía o le hace al cliente las mismas cuatro preguntas si no tiene celular; argumentos de venta, existencias de ejemplo, resultado de la atención, productos por agotarse y solicitud de reposición, servicio y garantía, QR para anaquel y métricas de su tienda.
+- **Colaborador:** consulta con el código de atención lo que recomendó la guía y por qué o le hace al cliente las mismas cuatro preguntas si no tiene celular; argumentos de venta, existencias de ejemplo, resultado de la atención, productos por agotarse y solicitud de reposición, servicio y garantía, QR para anaquel y métricas de su tienda.
 - **Mayorista:** catálogo con precios por volumen de ejemplo, pedido y pedido sugerido, solicitudes de reposición de sus tiendas, QR, servicio y garantía, y métricas de sus tiendas.
 
 Precios mayoristas, existencias, pedidos y métricas son datos de ejemplo y se guardan en el navegador. Para mostrar los dos modos en computadoras distintas, el enlace «Pasar datos a otra computadora» descarga una copia en un archivo y la carga en la otra; no hay sincronización. El portal copia productos, reglas y textos de la guía; `node scripts/check-portal-interno.cjs` comprueba que sigan iguales.
@@ -55,7 +55,7 @@ Precios mayoristas, existencias, pedidos y métricas son datos de ejemplo y se g
 - Recomendación con modelo, código, foto, características y explicación.
 - Comparación de alternativas, aceptación y motivos de rechazo.
 - Compartir una recomendación en el selector de WhatsApp; no se envían mensajes automáticamente.
-- Pantalla para mostrar el código a un colaborador de tienda.
+- Pantalla para mostrar a un colaborador de tienda el código del producto y el código de atención (por ejemplo, `P412L`), que resume las cuatro respuestas para consultarlas en el portal interno.
 - Garantía y respaldo local, enlace a la política oficial y centros de servicio.
 - Registro de compra y factura, consulta del registro y eliminación local.
 - Mis herramientas con búsqueda por modelo, nombre o código.

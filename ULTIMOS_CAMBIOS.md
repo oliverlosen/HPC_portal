@@ -6,6 +6,48 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-10-29 - Código de atención entre la guía y el portal interno
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `feature/codigo-atencion`, creada sobre la rama del PR #8 y actualizada con `main` después de integrarse los PR #7 y #8.
+- **Referencia:** [PR #9](https://github.com/oliverlosen/HPC_portal/pull/9).
+- **Qué se hizo:**
+  - La guía muestra un código de atención de cinco caracteres en «Muéstrale esta pantalla» y en la pantalla sin opción en la muestra (por ejemplo, `P412L`). Resume las cuatro respuestas: la letra de la necesidad (P, L, A o G), el número del material, de la frecuencia y de la prioridad, y una letra de control. No lleva datos personales ni se envía a ningún lado.
+  - Con un enlace directo a un producto, sin respuestas, el código no aparece. Si el cliente pasó a una alternativa, se conserva el código de su guía.
+  - En «Atender cliente» del portal interno, el colaborador escribe el código (acepta minúsculas, espacios y guiones). Ve las respuestas del cliente, la recomendación de la guía, su explicación y las otras opciones adecuadas. Si la muestra no cubre la necesidad, el portal lo indica y ofrece derivar a un asesor.
+  - Un código con un carácter mal escrito o con dos caracteres vecinos intercambiados se rechaza con un aviso. El código de producto y el modelo siguen funcionando.
+  - Las atenciones registradas con el código guardan sus respuestas (`via: 'codigo'`) y se cuentan aparte en las métricas del colaborador.
+  - La guía y el portal interno siguen separados:
+    - la guía solo muestra el código; no enlaza, no carga ni menciona el portal;
+    - el portal sigue fuera de `dist/`, que es lo único que se publica.
+  - Después de buscar, el foco pasa al título del resultado, y el resultado completo queda visible debajo de la barra fija del portal. Antes, en celular, esa barra tapaba el título o las respuestas al tocar un código de prueba o una alternativa.
+  - Si el código no es válido, el foco vuelve al campo, y el error queda asociado a él para los lectores de pantalla.
+  - `scripts/check-guide.cjs` y `scripts/check-portal-interno.cjs` comprueban:
+    - los 144 códigos;
+    - que el portal lea los mismos que muestra la guía;
+    - que se rechacen 11 580 errores de escritura.
+  - La versión pasa a `0.3.0` en `dist/data.js` y en el portal; la copia portátil se regeneró.
+- **Por qué:** el colaborador solo veía el producto recomendado, no lo que contestó el cliente ni por qué se le recomendó. Con el código puede retomar la conversación sin repetir las preguntas. La publicación del sitio no se tocó.
+- **Archivos afectados:** `dist/data.js`, `dist/app.js`, `dist/styles.css`, `preview/HPC_Cliente_Mockup.html` (regenerado), `prototipos/portal-interno.html`, `scripts/check-guide.cjs`, `scripts/check-portal-interno.cjs`, `README.md`, `PROYECTO.md`, `docs/alcance-cliente.md`, `docs/versiones.md`.
+- **Comprobaciones:**
+  - `node --check` de los archivos JavaScript.
+  - `node scripts/check-guide.cjs` y `node scripts/check-portal-interno.cjs`: correctos. En una copia aparte se confirmó que fallan si se cambia la letra de control, los pesos de la cuenta o la letra de una necesidad.
+  - Prueba en navegador sin ventana: 38 de 38 en Chrome y 38 de 38 en Edge. Recorre la guía, la copia portátil y el portal:
+    - el código en las dos pantallas de la guía, la alternativa y el enlace directo;
+    - en el portal, la búsqueda con Enter y con el botón, el código inválido, el código de producto y el modelo;
+    - el registro de atenciones, las métricas y la recarga;
+    - la vista a 360 px, con el resultado visible debajo de la barra fija y sin desbordamiento;
+    - la consola sin errores.
+  - axe-core 4.10.2 no encuentra problemas en los elementos nuevos. Solo marca el naranja de la marca, que ya estaba pendiente.
+  - Siguen correctas la prueba anterior con teclado real (25 de 25) y la de recorridos del portal: colaborador y mayorista, sin desbordamiento a 360, 390 y 1280 px.
+  - Después de actualizar la rama con `main`, el código probado no cambió. Los pasos de GitHub Actions pasan en esta rama: sintaxis, `scripts/check-*.cjs` y copia portátil al día.
+- **Pendientes/límites:**
+  - Conviene integrarlo solo si los colaboradores o los asesores de HPC van a usar el portal interno en el piloto. Si no, el cliente vería en la guía un código que nadie puede leer; en ese caso, es mejor dejar esta rama sin integrar hasta decidirlo.
+  - El colaborador escribe el código a mano; no hay conexión entre el celular del cliente y el portal, que sigue siendo un prototipo con datos de ejemplo.
+  - Si cambian el orden o la cantidad de las necesidades, materiales, frecuencias o prioridades, cambian los códigos. Las comprobaciones lo detectan, pero un código ya mostrado a un cliente dejaría de corresponder.
+  - El naranja espera la decisión de Oliver.
+  - No se probó con un lector de pantalla real ni en un teléfono.
+
 ### 2026-10-26 - Accesibilidad de la guía de clientes (sin el naranja)
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.

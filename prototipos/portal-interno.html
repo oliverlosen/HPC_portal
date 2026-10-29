@@ -30,7 +30,7 @@ p{margin:0}
 :focus-visible{outline:2px solid var(--ink);outline-offset:2px}
 .icon{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
 .wrap{max-width:1180px;margin:0 auto;padding:22px 20px 40px}
-main:focus{outline:none}
+main:focus,#product-title:focus,#nomatch-title:focus{outline:none}
 
 /* Barra superior y aviso de prototipo */
 .topbar{position:sticky;top:0;z-index:30;background:var(--surface);border-bottom:1px solid var(--line)}
@@ -332,7 +332,7 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
    Precios mayoristas, existencias, pedidos y métricas son datos de ejemplo; todo se guarda solo en este navegador. */
 (() => {
   'use strict';
-  const GUIDE_VERSION = '0.2.1'; // Debe coincidir con HPC_DATA.version de dist/data.js
+  const GUIDE_VERSION = '0.3.0'; // Debe coincidir con HPC_DATA.version de dist/data.js
 
   /* ---------- Muestra de la guía de clientes (dist/data.js) ---------- */
   const PRODUCTS = [
@@ -347,10 +347,10 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
     {id:'faucet-basic',category:'faucet',code:'49590',model:'M-048PB',brand:'FOSET BASIC',name:'Mezcladora de palanca para lavabo',subtitle:'Renueva tu lavamanos con una solución sencilla.',image:'M-048PB',price:179,tier:0,features:['Lavabo de 4 pulgadas','Manerales de palanca','Cuerpo ABS'],source:'https://www.hpcenlinea.com.gt/gt/products/49590-mezcladora-manerales-palanca-para-lavabo-foset-basic',area:'Plomería y grifería'}
   ];
   const PROJECTS = [
-    {id:'drill',name:'Perforar y fijar',materialQuestion:'¿Sobre qué material vas a trabajar?',materials:[['wood','Madera'],['metal','Metal'],['block','Pared de block o ladrillo'],['concrete','Concreto']]},
-    {id:'wash',name:'Lavar con presión',materialQuestion:'¿Qué quieres limpiar?',materials:[['car','Mi carro o moto'],['patio','Patio o terraza'],['both','Un poco de todo'],['heavy','Superficies muy sucias']]},
-    {id:'vacuum',name:'Aspirar y limpiar',materialQuestion:'¿Qué tipo de limpieza necesitas?',materials:[['home','Casa y espacios pequeños'],['car','El interior de mi carro'],['workshop','Mi taller o negocio'],['liquids','Sólidos y líquidos']]},
-    {id:'faucet',name:'Cambiar un grifo',materialQuestion:'¿Dónde vas a instalarlo?',materials:[['bathroom','Lavamanos del baño'],['kitchen','Lavatrastos de cocina'],['shower','Ducha o regadera'],['unknown','No estoy seguro']]}
+    {id:'drill',name:'Perforar y fijar',letter:'P',materialQuestion:'¿Sobre qué material vas a trabajar?',materials:[['wood','Madera'],['metal','Metal'],['block','Pared de block o ladrillo'],['concrete','Concreto']]},
+    {id:'wash',name:'Lavar con presión',letter:'L',materialQuestion:'¿Qué quieres limpiar?',materials:[['car','Mi carro o moto'],['patio','Patio o terraza'],['both','Un poco de todo'],['heavy','Superficies muy sucias']]},
+    {id:'vacuum',name:'Aspirar y limpiar',letter:'A',materialQuestion:'¿Qué tipo de limpieza necesitas?',materials:[['home','Casa y espacios pequeños'],['car','El interior de mi carro'],['workshop','Mi taller o negocio'],['liquids','Sólidos y líquidos']]},
+    {id:'faucet',name:'Cambiar un grifo',letter:'G',materialQuestion:'¿Dónde vas a instalarlo?',materials:[['bathroom','Lavamanos del baño'],['kitchen','Lavatrastos de cocina'],['shower','Ducha o regadera'],['unknown','No estoy seguro']]}
   ];
   const FREQUENCY = [['occasional','De vez en cuando'],['regular','Varias veces al mes'],['daily','Todos los días']];
   const PRIORITY = [['balance','Una buena combinación'],['economy','Cuidar mi presupuesto'],['power','Mayor capacidad']];
@@ -536,7 +536,7 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
   const validRequest = r => !!r && isStr(r.id) && /^R-\d{1,6}$/.test(r.id) && !!productById(r.productId) && STORES.some(x => x.id===r.store) && Number.isInteger(r.boxes) && r.boxes>=1 && r.boxes<=99 && isDate(r.at) && REQUEST_STATES.includes(r.status) && (r.note===undefined || isStr(r.note));
   const validLine = l => !!l && !!productById(l.id) && isStr(l.code) && isStr(l.model) && isStr(l.name) && Number.isInteger(l.boxes) && l.boxes>=1 && l.boxes<=999 && [l.units,l.unit,l.disc,l.total].every(isNum);
   const validOrder = o => !!o && isStr(o.id) && /^P-\d{1,6}$/.test(o.id) && isDate(o.createdAt) && ACCOUNTS.some(a => a.id===o.account) && isStr(o.point) && isStr(o.date) && ORDER_STATES.includes(o.status) && Array.isArray(o.lines) && o.lines.length>0 && o.lines.every(validLine) && [o.gross,o.discount,o.net].every(isNum) && (o.notes===undefined || isStr(o.notes));
-  const validAttention = a => !!a && isDate(a.at) && STORES.some(x => x.id===a.store) && (a.productId===null || !!productById(a.productId)) && (a.code===undefined || isStr(a.code)) && (a.outcome===undefined || OUTCOMES.some(o => o[0]===a.outcome)) && (a.chosenId===undefined || !!productById(a.chosenId)) && (a.via===undefined || a.via==='preguntas') && (a.answers===undefined || (!!a.answers && typeof a.answers==='object' && Object.keys(a.answers).length<=4 && Object.values(a.answers).every(isStr)));
+  const validAttention = a => !!a && isDate(a.at) && STORES.some(x => x.id===a.store) && (a.productId===null || !!productById(a.productId)) && (a.code===undefined || isStr(a.code)) && (a.outcome===undefined || OUTCOMES.some(o => o[0]===a.outcome)) && (a.chosenId===undefined || !!productById(a.chosenId)) && (a.via===undefined || a.via==='preguntas' || a.via==='codigo') && (a.answers===undefined || (!!a.answers && typeof a.answers==='object' && Object.keys(a.answers).length<=4 && Object.values(a.answers).every(isStr)));
   // Cada registro lleva un identificador propio para reconocerlo al pasar los datos a otra computadora.
   const newUid = () => (globalThis.crypto && crypto.randomUUID) ? crypto.randomUUID() : Date.now().toString(36)+Math.random().toString(36).slice(2,10);
   const UID_FROM = {r:x => `r:${x.id}|${x.at}`, p:x => `p:${x.id}|${x.createdAt}`, a:x => `a:${x.at}|${x.productId||''}|${x.store}`};
@@ -612,7 +612,7 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
   function loginView(){
     const m = state.loginMode;
     const rows = [
-      ['Guía de recomendación','Sí','Consulta lo que la guía recomendó, por código','No'],
+      ['Guía de recomendación','Sí','Consulta lo que la guía recomendó con el código de atención','No'],
       ['Atender sin celular','Usa la guía en su celular','Le hace las preguntas de la guía','No'],
       ['Precio al público (ejemplo)','Sí','Sí','Como precio sugerido'],
       ['Existencias (ejemplo)','No','De su tienda y de la bodega','De la bodega de HPC'],
@@ -679,6 +679,24 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
   }
 
   // Modo colaborador: atender cliente
+  // Código de atención de la guía (attentionCode() en dist/app.js): letra de la necesidad; número del material,
+  // de la frecuencia y de la prioridad; y una letra de control que detecta un carácter mal escrito o dos números intercambiados.
+  const CHECK_LETTERS = 'ACDEFHJKLMNPRTUVWXY';
+  function encodeAttention(a){const proj=PROJECTS.find(x=>x.id===a.project);if(!proj)return null;const m=proj.materials.findIndex(x=>x[0]===a.material),f=FREQUENCY.findIndex(x=>x[0]===a.frequency),r=PRIORITY.findIndex(x=>x[0]===a.priority);if(m<0||f<0||r<0)return null;return proj.letter+(m+1)+(f+1)+(r+1)+CHECK_LETTERS[(proj.letter.charCodeAt(0)-64+2*m+3*f+5*r)%CHECK_LETTERS.length];}
+  const attentionKey = q => String(q).toUpperCase().replace(/[\s-]+/g,'');
+  const looksLikeAttention = q => /^[A-Z]\d{3}[A-Z]$/.test(attentionKey(q));
+  // Las cuatro respuestas del cliente, o null si el código no es válido.
+  function decodeAttention(q){
+    const k=attentionKey(q), m=/^([A-Z])(\d)(\d)(\d)[A-Z]$/.exec(k), proj=m&&PROJECTS.find(x=>x.letter===m[1]);
+    if(!proj)return null;
+    const mat=proj.materials[m[2]-1], fr=FREQUENCY[m[3]-1], pr=PRIORITY[m[4]-1];
+    if(!mat||!fr||!pr)return null;
+    const a={project:proj.id,material:mat[0],frequency:fr[0],priority:pr[0]};
+    return encodeAttention(a)===k?a:null;
+  }
+  // Lleva el foco al título del resultado y muestra el resultado completo debajo de la barra fija (en celular mide unos 145 px);
+  // si no hay resultado, el foco vuelve al campo de búsqueda.
+  function focusLookupResult(){const h=document.getElementById('product-title')||document.getElementById('nomatch-title');if(!h){document.getElementById('lookup')?.focus();return;}h.setAttribute('tabindex','-1');h.focus({preventScroll:true});const top=(h.closest('article')||h).getBoundingClientRect().top+window.scrollY-(document.querySelector('.topbar')?.offsetHeight||0)-12;window.scrollTo(0,Math.max(0,top));}
   const findProduct = q => {const k=q.trim().toLowerCase().replace(/\s+/g,'');return PRODUCTS.find(p=>p.code===k||p.model.toLowerCase()===k);};
   function attendView(){
     const switcher = `<div class="chips mode-switch" role="group" aria-label="Cómo llega el cliente">${[['codigo','Trae el código de la guía'],['preguntas','No tiene celular: hacer las preguntas']].map(([id,label])=>`<button class="chip" data-action="attend-mode" data-mode="${id}" aria-pressed="${state.attendMode===id}">${label}</button>`).join('')}</div>`;
@@ -689,14 +707,17 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
       </div>
       ${assistResult()}
     </section>`;
-    const q = state.lookup.trim(), p = q ? findProduct(q) : null;
+    const q = state.lookup.trim(), coded = q ? decodeAttention(q) : null, p = q && !coded ? findProduct(q) : null;
+    const missing = looksLikeAttention(q)
+      ? `<h3 style="font-size:16px">El código de atención «${esc(attentionKey(q))}» no es válido.</h3><p class="hint" style="margin-top:4px">Revisa que esté bien escrito: la última letra comprueba los demás caracteres. Si no coincide, pide al cliente que te muestre otra vez su pantalla o hazle las preguntas de la guía.</p>`
+      : `<h3 style="font-size:16px">No encontramos «${esc(q)}» en la muestra.</h3><p class="hint" style="margin-top:4px">Revisa el código. La muestra del prototipo tiene ${PRODUCTS.length} productos; si el cliente busca otro, oriéntalo con un asesor de HPC.</p>`;
     return `<section class="stack">
       <div class="card"><div class="eyebrow">Atender cliente</div>${switcher}<h2 style="font-size:21px;margin-top:12px">¿Qué le recomendó la guía al cliente?</h2>
-        <p class="hint" style="margin-top:4px">Escribe el código que el cliente te muestra en «Muéstrale esta pantalla», o el modelo.</p>
-        <form id="lookup-form" class="lookup-form" role="search"><label class="sr-only" for="lookup">Código o modelo</label><input id="lookup" class="input" autocomplete="off" placeholder="Por ejemplo: 103246 o ROTI-20A3" value="${esc(q)}"><button class="btn btn-dark" type="submit">${icon('search')} Buscar</button></form>
-        <div class="chips" role="group" aria-label="Códigos para probar"><span class="hint small" style="align-self:center">Prueba con:</span>${['103246','19320','101595','12093','49590'].map(c=>`<button class="chip" data-action="try-code" data-code="${c}">${c}</button>`).join('')}</div>
+        <p class="hint" style="margin-top:4px">Escribe el código de atención que te muestra el cliente para ver sus respuestas y por qué la guía le recomendó esa herramienta. También sirve el código de producto o el modelo.</p>
+        <form id="lookup-form" class="lookup-form" role="search"><label class="sr-only" for="lookup">Código de atención, código de producto o modelo</label><input id="lookup" class="input" autocomplete="off" placeholder="Por ejemplo: P412L, 103246 o ROTI-20A3" value="${esc(q)}"${q&&!coded&&!p?' aria-invalid="true" aria-describedby="lookup-error"':''}><button class="btn btn-dark" type="submit">${icon('search')} Buscar</button></form>
+        <div class="chips" role="group" aria-label="Códigos para probar"><span class="hint small" style="align-self:center">Prueba con un código de atención:</span>${['P412L','G211M'].map(c=>`<button class="chip" data-action="try-code" data-code="${c}">${c}</button>`).join('')}<span class="hint small" style="align-self:center">o de producto:</span>${['103246','19320','101595','12093','49590'].map(c=>`<button class="chip" data-action="try-code" data-code="${c}">${c}</button>`).join('')}</div>
       </div>
-      ${q ? (p ? productPanel(p) : `<div class="card empty">${icon('info')}<div><h3 style="font-size:16px">No encontramos «${esc(q)}» en la muestra.</h3><p class="hint" style="margin-top:4px">Revisa el código. La muestra del prototipo tiene ${PRODUCTS.length} productos; si el cliente busca otro, oriéntalo con un asesor de HPC.</p></div></div>`) : ''}
+      ${q ? (coded ? assistResult(coded, attentionKey(q)) : p ? productPanel(p) : `<div class="card empty" id="lookup-error">${icon('info')}<div>${missing}</div></div>`) : ''}
     </section>`;
   }
   // Atender sin celular: las cuatro preguntas de la guía y la misma regla (chooseProduct).
@@ -714,12 +735,12 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
     </form>`;
   }
   const answersComplete = a => !!(a.project && a.material && a.frequency && a.priority);
-  function assistResult(){
-    const a = state.answers;
+  // Con code, el cliente trae el código de atención de la guía: las respuestas vienen del código.
+  function assistResult(a = state.answers, code = ''){
     if(!answersComplete(a))return '';
     const proj = PROJECTS.find(x=>x.id===a.project), p = chooseProduct(a);
     const chosen = [proj.name, proj.materials.find(m=>m[0]===a.material)[1], FREQUENCY.find(f=>f[0]===a.frequency)[1], PRIORITY.find(x=>x[0]===a.priority)[1]];
-    const head = `<div class="assist-head"><div class="eyebrow">${p?'La guía le recomendaría':'Resultado de la guía'}</div><div class="chips" style="margin-top:8px" role="group" aria-label="Respuestas del cliente">${chosen.map(c=>`<span class="tag">${esc(c)}</span>`).join('')}</div></div>`;
+    const head = `<div class="assist-head"><div class="eyebrow">${code?`Código de atención ${esc(code)} · `:''}${p?(code?'La guía le recomendó':'La guía le recomendaría'):'Resultado de la guía'}</div><div class="chips" style="margin-top:8px" role="group" aria-label="Respuestas del cliente">${chosen.map(c=>`<span class="tag">${esc(c)}</span>`).join('')}</div>${code&&p&&candidatesFor(p,a).length?'<p class="hint small" style="margin-top:8px">Si el cliente te muestra otro producto, lo eligió entre las otras opciones adecuadas que aparecen al final.</p>':''}</div>`;
     if(p)return productPanel(p, {head, reason:reasonFor(p,a), alts:candidatesFor(p,a)});
     return `<article class="card" aria-labelledby="nomatch-title">${head}<div class="empty">${icon('headset')}<div><h2 id="nomatch-title" style="font-size:18px">La muestra no tiene una opción para esta necesidad.</h2>
       <p class="hint" style="margin-top:4px">La muestra de grifería incluye un modelo para lavamanos de baño. Para cocina, ducha u otra instalación, deriva al cliente con un asesor de HPC para confirmar la opción adecuada; no la sustituyas por otro producto de la muestra.</p>
@@ -1163,8 +1184,8 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
       note:'Desde que el cliente inicia la guía hasta que ve su recomendación; la guía ya registra este dato (elapsedSeconds).'});
     const outcomeRows = collab ? [...OUTCOMES.map(([id,label])=>({label,value:mine.filter(a=>a.outcome===id).length})),{label:'Sin resultado registrado',value:mine.filter(a=>!a.outcome).length}].filter((r,i)=>i<OUTCOMES.length||r.value>0).sort((a,b)=>b.value-a.value) : [];
     const outcomesChart = collab ? barChart({id:'outcomes',title:'Cómo terminaron tus atenciones',subtitle:`${fmt(mine.length)} ${mine.length===1?'atención':'atenciones'} en este navegador`,rows:outcomeRows,note:'«Compró» lo registra el colaborador; no es una compra verificada con factura.'}) : '';
-    const assisted = mine.filter(a=>a.via==='preguntas').length;
-    const attentions = collab ? `<section class="card"><div class="section-title" style="margin-bottom:0"><div><h3 style="font-size:15.5px">Atenciones que registraste</h3><p class="hint small">Solo en este navegador, últimos ${P} días${assisted?` · ${fmt(assisted)} sin celular`:''}.</p></div><div class="k-value" style="font:700 28px/1 'DM Sans',sans-serif">${fmt(mine.length)}</div></div>${mine.length?`<ul class="att-list">${mine.slice(-5).reverse().map(a=>{const p=productById(a.productId);return `<li><span>${esc(p?p.name:'Sin opción en la muestra')} <span class="hint small">${p?`${esc(a.code)} · `:''}${esc(outcomeLabel(a))}${a.via==='preguntas'?' · sin celular':''}</span></span><span class="hint small">${esc(new Date(a.at).toLocaleString('es-GT',{dateStyle:'short',timeStyle:'short'}))}</span></li>`;}).join('')}</ul>`:'<p class="hint small" style="margin-top:8px">Usa «Registrar atención» en Atender cliente para sumarlas aquí.</p>'}</section>` : '';
+    const assisted = mine.filter(a=>a.via==='preguntas').length, withCode = mine.filter(a=>a.via==='codigo').length;
+    const attentions = collab ? `<section class="card"><div class="section-title" style="margin-bottom:0"><div><h3 style="font-size:15.5px">Atenciones que registraste</h3><p class="hint small">Solo en este navegador, últimos ${P} días${withCode?` · ${fmt(withCode)} con código de atención`:''}${assisted?` · ${fmt(assisted)} sin celular`:''}.</p></div><div class="k-value" style="font:700 28px/1 'DM Sans',sans-serif">${fmt(mine.length)}</div></div>${mine.length?`<ul class="att-list">${mine.slice(-5).reverse().map(a=>{const p=productById(a.productId);return `<li><span>${esc(p?p.name:'Sin opción en la muestra')} <span class="hint small">${p?`${esc(a.code)} · `:''}${esc(outcomeLabel(a))}${a.via==='preguntas'?' · sin celular':a.via==='codigo'?' · con código de atención':''}</span></span><span class="hint small">${esc(new Date(a.at).toLocaleString('es-GT',{dateStyle:'short',timeStyle:'short'}))}</span></li>`;}).join('')}</ul>`:'<p class="hint small" style="margin-top:8px">Usa «Registrar atención» en Atender cliente para sumarlas aquí.</p>'}</section>` : '';
     return `<section><div class="section-title"><div><div class="eyebrow">Métricas del piloto</div><h2>${collab?'Cómo va tu tienda':'Cómo van tus tiendas'}</h2><p class="hint">Datos de ejemplo generados para el prototipo; la medición real del piloto sigue pendiente.</p></div></div>
       ${filtersRow}${kpis}<div class="viz-grid">${funnel}${timeCard}${byNeed}${byReason}${outcomesChart}${byProduct}</div>${attentions?`<div style="margin-top:16px">${attentions}</div>`:''}</section>`;
   }
@@ -1222,7 +1243,7 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
     const id = b.dataset.id, a = b.dataset.action;
     if(a==='tab')setTab(b.dataset.tab);
     else if(a==='logout'){state.session=null;drop('session');state.tab=null;state.loginError='';state.dataOpen=false;state.confirmReset=false;state.dataMessage=null;render();}
-    else if(a==='try-code'||a==='open-product'){state.lookup=b.dataset.code;state.attendMode='codigo';if(state.tab!=='atender')setTab('atender');else{render();document.getElementById('product-title')?.scrollIntoView({block:'start'});}}
+    else if(a==='try-code'||a==='open-product'){state.lookup=b.dataset.code;state.attendMode='codigo';if(state.tab!=='atender')setTab('atender');else{render();focusLookupResult();}}
     else if(a==='attend-open'){state.attendFor=state.attendFor===id?null:id;state.restockFor=null;render();document.querySelector('[data-action="attend-save"]')?.focus();}
     else if(a==='attend-mode'){state.attendMode=b.dataset.mode;state.attendFor=null;state.restockFor=null;render();document.querySelector(`[data-action="attend-mode"][data-mode="${state.attendMode}"]`)?.focus();}
     else if(a==='answers-reset'){state.answers={};state.attendFor=null;state.restockFor=null;render();document.querySelector('input[name="q-project"]')?.focus();}
@@ -1230,7 +1251,9 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
       // Sin producto cuando la muestra no cubre la necesidad (atención sin celular derivada a un asesor)
       const p=productById(id),entry={uid:newUid(),productId:p?p.id:null,code:p?p.code:'',store:state.session.store,at:new Date().toISOString(),outcome:b.dataset.outcome};
       if(b.dataset.chosen)entry.chosenId=b.dataset.chosen;
+      const coded=state.attendMode==='codigo'?decodeAttention(state.lookup):null;
       if(state.attendMode==='preguntas'){const s=state.answers;entry.via='preguntas';entry.answers={project:s.project,material:s.material,frequency:s.frequency,priority:s.priority};}
+      else if(coded){entry.via='codigo';entry.answers=coded;}
       const list=[...state.attentions,entry].slice(-ATTENTION_LIMIT);
       if(save('attentions',list)){
         state.attentions=list;state.attendFor=null;if(entry.outcome==='sin-existencias'&&p)state.restockFor=p.id;
@@ -1305,7 +1328,7 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
   document.addEventListener('submit', e => {
     e.preventDefault();
     if(e.target.id==='login-form')login();
-    else if(e.target.id==='lookup-form'){state.lookup=document.getElementById('lookup').value;render();document.getElementById(findProduct(state.lookup)?'product-title':'lookup')?.focus();}
+    else if(e.target.id==='lookup-form'){state.lookup=document.getElementById('lookup').value;render();focusLookupResult();}
     else if(e.target.id==='order-form')confirmOrder();
     else if(e.target.id==='restock-form')submitRestock(e.target);
   });
@@ -1327,7 +1350,7 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
     im.src='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="120" height="120" fill="none" stroke="#e57b45" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"><path d="${ICONS[CATEGORY_ICON[p&&p.category]]||ICONS.box}"/></svg>`);
   }, true);
 
-  window.HPC_PORTAL = {chooseProduct, reasonFor, candidatesFor, mergeRecords, totals, csv, aggregate, products:PRODUCTS, projects:PROJECTS, frequency:FREQUENCY, priority:PRIORITY, questions:QUESTIONS, support:SUPPORT, stores:STORES, qrCategories:QR_CATEGORY, qr:QR,
+  window.HPC_PORTAL = {chooseProduct, reasonFor, candidatesFor, encodeAttention, decodeAttention, mergeRecords, totals, csv, aggregate, products:PRODUCTS, projects:PROJECTS, frequency:FREQUENCY, priority:PRIORITY, questions:QUESTIONS, support:SUPPORT, stores:STORES, qrCategories:QR_CATEGORY, qr:QR,
     suggestions:()=>state.session&&state.session.mode==='mayorista'?suggestions():[], version:GUIDE_VERSION};
   render();
 })();

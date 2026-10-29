@@ -71,6 +71,15 @@ Si se integra la rama `fix/accesibilidad-guia` después del PR #6, publicar `v0.
 - Los textos grises o claros tienen al menos 4.5:1 de contraste, sin cambiar el diseño.
 - Pendiente: el naranja de la marca en textos y botones, según la opción que elija Oliver.
 
+### Notas preparadas para v0.3.0
+
+Si se integra la rama `feature/codigo-atencion` después del PR #8, publicar `v0.3.0` desde el commit de `main` que la contenga:
+
+- Código de atención: la guía lo muestra en «Muéstrale esta pantalla» y en la pantalla sin opción en la muestra. Resume las cuatro respuestas del cliente, por ejemplo `P412L`, sin datos personales.
+- En «Atender cliente» del portal interno, el colaborador lo escribe y ve las respuestas, la recomendación de la guía, su explicación y las otras opciones adecuadas. Una letra de control rechaza un carácter mal escrito o dos caracteres vecinos intercambiados.
+- Las atenciones registradas con el código se cuentan aparte en las métricas del colaborador.
+- Límites: el código no se envía ni se guarda en un servidor; el colaborador lo escribe a mano. Las reglas siguen siendo de demostración.
+
 ## Recuperarse si aparece un error
 
 Para consultar una versión anterior sin tocar `main`, descargar sus archivos desde Releases o usar `git switch --detach v0.1.0` en una copia limpia.
