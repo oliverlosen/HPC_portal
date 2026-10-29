@@ -6,6 +6,29 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-10-29 - Comparación de opciones para medir el piloto
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `docs/medicion-piloto`, creada desde `main` después de integrarse los PR #7 y #8.
+- **Qué se hizo:** se agrega `docs/medicion-piloto.md`.
+  - Explica qué falta: los eventos se quedan en el navegador de cada cliente.
+  - Lista los 10 eventos que ya registra la guía, con sus datos y para qué sirven en el piloto.
+  - Compara Umami Cloud, Plausible, GoatCounter, Google Analytics 4, PostHog y una hoja de cálculo propia: costo, capacidad, cookies, dónde quedan los datos y esfuerzo.
+  - Recomienda Umami Cloud en su plan gratis, dice qué hace falta para avanzar y cómo se conectaría después.
+  - `README.md` y `PROYECTO.md` enlazan el documento.
+- **Por qué:** para que Oliver elija la opción en GitHub, con los datos en el repositorio y no en archivos sueltos. Sin esa decisión, el piloto no podría reunir sus datos cuando la guía se publique.
+- **Archivos afectados:** `docs/medicion-piloto.md` (nuevo), `README.md`, `PROYECTO.md`.
+- **Comprobaciones:**
+  - Los nombres y datos de los eventos coinciden con `track()` en `dist/app.js`.
+  - Los precios y límites salen de las páginas oficiales consultadas el 2026-10-29; las condiciones de Umami se volvieron a confirmar ese día.
+  - Los 11 enlaces externos responden y los internos existen.
+  - Es un cambio solo de documentación: no se ejecutó la batería de interfaz y la versión no cambia.
+- **Pendientes/límites:**
+  - Falta que Oliver elija la opción y que se cree la cuenta con un correo de HPC o suyo.
+  - Falta aprobar el texto para el cliente sobre qué se mide.
+  - El adaptador que enviaría los eventos se haría en otro PR, y solo sirve cuando la guía esté publicada.
+  - Las cifras de capacidad son estimaciones.
+
 ### 2026-10-26 - Accesibilidad de la guía de clientes (sin el naranja)
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.

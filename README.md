@@ -109,6 +109,8 @@ La categoría de entrada se conserva como contexto de medición y no sustituye l
 
 Los eventos de demostración se guardan localmente y se publican como `CustomEvent('hpc:event')`. Incluyen apertura, inicio del recorrido, tiempo hasta recomendación, recomendación guardada, aceptación, apertura de WhatsApp, solicitud de ayuda, alternativa elegida, rechazo y registro de compra, con o sin factura. No se incluye contenido de facturas ni datos personales en estos eventos.
 
+Las opciones para reunir estos eventos durante el piloto están comparadas en [docs/medicion-piloto.md](docs/medicion-piloto.md). Todavía no se eligió ninguna ni se agregó código de medición.
+
 La apertura de WhatsApp y “Me lo llevo” indican intención, no una compra confirmada. La validación de compra necesitará un flujo posterior con backend y evidencia revisada.
 
 ## Fuentes consultadas
