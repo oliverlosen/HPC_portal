@@ -10,6 +10,7 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
 - **Rama:** `feature/codigo-atencion`, creada sobre la rama del PR #8 y actualizada con `main` después de integrarse los PR #7 y #8.
+- **Referencia:** [PR #9](https://github.com/oliverlosen/HPC_portal/pull/9).
 - **Qué se hizo:**
   - La guía muestra un código de atención de cinco caracteres en «Muéstrale esta pantalla» y en la pantalla sin opción en la muestra (por ejemplo, `P412L`). Resume las cuatro respuestas: la letra de la necesidad (P, L, A o G), el número del material, de la frecuencia y de la prioridad, y una letra de control. No lleva datos personales ni se envía a ningún lado.
   - Con un enlace directo a un producto, sin respuestas, el código no aparece. Si el cliente pasó a una alternativa, se conserva el código de su guía.
