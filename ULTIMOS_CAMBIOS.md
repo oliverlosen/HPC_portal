@@ -6,6 +6,40 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-10-29 - Naranja de la marca con contraste suficiente en la guía (opción A)
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `fix/naranja-contraste`, creada desde `main` después de integrarse los PR #7 y #8.
+- **Qué se hizo:**
+  - En la guía de clientes, `#C2410C`, un naranja más oscuro, reemplaza a `#FC641B` donde hay texto. Se agrega la variable `--orange-text` en `dist/styles.css`. Cubre:
+    - etiquetas, enlaces, marca del producto y paso de la guía;
+    - la opción activa del menú y el botón «Llamar»;
+    - los botones con texto blanco y el enlace para saltar al contenido.
+  - El contorno de foco del teclado también usa `#C2410C`. Con `#FC641B` quedaba en 2.8:1 sobre el fondo gris claro, por debajo del 3:1 que piden los indicadores.
+  - El naranja de la marca `#FC641B` se conserva en el logo, los íconos, los bordes, la opción elegida, la barra de progreso y el círculo de carga.
+  - `docs/naranja-opciones.png` compara en celular el antes, la opción A y la opción B (texto oscuro sobre el naranja actual). `docs/alcance-cliente.md` y `PROYECTO.md` describen cuándo se usa cada naranja.
+  - El portal interno no cambia, salvo su número de versión, para mantener separadas la página interna y la de clientes.
+  - La versión pasa a `0.2.2` en `dist/data.js` y en el portal; la copia portátil se regeneró.
+- **Por qué:** con `#FC641B`, los textos y botones naranjas tenían entre 2.6 y 3:1 de contraste, por debajo del 4.5:1 de WCAG 2.1 AA. Era lo único pendiente de la revisión de accesibilidad del PR #8. Se aplica la opción A, la recomendada; Oliver decide en el PR.
+- **Archivos afectados:** `dist/styles.css`, `dist/data.js`, `preview/HPC_Cliente_Mockup.html` (regenerado), `prototipos/portal-interno.html` (versión), `docs/naranja-opciones.png` (nuevo), `docs/alcance-cliente.md`, `docs/versiones.md`, `README.md`, `PROYECTO.md`.
+- **Comprobaciones:**
+  - `node --check`, `node scripts/check-guide.cjs` y `node scripts/check-portal-interno.cjs`: correctos. La copia portátil está al día.
+  - axe-core 4.10.2 en las mismas 32 pantallas de la guía (escritorio y celular): el contraste insuficiente baja de 94 a 8, y el del naranja, de 86 a 0.
+    - Quedan los 8 números decorativos «01» a «04», ocultos para los lectores de pantalla.
+    - El aviso «skip-link» (10) es el mismo de antes: el enlace `#inicio` del logo es una ruta, no un enlace para saltar contenido.
+  - Contraste calculado de `#C2410C`:
+    - 5.2:1 con blanco;
+    - 4.9:1 con el gris claro del fondo;
+    - 4.6:1 con el naranja suave del menú y del botón «Llamar»;
+    - 4.56:1 con la columna de contexto de las preguntas.
+  - Navegador sin ventana, guía y copia portátil a 1280 y 360 px: 19 de 19 en Chrome y 19 de 19 en Edge. Cubre la versión, los colores aplicados, el logo y los íconos con el naranja de la marca, que no haya desbordamiento y la consola sin errores.
+  - Teclado real en Chrome: 25 de 25, con el contorno de foco visible en cada parada.
+- **Pendientes/límites:**
+  - Si Oliver prefiere la opción B, se cambia en este mismo PR.
+  - El portal interno conserva el blanco sobre `#FC641B` (3:1) en sus botones; se puede aplicar la misma opción en un PR aparte.
+  - Si el PR #9 se integra antes, la versión de esta corrección pasa a `0.3.1` al actualizar la rama.
+  - No se probó con un lector de pantalla real ni en un teléfono.
+
 ### 2026-10-26 - Accesibilidad de la guía de clientes (sin el naranja)
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.

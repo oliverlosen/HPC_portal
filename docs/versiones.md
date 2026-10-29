@@ -71,6 +71,15 @@ Si se integra la rama `fix/accesibilidad-guia` después del PR #6, publicar `v0.
 - Los textos grises o claros tienen al menos 4.5:1 de contraste, sin cambiar el diseño.
 - Pendiente: el naranja de la marca en textos y botones, según la opción que elija Oliver.
 
+### Notas preparadas para v0.2.2
+
+Si se integra la rama `fix/naranja-contraste`, publicar `v0.2.2` desde el commit de `main` que la contenga. Si antes se integra el PR #9 (versión 0.3.0), esta corrección pasa a ser la `0.3.1`.
+
+- La guía usa `#C2410C`, un naranja más oscuro, en textos, botones con texto y el contorno de foco. El naranja de la marca `#FC641B` se conserva en el logo, los íconos, los bordes y la barra de progreso.
+- Todos los textos de la guía cumplen el contraste mínimo de 4.5:1. Solo quedan los números decorativos de las tarjetas, ocultos para los lectores de pantalla.
+- `docs/naranja-opciones.png` compara el antes con las opciones A y B.
+- El portal interno solo cambia su número de versión.
+
 ## Recuperarse si aparece un error
 
 Para consultar una versión anterior sin tocar `main`, descargar sus archivos desde Releases o usar `git switch --detach v0.1.0` en una copia limpia.
