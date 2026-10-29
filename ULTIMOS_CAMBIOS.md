@@ -16,7 +16,8 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
   - En «Atender cliente» del portal interno, el colaborador escribe el código (acepta minúsculas, espacios y guiones). Ve las respuestas del cliente, la recomendación de la guía, su explicación y las otras opciones adecuadas. Si la muestra no cubre la necesidad, el portal lo indica y ofrece derivar a un asesor.
   - Un código con un carácter mal escrito o con dos caracteres vecinos intercambiados se rechaza con un aviso. El código de producto y el modelo siguen funcionando.
   - Las atenciones registradas con el código guardan sus respuestas (`via: 'codigo'`) y se cuentan aparte en las métricas del colaborador.
-  - Después de buscar, el foco pasa al título del resultado. Si el código no es válido, vuelve al campo, y el error queda asociado a él para los lectores de pantalla.
+  - Después de buscar, el foco pasa al título del resultado, y el resultado completo queda visible debajo de la barra fija del portal. Antes, en celular, esa barra tapaba el título o las respuestas al tocar un código de prueba o una alternativa.
+  - Si el código no es válido, el foco vuelve al campo, y el error queda asociado a él para los lectores de pantalla.
   - `scripts/check-guide.cjs` y `scripts/check-portal-interno.cjs` comprueban:
     - los 144 códigos;
     - que el portal lea los mismos que muestra la guía;
@@ -27,11 +28,12 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 - **Comprobaciones:**
   - `node --check` de los archivos JavaScript.
   - `node scripts/check-guide.cjs` y `node scripts/check-portal-interno.cjs`: correctos. En una copia aparte se confirmó que fallan si se cambia la letra de control, los pesos de la cuenta o la letra de una necesidad.
-  - Prueba en navegador sin ventana: 36 de 36 en Chrome y 36 de 36 en Edge. Recorre la guía, la copia portátil y el portal:
+  - Prueba en navegador sin ventana: 38 de 38 en Chrome y 38 de 38 en Edge. Recorre la guía, la copia portátil y el portal:
     - el código en las dos pantallas de la guía, la alternativa y el enlace directo;
     - en el portal, la búsqueda con Enter y con el botón, el código inválido, el código de producto y el modelo;
     - el registro de atenciones, las métricas y la recarga;
-    - la vista a 360 px sin desbordamiento y la consola sin errores.
+    - la vista a 360 px, con el resultado visible debajo de la barra fija y sin desbordamiento;
+    - la consola sin errores.
   - axe-core 4.10.2 no encuentra problemas en los elementos nuevos. Solo marca el naranja de la marca, que ya estaba pendiente.
   - Siguen correctas la prueba anterior con teclado real (25 de 25) y la de recorridos del portal: colaborador y mayorista, sin desbordamiento a 360, 390 y 1280 px.
 - **Pendientes/límites:**

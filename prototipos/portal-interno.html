@@ -694,8 +694,9 @@ figcaption{margin-top:12px;color:var(--viz-text-2);font-size:12px}
     const a={project:proj.id,material:mat[0],frequency:fr[0],priority:pr[0]};
     return encodeAttention(a)===k?a:null;
   }
-  // Lleva el foco al título del resultado; si no hay resultado, al campo de búsqueda.
-  function focusLookupResult(){const h=document.getElementById('product-title')||document.getElementById('nomatch-title');if(!h){document.getElementById('lookup')?.focus();return;}h.setAttribute('tabindex','-1');h.focus({preventScroll:true});h.scrollIntoView({block:'start'});}
+  // Lleva el foco al título del resultado y muestra el resultado completo debajo de la barra fija (en celular mide unos 145 px);
+  // si no hay resultado, el foco vuelve al campo de búsqueda.
+  function focusLookupResult(){const h=document.getElementById('product-title')||document.getElementById('nomatch-title');if(!h){document.getElementById('lookup')?.focus();return;}h.setAttribute('tabindex','-1');h.focus({preventScroll:true});const top=(h.closest('article')||h).getBoundingClientRect().top+window.scrollY-(document.querySelector('.topbar')?.offsetHeight||0)-12;window.scrollTo(0,Math.max(0,top));}
   const findProduct = q => {const k=q.trim().toLowerCase().replace(/\s+/g,'');return PRODUCTS.find(p=>p.code===k||p.model.toLowerCase()===k);};
   function attendView(){
     const switcher = `<div class="chips mode-switch" role="group" aria-label="Cómo llega el cliente">${[['codigo','Trae el código de la guía'],['preguntas','No tiene celular: hacer las preguntas']].map(([id,label])=>`<button class="chip" data-action="attend-mode" data-mode="${id}" aria-pressed="${state.attendMode===id}">${label}</button>`).join('')}</div>`;
