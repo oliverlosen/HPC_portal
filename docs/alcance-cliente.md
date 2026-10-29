@@ -6,7 +6,7 @@ Convertir una duda en el anaquel en una recomendación comprensible, con respald
 
 ## Dirección visual
 
-Naranja `#FC641B` para acciones principales y Smart Guide; negro `#191C1D` para títulos y bloques de énfasis; blanco y gris muy claro para lectura y superficies. Tipografía Manrope para títulos y DM Sans para interfaz, con fallback a sans-serif. Diseño adaptable desde 360 px y navegación lateral en escritorio.
+Naranja `#FC641B` para acciones principales y Smart Guide; negro `#191C1D` para títulos y bloques de énfasis; blanco y gris muy claro para lectura y superficies. Tipografía Manrope para títulos y DM Sans para interfaz, con fallback a sans-serif. Diseño adaptable desde 360 px y navegación lateral en escritorio. El texto debe tener un contraste de al menos 4.5:1 con su fondo (3:1 si es grande), como pide WCAG 2.1 AA; el naranja de la marca sobre fondos claros no lo alcanza en texto pequeño.
 
 ## Pantallas
 

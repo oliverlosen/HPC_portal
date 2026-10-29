@@ -1,6 +1,6 @@
 # HPC Smart Guide - Contexto compartido del proyecto
 
-Última actualización de este contexto: 2026-10-21. Los avances posteriores deben registrarse en [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBIOS.md); si alteran el estado descrito aquí, actualiza también este documento.
+Última actualización de este contexto: 2026-10-26. Los avances posteriores deben registrarse en [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBIOS.md); si alteran el estado descrito aquí, actualiza también este documento.
 
 ## Qué problema queremos resolver
 
@@ -34,7 +34,7 @@ La guía empieza con la necesidad. No es una tienda de comercio electrónico ni 
 | Frontend del cliente | Prototipo interactivo en `dist/`; primera versión [PR #1](https://github.com/oliverlosen/HPC_portal/pull/1), correcciones con recomendación por material [PR #3](https://github.com/oliverlosen/HPC_portal/pull/3) y pendientes de revisión [PR #5](https://github.com/oliverlosen/HPC_portal/pull/5), integrados en `main` |
 | Vista portátil | `preview/HPC_Cliente_Mockup.html`, generada desde las mismas fuentes |
 | Portal interno (colaborador y mayorista) | Prototipo de un solo archivo en `prototipos/portal-interno.html`, fuera de `dist/` y sin publicar. Datos de ejemplo en `localStorage`; se pueden pasar a otra computadora con un archivo. Códigos de acceso de demostración, no seguros. Copia datos, reglas y textos de la guía; `scripts/check-portal-interno.cjs` comprueba que sigan iguales |
-| Versiones y Releases | Versión preparada `0.2.0` (guía de clientes y portal interno); política en [docs/versiones.md](docs/versiones.md); primeras etiquetas y Releases pendientes de publicación |
+| Versiones y Releases | Versión preparada `0.2.1` (guía de clientes y portal interno); política en [docs/versiones.md](docs/versiones.md); primeras etiquetas y Releases pendientes de publicación |
 | Preguntas y recomendación | Reglas de demostración en JavaScript, pendientes de validar con especialistas de HPC |
 | Productos y fotografías | Muestra basada en el catálogo HPC/Truper; las fotografías requieren conexión externa |
 | Precios | Valores de ejemplo identificados en pantalla |
@@ -62,6 +62,7 @@ Para una etapa posterior se contemplan búsqueda directa, kits/combinaciones par
 
 - Texto claro en español de Guatemala y uso cómodo en teléfono, que será el punto de entrada del QR/NFC.
 - Naranja `#FC641B`, negro `#191C1D`, blanco y grises claros; títulos Manrope e interfaz DM Sans, con fuentes de sistema como alternativa.
+- El texto debe tener un contraste de al menos 4.5:1 con su fondo (3:1 si es grande), según WCAG 2.1 AA, y la guía debe poder usarse con teclado sin perder el foco. El naranja `#FC641B` sobre fondos claros no alcanza ese contraste en texto pequeño; su uso en textos y botones está pendiente de decisión.
 - Orientación útil antes de solicitar datos de contacto; no introducir barreras innecesarias para obtener la recomendación.
 - Diferenciar información oficial, ejemplos y datos pendientes de integración.
 - Mantener garantía y servicio local visibles sin prometer cobertura aprobada.
@@ -97,7 +98,8 @@ Sitio estático con HTML, CSS y JavaScript del navegador. No necesita instalar d
 5. Configurar medición del piloto, diferenciando intención, evidencia recibida y compra confirmada.
 6. Diseñar el portal administrativo y sus permisos.
 7. Definir el futuro del portal interno: acceso real por usuario, datos compartidos entre tiendas y mayoristas, publicación y si debe leer las fuentes de `dist/` en lugar de copiarlas.
-8. Priorizar búsqueda, kits y ubicación detallada después del piloto.
+8. Elegir cómo usar el naranja de la marca en textos y botones para cumplir el contraste: un naranja más oscuro donde hay texto (`#C2410C`, con texto blanco en botones) o texto oscuro sobre el naranja actual. Se prepararon capturas de las dos opciones; decide Oliver.
+9. Priorizar búsqueda, kits y ubicación detallada después del piloto.
 
 No se han elegido todavía proveedores para el backend o una autenticación comercial. No los presentes como decisiones tomadas.
 

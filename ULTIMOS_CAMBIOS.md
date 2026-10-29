@@ -6,6 +6,22 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-10-26 - Accesibilidad de la guía de clientes (sin el naranja)
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `fix/accesibilidad-guia`, preparada el 2026-10-21 sobre el PR #6 y actualizada sobre `main` cuando ese PR se integró.
+- **Referencia:** [PR #8](https://github.com/oliverlosen/HPC_portal/pull/8).
+- **Qué se hizo:**
+  - Al tocar «Continuar» o «Anterior», el foco pasa al título de la nueva pregunta; al cambiar de página, al título principal. Antes se perdía y había que recorrer la página desde arriba.
+  - Cada pregunta y la pantalla «sin opción en la muestra» tienen h1, y ya no se salta de h1 a h3 (columna de contexto, «¿Por qué esta herramienta?», ayuda y Mis herramientas). Los estilos no cambian.
+  - La barra de progreso queda como decoración (el texto «Paso X de 4» ya la describe) y la columna de contexto deja de ser contenido complementario anidado.
+  - 37 colores de texto gris o claro se oscurecen, con el mismo matiz, hasta 4.6:1, incluida la variable `--muted`. Los números decorativos de las tarjetas se ocultan a los lectores de pantalla y conservan su color.
+  - La versión pasa a `0.2.1` en `dist/data.js` y en el portal interno; la copia portátil se regeneró.
+  - `PROYECTO.md` agrega el criterio de contraste y uso con teclado, y la decisión pendiente sobre el naranja; `docs/alcance-cliente.md`, el criterio de contraste.
+- **Por qué:** lo encontró la revisión con axe-core y con teclado del 2026-10-21. El naranja de la marca no se toca: espera la decisión de Oliver entre dos opciones.
+- **Archivos afectados:** `dist/app.js`, `dist/styles.css`, `dist/data.js`, `preview/HPC_Cliente_Mockup.html` (regenerado), `prototipos/portal-interno.html` (versión), `docs/versiones.md`, `docs/alcance-cliente.md`, `README.md`, `PROYECTO.md`.
+- **Comprobaciones:** `node --check` de los archivos JavaScript; `node scripts/check-guide.cjs` y `node scripts/check-portal-interno.cjs` correctos. axe-core en 32 pantallas de la guía, en escritorio y celular y con sus ventanas: el contraste insuficiente baja de 475 a 94 (86 del naranja y 8 números decorativos); barra de progreso, sección anidada, título principal y orden de títulos bajan de 28 a 0. Teclado real en Chrome: 25/25, con el foco en cada pregunta y en la recomendación. La guía y la copia portátil abren con la versión `0.2.1` en Edge y en Chrome, sin desbordamiento a 360 y 390 px. El portal interno pasa sus pruebas de recorridos en Edge y Chrome. Comparación visual antes y ahora: mismo diseño, con grises algo más oscuros. Todo se repitió el 2026-10-26, después de actualizar la rama sobre `main`, con los mismos resultados.
+- **Pendientes/límites:** el naranja en textos y botones espera la decisión de Oliver. axe marca como «skip-link» el enlace `#inicio` del logo en el celular, pero es una ruta de la guía, no un enlace para saltar contenido. No se probó con un lector de pantalla real ni en un teléfono. Si el PR #7 se integra antes, `ULTIMOS_CAMBIOS.md` tendrá entradas de los dos PR en el mismo lugar; se conservan ambas.
 ### 2026-10-21 - Comprobaciones automáticas en cada PR
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
