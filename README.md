@@ -91,6 +91,7 @@ docs/
   versiones.md              # entregas, Releases y recuperación
 .openai/hosting.json
 .github/pull_request_template.md
+.github/workflows/comprobaciones.yml  # comprobaciones automáticas en cada PR y en main
 AGENTS.md                   # guía común para agentes
 CLAUDE.md                   # entrada para Claude Code; importa AGENTS.md
 PROYECTO.md                 # contexto, estado y próximos pasos
