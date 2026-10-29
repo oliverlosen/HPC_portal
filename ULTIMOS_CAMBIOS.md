@@ -10,6 +10,7 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
 - **Rama:** `docs/medicion-piloto`, creada desde `main` después de integrarse los PR #7 y #8.
+- **Referencia:** [PR #11](https://github.com/oliverlosen/HPC_portal/pull/11).
 - **Qué se hizo:** se agrega `docs/medicion-piloto.md`.
   - Explica qué falta: los eventos se quedan en el navegador de cada cliente.
   - Lista los 10 eventos que ya registra la guía, con sus datos y para qué sirven en el piloto.
