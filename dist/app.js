@@ -96,7 +96,7 @@
     if(answers.project==='vacuum'&&answers.material==='workshop'&&answers.priority!=='economy')tier=2;
     return list.slice().sort((a,b)=>Math.abs(a.tier-tier)-Math.abs(b.tier-tier)||a.price-b.price)[0];
   }
-  // Código de atención: resume las cuatro respuestas para que el colaborador las vea en el portal interno.
+  // Código de atención: resume las cuatro respuestas para que un colaborador las consulte sin repetir las preguntas.
   // Letra de la necesidad; número del material, de la frecuencia y de la prioridad (en el orden de las opciones);
   // y una letra de control que detecta un carácter mal escrito o dos números intercambiados.
   const CHECK_LETTERS='ACDEFHJKLMNPRTUVWXY';

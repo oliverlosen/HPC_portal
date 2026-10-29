@@ -98,7 +98,7 @@ Sitio estático con HTML, CSS y JavaScript del navegador. No necesita instalar d
 4. Diseñar backend, almacenamiento de facturas, consentimiento y acceso a los registros.
 5. Configurar medición del piloto, diferenciando intención, evidencia recibida y compra confirmada.
 6. Diseñar el portal administrativo y sus permisos.
-7. Definir el futuro del portal interno: acceso real por usuario, datos compartidos entre tiendas y mayoristas, publicación y si debe leer las fuentes de `dist/` en lugar de copiarlas.
+7. Definir el futuro del portal interno: acceso real por usuario, datos compartidos entre tiendas y mayoristas, publicación y si debe leer las fuentes de `dist/` en lugar de copiarlas. De esa decisión depende también si la guía muestra el código de atención a los clientes.
 8. Elegir cómo usar el naranja de la marca en textos y botones para cumplir el contraste: un naranja más oscuro donde hay texto (`#C2410C`, con texto blanco en botones) o texto oscuro sobre el naranja actual. Se prepararon capturas de las dos opciones; decide Oliver.
 9. Priorizar búsqueda, kits y ubicación detallada después del piloto.
 
