@@ -6,7 +6,7 @@ const vm = require('node:vm');
 const root = path.resolve(__dirname, '..');
 const read = file => fs.readFileSync(path.join(root, file), 'utf8');
 
-function browser(seed={}, now) {
+function browser(seed={}, now, systemDark=false) {
   const elements = new Map();
   const element = id => {
     if (!elements.has(id)) elements.set(id, {innerHTML:'', style:{}, classList:{add(){}, remove(){}}, querySelector(){return null;}});
@@ -16,11 +16,12 @@ function browser(seed={}, now) {
   let hash = '', pendingHash = false;
   const location = {search:'', get hash(){return hash;}, set hash(value){hash='#'+value.replace(/^#/, '');pendingHash=true;}};
   const document = {
-    body:element('body'), activeElement:null, title:'',
+    body:element('body'), documentElement:{dataset:{}, style:{}}, activeElement:null, title:'',
     getElementById:element, querySelector(){return null;}, querySelectorAll(){return [];},
     addEventListener(name, callback){documentListeners[name]=callback;}
   };
-  const window = {addEventListener(name, callback){windowListeners[name]=callback;}, dispatchEvent(){}, scrollTo(){}};
+  const window = {addEventListener(name, callback){windowListeners[name]=callback;}, dispatchEvent(){}, scrollTo(){},
+    matchMedia:query=>({matches:systemDark&&query.includes('dark'), addEventListener(){}})};
   const context = vm.createContext({window, document, location, URLSearchParams, performance,
     CustomEvent:class {constructor(name, init){this.type=name;this.detail=init.detail;}},
     localStorage:{getItem:key=>storage.get(key)??null, setItem:(key,value)=>storage.set(key,value)},
@@ -55,7 +56,8 @@ function browser(seed={}, now) {
     pendingHash = false;
     windowListeners.hashchange();
   }
-  return {window, html, overlay, click, guide, navigate, events:()=>JSON.parse(storage.get('hpc-demo-events'))};
+  return {window, html, overlay, click, guide, navigate, events:()=>JSON.parse(storage.get('hpc-demo-events')),
+    theme:()=>document.documentElement.dataset.theme, stored:key=>storage.get(key)};
 }
 
 const b = browser();
@@ -189,4 +191,15 @@ evening.navigate('herramientas');
 evening.click('register');
 assert.match(evening.overlay(),/max="2026-10-12"/,'Purchase date limit must use the local date');
 
-console.log(`OK: ${drillChecks} drill combinations; 144 valid guide combinations; rendered controls, alternative events, 8 vacuum and 4 wash explanations, back navigation, 144 attention codes, one card per purchase record and local purchase date. Layout, external images and receipts require a real browser.`);
+// Appearance: «Automático» follows the phone; a choice is kept on this device.
+assert.equal(browser().theme(),'light');
+assert.equal(browser({}, undefined, true).theme(),'dark','Automatic must follow a phone in dark mode');
+const themed=browser({'hpc-theme':JSON.stringify('dark')});
+assert.equal(themed.theme(),'dark');
+assert.match(themed.html(),/data-action="theme" data-value="dark" aria-pressed="true"/);
+themed.click('theme',{value:'light'});
+assert.equal(themed.theme(),'light');
+assert.equal(themed.stored('hpc-theme'),JSON.stringify('light'));
+assert.equal(browser({'hpc-theme':JSON.stringify('rojo')}, undefined, true).theme(),'dark','An unknown choice falls back to automatic');
+
+console.log(`OK: ${drillChecks} drill combinations; 144 valid guide combinations; rendered controls, alternative events, 8 vacuum and 4 wash explanations, back navigation, 144 attention codes, one card per purchase record, local purchase date and appearance (automatic, light and dark). Layout, external images and receipts require a real browser.`);

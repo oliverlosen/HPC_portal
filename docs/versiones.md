@@ -97,6 +97,16 @@ Si se integra la rama `fix/informacion-oficial-hpc`, publicar `v0.3.2` desde el 
 - La página de garantía aclara que HPC no pide factura, qué no cubre la garantía y qué ofrece cuando no aplica.
 - El portal interno muestra los mismos centros, enlaces y textos.
 
+### Notas preparadas para v0.4.0
+
+Si se integra la rama `feature/modo-oscuro` después de `v0.3.2`, publicar `v0.4.0` desde el commit de `main` que la contenga:
+
+- Modo oscuro en la guía de clientes. «Automático» sigue el modo del teléfono; en el menú, «Aspecto» permite elegir Claro u Oscuro, y la elección se guarda en el navegador.
+- En oscuro, los botones usan el naranja de la marca con texto negro, y las fotos de producto quedan sobre fondo claro. Los textos cumplen el contraste mínimo de 4.5:1.
+- En el modo claro, cuatro textos que no lo cumplían ahora sí lo cumplen, y el formulario de registro ya no muestra una imagen vacía.
+- En iPhone y Android, la letra más pequeña sube a 10 u 11 px, el buscador de Mis herramientas ocupa todo el ancho y los enlaces pequeños se tocan con más facilidad. Es solo CSS, sin código de app nativa.
+- El portal interno solo cambia su número de versión.
+
 ## Recuperarse si aparece un error
 
 Para consultar una versión anterior sin tocar `main`, descargar sus archivos desde Releases o usar `git switch --detach v0.1.0` en una copia limpia.

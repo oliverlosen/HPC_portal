@@ -6,7 +6,7 @@ Convertir una duda en el anaquel en una recomendación comprensible, con respald
 
 ## Dirección visual
 
-Naranja `#FC641B` de la marca para el logo, los íconos, los bordes y los detalles de Smart Guide; `#C2410C`, un naranja más oscuro, para textos, botones con texto y el contorno de foco; negro `#191C1D` para títulos y bloques de énfasis; blanco y gris muy claro para lectura y superficies. Tipografía Manrope para títulos y DM Sans para interfaz, con fallback a sans-serif. Diseño adaptable desde 360 px y navegación lateral en escritorio. El texto debe tener un contraste de al menos 4.5:1 con su fondo (3:1 si es grande), como pide WCAG 2.1 AA; el naranja de la marca sobre fondos claros no lo alcanza en texto pequeño, por eso los textos usan `#C2410C`.
+Naranja `#FC641B` de la marca para el logo, los íconos, los bordes y los detalles de Smart Guide; `#C2410C`, un naranja más oscuro, para textos, botones con texto y el contorno de foco; negro `#191C1D` para títulos y bloques de énfasis; blanco y gris muy claro para lectura y superficies. Tipografía Manrope para títulos y DM Sans para interfaz, con fallback a sans-serif. Diseño adaptable desde 360 px y navegación lateral en escritorio. El texto debe tener un contraste de al menos 4.5:1 con su fondo (3:1 si es grande), como pide WCAG 2.1 AA; el naranja de la marca sobre fondos claros no lo alcanza en texto pequeño, por eso los textos usan `#C2410C`. En modo oscuro (automático según el teléfono, o elegido en el menú), el fondo es casi negro `#121516`, los botones usan `#FC641B` con texto negro, los textos naranjas `#FF8A4C` y las fotos de producto se mantienen sobre fondo claro.
 
 ## Pantallas
 

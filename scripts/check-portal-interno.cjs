@@ -15,7 +15,7 @@ function context() {
   const element = () => ({innerHTML:'', hidden:true, style:{}, classList:{add(){}, remove(){}, toggle(){}},
     querySelector(){return null;}, querySelectorAll(){return [];}, append(){}, focus(){}, scrollIntoView(){}, setAttribute(){}, addEventListener(){}});
   const elements = {};
-  const document = {body:element(), title:'', activeElement:null, getElementById:id => elements[id] || (elements[id] = element()),
+  const document = {body:element(), documentElement:{dataset:{}, style:{}}, title:'', activeElement:null, getElementById:id => elements[id] || (elements[id] = element()),
     querySelector(){return null;}, querySelectorAll(){return [];}, addEventListener(){}, createElement:element};
   return vm.createContext({window:{addEventListener(){}, dispatchEvent(){}, scrollTo(){}}, document, location:{search:'', hash:''},
     URL, URLSearchParams, TextEncoder, performance, console, Intl,
