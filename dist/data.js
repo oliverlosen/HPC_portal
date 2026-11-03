@@ -1,5 +1,5 @@
 window.HPC_DATA = {
-  version: '0.3.1',
+  version: '0.3.2',
   stores: [
     {id:'cemaco',name:'CEMACO',description:'Punto de venta de ejemplo',icon:'store'},
     {id:'aki',name:'AKÍ',description:'Punto de venta de ejemplo',icon:'store'},
@@ -32,12 +32,22 @@ window.HPC_DATA = {
     {id:'vacuum-large',category:'vacuum',code:'12093',model:'ASPI-12',brand:'TRUPER',name:'Aspiradora de 12 galones',subtitle:'Mayor capacidad para tu taller o negocio.',image:'ASP-12',price:1499,tier:2,features:['12 galones','Sólidos y líquidos','Soplador desmontable'],source:'https://www.hpcenlinea.com.gt/gt/products/12093-aspiradora-solidos-y-liquidos-12-gal-soplador-desmontable',area:'Limpieza y hogar'},
     {id:'faucet-basic',category:'faucet',code:'49590',model:'M-048PB',brand:'FOSET BASIC',name:'Mezcladora de palanca para lavabo',subtitle:'Renueva tu lavamanos con una solución sencilla.',image:'M-048PB',price:179,tier:0,features:['Lavabo de 4 pulgadas','Manerales de palanca','Cuerpo ABS'],source:'https://www.hpcenlinea.com.gt/gt/products/49590-mezcladora-manerales-palanca-para-lavabo-foset-basic',area:'Plomería y grifería'}
   ],
+  // Publicados por HPC en hpc.com.gt/centros-de-servicio (2026-11-03); el mapa usa las coordenadas de sus enlaces, salvo Zacapa.
   centers: [
-    {city:'Guatemala',address:'27 Calle 41-55, zona 5, Bodega C, Guatemala',map:'https://www.google.com/maps/search/?api=1&query=HPC+27+Calle+41-55+Zona+5+Guatemala'},
-    {city:'Retalhuleu',address:'Centro Comercial La Trinidad, local L-91, 5ta avenida y 1a calle, zona 5',map:'https://www.google.com/maps/search/?api=1&query=Centro+Comercial+La+Trinidad+Retalhuleu'},
-    {city:'Quetzaltenango',address:'18 avenida 0-69, zona 3, Quetzaltenango',map:'https://www.google.com/maps/search/?api=1&query=18+avenida+0-69+zona+3+Quetzaltenango'},
-    {city:'Petén',address:'Metro Plaza Mundo Maya, locales 103 al 108, frente al aeropuerto, Flores',map:'https://www.google.com/maps/search/?api=1&query=Metro+Plaza+Mundo+Maya+Flores'}
+    {city:'Guatemala (central)',address:'6a Avenida 8-25, zona 4, Guatemala',hours:'Lun–vie 6:00–19:00 · Sáb 6:00–15:00',map:'https://www.google.com/maps/search/?api=1&query=14.615361,-90.517651'},
+    {city:'Chimaltenango',address:'CC Pradera Chimaltenango, locales 36 y 56 al 58, Diagonal 1, 1-75, zona 6, Chimaltenango',map:'https://www.google.com/maps/search/?api=1&query=14.660633,-90.810091'},
+    {city:'Cobán',address:'6a calle 0-36, zona 8, sector Talpetate, Periférico Sur, Bodega B, Cobán',map:'https://www.google.com/maps/search/?api=1&query=15.461586,-90.377462'},
+    {city:'El Rancho',address:'Km 86, San Agustín Acasaguastlán, bodegas El Progreso, complejo Interoceánica, detrás de Ferromax',note:'No cuenta con mostrador',map:'https://www.google.com/maps/search/?api=1&query=14.928889,-90.003765'},
+    {city:'Escuintla',address:'Km 64 carretera a Puerto Quetzal, Bodega 18 (Zigo), Escuintla',map:'https://www.google.com/maps/search/?api=1&query=14.270439,-90.776245'},
+    {city:'Huehuetenango',address:'Km 253 Piedra Negra, salida a Quiché, Bodegas Zigo, Huehuetenango',map:'https://www.google.com/maps/search/?api=1&query=15.272598,-91.475936'},
+    {city:'Mazatenango',address:'Km 162 circunvalación de Mazatenango, contiguo al Centro Comercial Paseo Carnaval, Suchitepéquez',map:'https://www.google.com/maps/search/?api=1&query=14.535663,-91.522572'},
+    {city:'Morales, Izabal',address:'Km 244, aldea La Ruidosa, Bodega Zigo, Morales, Izabal',note:'No cuenta con mostrador',map:'https://www.google.com/maps/search/?api=1&query=15.499607,-88.826299'},
+    {city:'Petén',address:'Calle Distribuidora Minerva 8070, zona 2, Santa Elena, Flores, Petén',map:'https://www.google.com/maps/search/?api=1&query=16.917906,-89.901928'},
+    {city:'Quetzaltenango',address:'Aldea Santa Rita, zona 0, camino a Cajolá, Complejo de bodegas San Miguel, La Esperanza, Quetzaltenango',map:'https://www.google.com/maps/search/?api=1&query=14.881764,-91.591439'},
+    {city:'Quiché',address:'Colonia Final de los Cipresales, zona 4, Santa Cruz del Quiché',map:'https://www.google.com/maps/search/?api=1&query=15.016128,-91.147528'},
+    {city:'Zacapa',address:'Km 135.5 Ruta al Atlántico, Río Hondo, Zacapa',map:'https://www.google.com/maps/search/?api=1&query=Km+135.5+Ruta+al+Atlantico+Rio+Hondo+Zacapa'}
   ],
-  policy:'https://www.hpcenlinea.com.gt/gt/politicasdegarantia',
-  centersSource:'https://www.hpcenlinea.com.gt/gt/centrosdeservicio'
+  centerHours:'Lun–vie 8:00–17:00 · Sáb 8:00–12:00',
+  policy:'https://hpc.com.gt/politicasdegarantia',
+  centersSource:'https://hpc.com.gt/centros-de-servicio'
 };

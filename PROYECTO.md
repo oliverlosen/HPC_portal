@@ -34,7 +34,7 @@ La guía empieza con la necesidad. No es una tienda de comercio electrónico ni 
 | Frontend del cliente | Prototipo interactivo en `dist/`; primera versión [PR #1](https://github.com/oliverlosen/HPC_portal/pull/1), correcciones con recomendación por material [PR #3](https://github.com/oliverlosen/HPC_portal/pull/3) y pendientes de revisión [PR #5](https://github.com/oliverlosen/HPC_portal/pull/5), integrados en `main` |
 | Vista portátil | `preview/HPC_Cliente_Mockup.html`, generada desde las mismas fuentes |
 | Portal interno (colaborador y mayorista) | Prototipo de un solo archivo en `prototipos/portal-interno.html`, fuera de `dist/` y sin publicar. Datos de ejemplo en `localStorage`; se pueden pasar a otra computadora con un archivo. Códigos de acceso de demostración, no seguros. Copia datos, reglas y textos de la guía; `scripts/check-portal-interno.cjs` comprueba que sigan iguales |
-| Versiones y Releases | Versión preparada `0.3.1` (guía de clientes y portal interno); política en [docs/versiones.md](docs/versiones.md); primeras etiquetas y Releases pendientes de publicación |
+| Versiones y Releases | Versión preparada `0.3.2` (guía de clientes y portal interno); política en [docs/versiones.md](docs/versiones.md); primeras etiquetas y Releases pendientes de publicación |
 | Preguntas y recomendación | Reglas de demostración en JavaScript, pendientes de validar con especialistas de HPC |
 | Productos y fotografías | Muestra basada en el catálogo HPC/Truper; las fotografías requieren conexión externa |
 | Precios | Valores de ejemplo identificados en pantalla |
@@ -112,7 +112,7 @@ Trabaja con [AGENTS.md](AGENTS.md), actualiza [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBI
 
 - Documento proporcionado por el equipo: **Fase 2 - Proyecto Final.pdf**. Su contenido relevante está resumido aquí; el PDF original no está incluido en el repositorio.
 - [Empresa y catálogo HPC](https://www.hpcenlinea.com.gt/gt).
-- [Política de garantía](https://www.hpcenlinea.com.gt/gt/politicasdegarantia).
-- [Centros de servicio](https://www.hpcenlinea.com.gt/gt/centrosdeservicio).
+- [Política de garantía](https://hpc.com.gt/politicasdegarantia), consultada el 2026-11-03.
+- [Centros de servicio](https://hpc.com.gt/centros-de-servicio), consultada el 2026-11-03.
 
 Consulta las fuentes oficiales antes de cambiar afirmaciones sobre productos, garantía, precios o servicio. Añade la referencia y la fecha cuando incorpores información nueva.

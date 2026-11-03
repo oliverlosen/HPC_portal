@@ -88,6 +88,15 @@ Si se integra la rama `fix/naranja-contraste-guia`, publicar `v0.3.1` desde el c
 - Los textos de la guía cumplen el contraste mínimo de 4.5:1. Solo quedan los números decorativos de las tarjetas, ocultos para los lectores de pantalla.
 - El portal interno solo cambia su número de versión.
 
+### Notas preparadas para v0.3.2
+
+Si se integra la rama `fix/informacion-oficial-hpc`, publicar `v0.3.2` desde el commit de `main` que la contenga:
+
+- Centros de servicio según la página oficial de HPC del 2026-11-03: la central en la 6a Avenida 8-25, zona 4, con su propio horario, y once centros en los departamentos. Retalhuleu ya no aparece.
+- Los enlaces a la política de garantía y a los centros apuntan a `hpc.com.gt`; los anteriores daban error 404.
+- La página de garantía aclara que HPC no pide factura, qué no cubre la garantía y qué ofrece cuando no aplica.
+- El portal interno muestra los mismos centros, enlaces y textos.
+
 ## Recuperarse si aparece un error
 
 Para consultar una versión anterior sin tocar `main`, descargar sus archivos desde Releases o usar `git switch --detach v0.1.0` en una copia limpia.

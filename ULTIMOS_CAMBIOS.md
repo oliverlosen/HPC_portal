@@ -6,6 +6,27 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-11-03 - Centros de servicio, enlaces y garantía según la información oficial de HPC
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `fix/informacion-oficial-hpc`, desde `main` después del PR #12, en un solo commit.
+- **Qué se hizo:**
+  - Centros de servicio de [hpc.com.gt/centros-de-servicio](https://hpc.com.gt/centros-de-servicio), consultada el 2026-11-03: la central en la 6a Avenida 8-25, zona 4, con su horario propio, y 11 centros más. Dos no tienen mostrador. Retalhuleu ya no aparece. «Cómo llegar» usa las coordenadas de los enlaces oficiales.
+  - Los enlaces a la política de garantía y a los centros pasan a `hpc.com.gt`. Los anteriores de `hpcenlinea.com.gt` daban error 404 en el pie de página, Garantía, Ayuda, el texto de WhatsApp y el portal.
+  - Garantía: dice que HPC no pide factura, qué no cubre (accesorios, consumibles, insumos y promocionales) y qué ofrece cuando no aplica. «Guarda tu factura» pasa a «Ten los datos de tu herramienta a la mano»; el registro de compra no cambia.
+  - El portal interno copia los mismos centros, enlaces y textos. `check-portal-interno.cjs` compara también el horario general.
+  - Versión `0.3.2`; copia portátil regenerada.
+- **Por qué:** la guía mostraba direcciones que ya no son las oficiales, dos enlaces rotos y un mensaje sobre la factura contrario a la política publicada.
+- **Archivos afectados:** `dist/data.js`, `dist/app.js`, `prototipos/portal-interno.html`, `scripts/check-portal-interno.cjs`, `preview/HPC_Cliente_Mockup.html`, `PROYECTO.md`, `README.md`, `docs/versiones.md`.
+- **Comprobaciones:**
+  - `node --check`, `node scripts/check-guide.cjs` y `node scripts/check-portal-interno.cjs`: correctos.
+  - Chrome sin ventana, a 390 y 1366 px, en la guía, la copia portátil y el portal (colaborador y mayorista): 81 de 81. Cubre los centros, los horarios, los enlaces, los textos de garantía, el texto de WhatsApp, «Copiar para enviar al cliente» y el desbordamiento horizontal; sin errores en la consola.
+  - Los enlaces nuevos responden. Los anteriores dan 404 en el navegador. La búsqueda de Zacapa abre Río Hondo en Google Maps.
+- **Pendientes/límites:**
+  - La página de garantía de HPC muestra 10 centros; la de centros muestra 12, con El Rancho y Morales sin mostrador. Se usó la de centros.
+  - Las direcciones, los horarios y los enlaces pueden volver a cambiar; conviene revisarlos antes de un piloto.
+  - No se probó en un teléfono.
+
 ### 2026-10-29 - Naranja de la marca con contraste suficiente en la guía (opción A)
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.

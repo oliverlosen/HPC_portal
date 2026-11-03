@@ -37,7 +37,7 @@ Para revisar la propuesta sin servidor, abre `preview/HPC_Cliente_Mockup.html`: 
 
 **Requisitos para colaborar:** Git para clonar el repositorio y trabajar en ramas. Node.js solo se usa para las comprobaciones de [AGENTS.md](AGENTS.md) (`node --check`) y para regenerar la copia portátil; no hay paquetes que instalar. Python es opcional y solo sirve para el servidor del ejemplo; sin Python, abre `preview/HPC_Cliente_Mockup.html` o `dist/index.html` directamente.
 
-`node scripts/check-guide.cjs` comprueba recomendaciones y eventos con un adaptador mínimo del navegador, sin dependencias. No sustituye la revisión visual ni comprueba fotos externas o facturas. Para identificar entregas y recuperarse de un error, sigue [Versiones y Releases](docs/versiones.md). La versión preparada es `0.3.1`; la publicación de las primeras Releases está pendiente.
+`node scripts/check-guide.cjs` comprueba recomendaciones y eventos con un adaptador mínimo del navegador, sin dependencias. No sustituye la revisión visual ni comprueba fotos externas o facturas. Para identificar entregas y recuperarse de un error, sigue [Versiones y Releases](docs/versiones.md). La versión preparada es `0.3.2`; la publicación de las primeras Releases está pendiente.
 
 ## Portal interno (prototipo)
 
@@ -115,7 +115,7 @@ La apertura de WhatsApp y “Me lo llevo” indican intención, no una compra co
 
 - Documento proporcionado: Fase 2 - Proyecto Final.pdf.
 - Empresa y catálogo: https://www.hpcenlinea.com.gt/gt
-- Garantía: https://www.hpcenlinea.com.gt/gt/politicasdegarantia
-- Servicio local: https://www.hpcenlinea.com.gt/gt/centrosdeservicio
+- Garantía: https://hpc.com.gt/politicasdegarantia (consultada el 2026-11-03)
+- Servicio local: https://hpc.com.gt/centros-de-servicio (consultada el 2026-11-03)
 
 La segunda etapa del documento contempla búsqueda de catálogo, kits/combos y ubicación detallada. Esas funciones se dejan para una próxima iteración.
