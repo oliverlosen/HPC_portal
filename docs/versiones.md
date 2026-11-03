@@ -80,6 +80,14 @@ Si se integra la rama `feature/codigo-atencion` después del PR #8, publicar `v0
 - Las atenciones registradas con el código se cuentan aparte en las métricas del colaborador.
 - Límites: el código no se envía ni se guarda en un servidor; el colaborador lo escribe a mano. Las reglas siguen siendo de demostración.
 
+### Notas preparadas para v0.3.1
+
+Si se integra la rama `fix/naranja-contraste-guia`, publicar `v0.3.1` desde el commit de `main` que la contenga:
+
+- La guía usa `#C2410C`, un naranja más oscuro, en textos, botones con texto y el contorno de foco. El naranja de la marca `#FC641B` se conserva en el logo, los íconos, los bordes y la barra de progreso.
+- Los textos de la guía cumplen el contraste mínimo de 4.5:1. Solo quedan los números decorativos de las tarjetas, ocultos para los lectores de pantalla.
+- El portal interno solo cambia su número de versión.
+
 ## Recuperarse si aparece un error
 
 Para consultar una versión anterior sin tocar `main`, descargar sus archivos desde Releases o usar `git switch --detach v0.1.0` en una copia limpia.

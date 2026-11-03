@@ -6,6 +6,27 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-10-29 - Naranja de la marca con contraste suficiente en la guía (opción A)
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `fix/naranja-contraste-guia`, desde `main` después del PR #9, en un solo commit. Reemplaza al PR #10, que tenía dos commits y chocaba con `main`.
+- **Qué se hizo:**
+  - En la guía de clientes, `#C2410C` (variable `--orange-text`) reemplaza a `#FC641B` en textos, botones con texto, el enlace para saltar al contenido y el contorno de foco.
+  - `#FC641B` se conserva en el logo, los íconos, los bordes y la barra de progreso.
+  - El portal interno solo cambia su número de versión.
+  - Versión `0.3.1`; copia portátil regenerada; contexto y documentación actualizados.
+- **Por qué:** el naranja de la marca tenía entre 2.6 y 3:1 de contraste en texto pequeño; WCAG 2.1 AA pide 4.5:1.
+- **Archivos afectados:** `dist/styles.css`, `dist/data.js`, `preview/HPC_Cliente_Mockup.html`, `prototipos/portal-interno.html` (versión), `PROYECTO.md`, `README.md`, `docs/alcance-cliente.md`, `docs/versiones.md`.
+- **Comprobaciones:**
+  - `node --check`, `node scripts/check-guide.cjs` y `node scripts/check-portal-interno.cjs`: correctos.
+  - axe-core en 32 pantallas de la guía: 0 problemas de contraste con el naranja. Quedan los 8 números decorativos, ocultos para los lectores de pantalla.
+  - Chrome y Edge, a 1280 y 360 px: 19 de 19 en cada uno (colores, sin desbordamiento y sin errores en la consola).
+  - Teclado real en Chrome: 6 de 6, con el contorno de foco visible y separado del botón.
+- **Pendientes/límites:**
+  - Oliver decide entre la opción A (aplicada) y la B (texto oscuro sobre el naranja actual).
+  - El portal interno conserva sus botones con `#FC641B`.
+  - No se probó con un lector de pantalla ni en un teléfono.
+
 ### 2026-10-29 - Código de atención entre la guía y el portal interno
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
