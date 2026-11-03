@@ -95,7 +95,8 @@ const S = portal.support;
 same('centros de servicio', S.centers, data.centers);
 same('política de garantía', S.policy, data.policy);
 same('fuente de los centros', S.source, data.centersSource);
-const texts = [['teléfono', `tel:${S.tel}`], ['teléfono visible', S.phone], ['correo', `mailto:${S.email}`], ['horario', S.hours], ['garantía', S.warranty],
+same('horario general de los centros', S.hours, data.centerHours);
+const texts = [['teléfono', `tel:${S.tel}`], ['teléfono visible', S.phone], ['correo', `mailto:${S.email}`], ['garantía', S.warranty],
   ...S.points.flat().map(t => ['garantía', t]), ...S.faq.flat().map(t => ['pregunta frecuente', t])];
 for (const [label, text] of texts) if (!appSource.includes(text)) problems.push(`${label}: «${text}» no está en dist/app.js`);
 
