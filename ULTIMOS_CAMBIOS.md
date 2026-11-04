@@ -6,6 +6,44 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-11-03 - Modo oscuro y ajustes para teléfonos en la guía de clientes
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `feature/modo-oscuro`, desde `main` después del PR #13, en un solo commit.
+- **Qué se hizo:**
+  - La guía de clientes tiene modo oscuro. «Automático» sigue el modo del teléfono y cambia si el teléfono cambia. En el menú, «Aspecto» permite elegir Claro u Oscuro, y la elección se guarda en el navegador (`hpc-theme`). Un script corto en `index.html` aplica el aspecto antes de pintar la página, para que no aparezca un destello blanco.
+  - Colores en oscuro:
+    - fondo `#121516` y tarjetas `#1B1F20`;
+    - texto `#EEF1F1` y texto secundario `#A3ABAE`;
+    - textos naranjas `#FF8A4C`;
+    - botones `#FC641B` con texto negro.
+
+    Las fotos de producto quedan sobre fondo claro. Los colores están en un bloque al final de `styles.css`.
+  - Ajustes para iPhone y Android, solo en CSS (sin código de app nativa):
+    - Los textos de 7 a 9 px pasan a 10 u 11 px. Quedan más pequeños el logo y algunos textos con el teléfono en horizontal.
+    - El buscador de Mis herramientas ocupa todo el ancho.
+    - Los enlaces pequeños tienen más área para tocar.
+    - El iPhone no agranda el texto solo al girarlo, y en pantallas táctiles los campos usan 16 px, para que iOS no acerque la página.
+  - Los dos colores que estaban dentro de `app.js` («No es lo que busco» y «Eliminar registro de este dispositivo») pasan a clases de CSS.
+  - Cambios en el modo claro:
+    - Cuatro textos que no alcanzaban 4.5:1 ahora sí lo alcanzan: las respuestas de las preguntas frecuentes de garantía, Mis herramientas vacío, la letra pequeña de la opción elegida y «Eliminar registro».
+    - La regla `[hidden]` vuelve a ocultar la vista previa vacía de la factura. Antes, en el formulario de registro se veía como una imagen rota.
+  - `check-guide.cjs` prueba el aspecto: automático, elegido, guardado y valor desconocido. Los dos scripts de comprobación ahora simulan también `document.documentElement`.
+  - Versión `0.4.0`, por ser una función nueva. El portal interno solo cambia su número de versión. Copia portátil regenerada.
+- **Por qué:** lo pidió el colaborador, y Oliver aprobó el modo oscuro. La guía se abre desde un QR en el teléfono del cliente; muchos teléfonos usan el modo oscuro, y la letra de 7 a 9 px casi no se lee en un teléfono.
+- **Archivos afectados:** `dist/index.html`, `dist/styles.css`, `dist/app.js`, `dist/data.js`, `prototipos/portal-interno.html`, `scripts/check-guide.cjs`, `scripts/check-portal-interno.cjs`, `preview/HPC_Cliente_Mockup.html`, `PROYECTO.md`, `README.md`, `docs/alcance-cliente.md`, `docs/versiones.md`.
+- **Comprobaciones:**
+  - `node --check`, `node scripts/check-guide.cjs` y `node scripts/check-portal-interno.cjs`: correctos.
+  - Chrome sin ventana con axe-core 4.10.2 (WCAG 2.1 A y AA), en oscuro y en claro, a 390 y 1366 px: 54 pantallas y ventanas. Cubre inicio, menú, preguntas, recomendación, comparar, colaborador, «No es lo que busco», punto de venta, sin opción, garantía con las respuestas abiertas, registro, Mis herramientas, ayuda y «Cómo funciona». Solo quedan los cuatro números decorativos de las tarjetas de inicio, como antes. Sin desbordamiento ni errores en la consola.
+  - Selector en Chrome con clic real: 15 de 15. Cambia al instante, recuerda la elección al recargar y en otras páginas, sigue al teléfono en Automático, maneja un valor desconocido y funciona en la copia portátil. Sin errores en la consola.
+  - Chrome emulando teléfonos en claro y en oscuro: iPhone SE, iPhone 15, iPhone 15 Pro Max, un iPhone en horizontal y Android de 360 y 412 px. Fueron 132 pantallas, sin desbordamiento ni texto fuera de su caja; solo aparece el logo, que junta sus letras a propósito. Después de los ajustes, 88 pantallas en cuatro de esos teléfonos dieron el mismo resultado.
+  - Revisión visual de las capturas en celular y escritorio.
+- **Pendientes/límites:**
+  - No se probó en un iPhone ni en un Android reales, ni en Safari. Chrome emuló el tamaño, la pantalla táctil y el modo oscuro de cada teléfono.
+  - Los números decorativos de las tarjetas siguen tenues en los dos modos y están ocultos para los lectores de pantalla.
+  - El portal interno no tiene modo oscuro.
+  - La barra del navegador del teléfono sigue en naranja (`theme-color`) en los dos modos.
+
 ### 2026-11-03 - Centros de servicio, enlaces y garantía según la información oficial de HPC
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
