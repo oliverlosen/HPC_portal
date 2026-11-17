@@ -1,0 +1,129 @@
+# HPC Smart Guide - Contexto compartido del proyecto
+
+Última actualización de este contexto: 2026-11-17. Los avances posteriores deben registrarse en [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBIOS.md); si alteran el estado descrito aquí, actualiza también este documento.
+
+## Entrega local unificada — 0.6.0
+
+La entrega principal es `HPC_Portal_Unificado.html`, generado dentro de esta carpeta. Permite elegir Cliente, Colaborador, Mayorista e Inteligencia Comercial. Colaborador y Mayorista usan perfiles de demostración. Esta carpeta es una copia sin `.git`; no se crearon ramas, commits ni PR.
+
+`presentation/` define la pantalla inicial y el selector permanente. El generador incorpora los tres documentos de origen mediante vistas `srcdoc` en el mismo archivo: únicamente la vista seleccionada queda visible y activa para el usuario. La vista del cliente, la interna y la de Inteligencia Comercial mantienen separados estilos, eventos y estado; no se cargan otros HTML. Fotografías y almacenamiento se comparten a través del contenedor. Las fuentes, fotografías y scripts están integrados; no hay solicitudes de red necesarias para la presentación. Los enlaces externos mantienen su propósito original.
+
+Smart Guide incorpora interpretación de texto local compartida entre cliente y colaborador. `smart-knowledge.js` contiene 250 frases editoriales; `smart-engine.js` devuelve intención, datos reconocidos, preguntas pendientes y aclaraciones; `smart-ui.js` presenta la consulta y la revisión editable. Se mantienen las cuatro preguntas, las reglas de recomendación y sus 144 códigos. Una búsqueda de modelo devuelve una ficha, no una recomendación personalizada. No se amplió el catálogo ni se verificaron nuevas afirmaciones sobre productos o garantía.
+
+El almacenamiento usa las claves existentes. Si está bloqueado, el contenedor conserva los cambios en memoria durante la sesión y muestra un aviso. Los registros persistentes dependen del navegador y de la ubicación del archivo; no se promete migración automática entre rutas, navegadores o computadoras. Las facturas siguen en IndexedDB y conservan su manejo de error si no está disponible.
+
+## Qué problema queremos resolver
+
+HPC distribuye herramientas y productos para distintos proyectos en Guatemala. Un cliente en CEMACO, AKÍ o una ferretería puede necesitar ayuda para elegir, no encontrar un producto exhibido o desconocer la garantía y el servicio local. La propuesta es acompañarlo desde su necesidad hasta una opción comprensible, sin exigir conocimientos técnicos.
+
+La plataforma se llama **HPC Smart Guide**. Busca transformar la búsqueda de una herramienta en una solución para el proyecto del cliente, y hacer visible el respaldo local de HPC.
+
+## Quién usa la plataforma
+
+- **Cliente:** escanea un QR, acerca su teléfono a una etiqueta NFC o abre un enlace; recibe asesoría y consulta el respaldo.
+- **Colaborador de tienda:** puede ver el código y modelo en la pantalla del cliente para ayudar a ubicarlo, y un código de atención que resume sus cuatro respuestas. Tiene un prototipo de portal interno para revisión (`prototipos/portal-interno.html`): con ese código consulta lo que recomendó la guía y por qué, hace las mismas preguntas si el cliente no tiene celular, registra cómo terminó la atención, pide reposición y consulta servicio y garantía. Entra con un código personal de ejemplo, ve las metas del piloto y las suyas del mes, y una pestaña con el análisis del proyecto (HPC en Cemaco).
+- **Mayorista o distribuidor:** en el mismo prototipo, catálogo con precios por volumen de ejemplo, pedidos, pedido sugerido y solicitudes de reposición de sus tiendas.
+- **Equipo de HPC:** necesitará mantener catálogo, reglas, tiendas y resultados del piloto. Ese portal administrativo está pendiente.
+- **Equipo del proyecto:** trabaja desde GitHub con distintos agentes y herramientas; comparte contexto mediante los documentos de este repositorio.
+
+## Recorrido principal del cliente
+
+1. Accede a la guía sin descargar una aplicación.
+2. Elige qué necesita hacer: perforar/fijar, lavar con presión, aspirar/limpiar o cambiar un grifo.
+3. Responde preguntas sobre material o superficie, frecuencia de uso y prioridad.
+4. Recibe una recomendación con imagen, modelo, código, características y explicación.
+5. Puede comparar una alternativa, guardar su elección, abrir el selector de WhatsApp o mostrar a un colaborador el código del producto y el código de atención.
+6. Consulta garantía y servicio local; después de comprar, puede conservar los datos y la factura en la demostración.
+
+La guía empieza con la necesidad. No es una tienda de comercio electrónico ni registra ventas verificadas en su estado actual.
+
+## Estado real de la implementación
+
+| Componente | Estado al actualizar este documento |
+|---|---|
+| Frontend del cliente | Prototipo interactivo en `dist/`; primera versión [PR #1](https://github.com/oliverlosen/HPC_portal/pull/1), correcciones con recomendación por material [PR #3](https://github.com/oliverlosen/HPC_portal/pull/3) y pendientes de revisión [PR #5](https://github.com/oliverlosen/HPC_portal/pull/5), integrados en `main` |
+| Vista portátil | `preview/HPC_Cliente_Mockup.html`, generada desde las mismas fuentes |
+| Portal interno (colaborador y mayorista) | Prototipo de un solo archivo en `prototipos/portal-interno.html`, fuera de `dist/` y sin publicar. Datos de ejemplo en `localStorage`; se pueden pasar a otra computadora con un archivo. Códigos de acceso de demostración, no seguros: uno por colaborador de ejemplo y uno por cuenta de mayorista. Copia datos, reglas y textos de la guía; `scripts/check-portal-interno.cjs` comprueba que sigan iguales |
+| Versiones y Releases | Versión local preparada `0.6.0` (guía de clientes y portal interno); política en [docs/versiones.md](docs/versiones.md); primeras etiquetas y Releases pendientes de publicación |
+| Preguntas y recomendación | Reglas de demostración en JavaScript, pendientes de validar con especialistas de HPC |
+| Productos y fotografías | Muestra basada en el catálogo HPC/Truper; fotografías integradas en el HTML portátil y copias locales para las fuentes |
+| Precios | Valores de ejemplo identificados en pantalla |
+| Tiendas e inventario | Puntos de venta de ejemplo; sin inventario ni pasillos exactos conectados |
+| Garantía y servicio | Resumen y enlaces oficiales; la cobertura la confirma HPC |
+| Recomendaciones y registros | `localStorage` en el navegador; no se comparten entre computadoras |
+| Código de atención | La guía lo muestra en «Muéstrale esta pantalla» y cuando la muestra no tiene una opción. Resume las cuatro respuestas, sin datos personales; el colaborador lo escribe en el portal interno. No se envía ni se guarda en un servidor. Cambiar el orden o la cantidad de las opciones cambia los códigos |
+| Facturas | Archivos locales en `IndexedDB`, con consentimiento; no se envían a HPC |
+| WhatsApp | Abre el selector para que la persona decida a quién compartir; no envía automáticamente |
+| Medición | Eventos locales y `CustomEvent('hpc:event')`; sin Google Analytics configurado |
+| Autenticación y backend | Pendientes |
+| Portal administrativo | Pendiente |
+| Publicación web compartida | No verificada ni terminada; la carga de fuente a Sites quedó bloqueada por restricciones de red del entorno inicial |
+
+Estos estados describen lo existente; no son una lista de tareas autorizadas para implementar en cada sesión. Trabaja en el alcance de la solicitud actual.
+
+## Piloto y evolución
+
+La propuesta académica plantea comenzar con un piloto limitado en tiendas CEMACO, AKÍ y ferreterías, con énfasis en recomendación, garantía y compartir la elección. El prototipo permite explorar los cuatro grupos de necesidades incluidos.
+
+El documento propone evaluar el uso, el tiempo hasta la recomendación, su aceptación, solicitudes de ayuda, motivos de rechazo y compras respaldadas con evidencia. La interfaz actual recoge señales locales de demostración; todavía no produce una evaluación comercial real. Aceptar una recomendación o abrir WhatsApp no prueba que hubo una compra.
+
+Para una etapa posterior se contemplan búsqueda directa, kits/combinaciones para proyectos y ubicación más detallada cuando las tiendas proporcionen información.
+
+## Criterios de producto
+
+- Texto claro en español de Guatemala y uso cómodo en teléfono, que será el punto de entrada del QR/NFC.
+- Naranja `#FC641B` en el logo, los íconos y los bordes; `#C2410C` en textos, botones con texto y el contorno de foco; negro `#191C1D`, blanco y grises claros; títulos Manrope e interfaz DM Sans, con fuentes de sistema como alternativa.
+- El texto debe tener un contraste de al menos 4.5:1 con su fondo (3:1 si es grande), según WCAG 2.1 AA, y la guía debe poder usarse con teclado sin perder el foco. El naranja `#FC641B` sobre fondos claros no alcanza ese contraste en texto pequeño; por eso la guía y el portal interno usan `#C2410C` donde hay texto (opción A).
+- Modo oscuro en la guía de clientes: «Automático» sigue el modo del teléfono, y en el menú el cliente puede elegir Claro u Oscuro; la elección se guarda en su navegador. En oscuro, los botones usan `#FC641B` con texto negro, los textos naranjas `#FF8A4C` y las fotos de producto quedan sobre fondo claro, con el mismo contraste mínimo. El portal interno usa el mismo diseño y el mismo modo oscuro, con su propio selector «Aspecto».
+- Orientación útil antes de solicitar datos de contacto; no introducir barreras innecesarias para obtener la recomendación.
+- Diferenciar información oficial, ejemplos y datos pendientes de integración.
+- Mantener garantía y servicio local visibles sin prometer cobertura aprobada.
+- Derivar a asesoría si una necesidad queda fuera de la muestra. En concreto se prioriza el equipo SDS Plus incluido; la grifería de la muestra cubre lavamanos de baño y no se extiende automáticamente a cocina o ducha.
+- Para madera y metal, comparar los taladros/destornilladores de la muestra, sin elegir el SDS solo por potencia. Para uso diario o prioridad de mayor capacidad, mostrar ROTI-20A3 con dos baterías; para presupuesto y uso ocasional o regular, ROTI-20A2 con una batería. Son variantes de la misma familia: las baterías adicionales permiten alternarlas, no aumentan el diámetro de perforación. Indicar modo taladro sin percusión y derivar a HPC para confirmar diámetro, profundidad y trabajo intenso o continuo. Esta orientación de demostración no acredita capacidad para trabajo industrial continuo.
+
+Esta decisión se apoya en la [ficha de ROTI-20A3](https://www.truper.com/ficha_tecnica_pdf/views/ficha-print.php?id=261856) y el [manual de ROTI-20A3/20A2/20AS](https://www.truper.com/admin/descargables/manual/103246-103247-103248-02%20ROTOMARTILLO%20ESP-ING.pdf), consultados el 2026-10-13. El [SDS ROEL-50N2](https://www.truper.com/ficha_tecnica_pdf/views/ficha-print.php?id=79843) también admite madera y metal según Truper; se excluye de la selección automática para esos materiales como criterio de la guía, no por incompatibilidad absoluta.
+
+## Arquitectura actual y fuentes de edición
+
+Sitio estático con HTML, CSS y JavaScript del navegador. No necesita instalar dependencias de aplicación ni ejecutar una compilación. El generador ensambla tanto la presentación unificada como la copia portátil del cliente, y sincroniza el bloque compartido del portal interno. El portal interno es un HTML independiente, sin dependencias, que se abre directamente.
+
+| Archivo o carpeta | Responsabilidad |
+|---|---|
+| `dist/index.html` | Documento base y carga de recursos |
+| `dist/styles.css` | Diseño, estilos y vistas adaptables |
+| `dist/data.js` | Categorías, preguntas, catálogo de muestra y centros |
+| `dist/app.js` | Rutas, reglas, interacción, eventos y registros locales |
+| `scripts/export-preview.cjs` | Ensamblar el mockup portátil |
+| `scripts/check-guide.cjs` | Comprobar recomendaciones y eventos de la guía |
+| `scripts/check-portal-interno.cjs` | Comprobar que el portal interno use lo mismo que la guía, y sus funciones propias |
+| `preview/` | Copia portátil generada; editar las fuentes, no esta copia |
+| `prototipos/portal-interno.html` | Portal interno de colaborador y mayorista (prototipo) |
+| `.openai/hosting.json` | Identidad y configuración existentes de Sites |
+| `docs/alcance-cliente.md` | Alcance detallado del frontend |
+
+## Próximas decisiones e integraciones
+
+1. Validar preguntas, catálogo, criterios y compatibilidades con HPC.
+2. Definir una fuente autorizada de precios, disponibilidad y datos por tienda.
+3. Elegir el entorno de publicación y la forma de acceso de los usuarios.
+4. Diseñar backend, almacenamiento de facturas, consentimiento y acceso a los registros.
+5. Configurar medición del piloto, diferenciando intención, evidencia recibida y compra confirmada.
+6. Diseñar el portal administrativo y sus permisos.
+7. Definir el futuro del portal interno: acceso real por usuario, datos compartidos entre tiendas y mayoristas, publicación y si debe leer las fuentes de `dist/` en lugar de copiarlas. De esa decisión depende también si la guía muestra el código de atención a los clientes.
+8. Naranja de la marca: la guía usa la opción A (`#C2410C` donde hay texto, con texto blanco en los botones), propuesta en lugar de la opción B (texto oscuro sobre el naranja actual). Desde la versión 0.5.0 también la usa el portal interno.
+9. Priorizar búsqueda, kits y ubicación detallada después del piloto.
+
+No se han elegido todavía proveedores para el backend o una autenticación comercial. No los presentes como decisiones tomadas.
+
+## Cómo conservar una sola versión del contexto
+
+Trabaja con [AGENTS.md](AGENTS.md), actualiza [ULTIMOS_CAMBIOS.md](ULTIMOS_CAMBIOS.md) al modificar archivos y usa ramas/PR para compartir los cambios. Una conversación con un agente no actualiza por sí misma el contexto de los demás.
+
+## Fuentes del proyecto
+
+- Documento proporcionado por el equipo: **Fase 2 - Proyecto Final.pdf**. Su contenido relevante está resumido aquí; el PDF original no está incluido en el repositorio.
+- [Empresa y catálogo HPC](https://www.hpcenlinea.com.gt/gt).
+- [Política de garantía](https://hpc.com.gt/politicasdegarantia), consultada el 2026-11-03.
+- [Centros de servicio](https://hpc.com.gt/centros-de-servicio), consultada el 2026-11-03.
+
+Consulta las fuentes oficiales antes de cambiar afirmaciones sobre productos, garantía, precios o servicio. Añade la referencia y la fecha cuando incorpores información nueva.

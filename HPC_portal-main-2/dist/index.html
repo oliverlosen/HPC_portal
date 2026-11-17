@@ -1,0 +1,29 @@
+<!doctype html>
+<html lang="es-GT">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#fc641b">
+  <meta name="description" content="HPC Smart Guide: encuentra la herramienta para tu proyecto y conoce el respaldo local de HPC. Prototipo de experiencia de cliente.">
+  <title>HPC Smart Guide | Tu proyecto empieza aquí</title>
+  <script>(function(){var t;try{t=JSON.parse(localStorage.getItem('hpc-theme'))}catch(e){}if(t!=='light'&&t!=='dark')t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);document.documentElement.style.colorScheme=t})();</script>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="fonts.css">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="smart-guide.css">
+  <link rel="stylesheet" href="polish.css">
+  <script src="storage.js" defer></script>
+  <script src="assets.js" defer></script>
+  <script src="data.js" defer></script>
+  <script src="smart-knowledge.js" defer></script>
+  <script src="smart-engine.js" defer></script>
+  <script src="smart-ui.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Ir al contenido</a>
+  <div id="app"></div>
+  <div id="overlay-root"></div>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>
