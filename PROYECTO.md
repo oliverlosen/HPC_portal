@@ -11,7 +11,7 @@ La plataforma se llama **HPC Smart Guide**. Busca transformar la búsqueda de un
 ## Quién usa la plataforma
 
 - **Cliente:** escanea un QR, acerca su teléfono a una etiqueta NFC o abre un enlace; recibe asesoría y consulta el respaldo.
-- **Colaborador de tienda:** puede ver el código y modelo en la pantalla del cliente para ayudar a ubicarlo, y un código de atención que resume sus cuatro respuestas. Tiene un prototipo de portal interno para revisión (`prototipos/portal-interno.html`): con ese código consulta lo que recomendó la guía y por qué, hace las mismas preguntas si el cliente no tiene celular, registra cómo terminó la atención, pide reposición y consulta servicio y garantía.
+- **Colaborador de tienda:** puede ver el código y modelo en la pantalla del cliente para ayudar a ubicarlo, y un código de atención que resume sus cuatro respuestas. Tiene un prototipo de portal interno para revisión (`prototipos/portal-interno.html`): con ese código consulta lo que recomendó la guía y por qué, hace las mismas preguntas si el cliente no tiene celular, registra cómo terminó la atención, pide reposición y consulta servicio y garantía. Entra con un código personal de ejemplo, ve las metas del piloto y las suyas del mes, y una pestaña con el análisis del proyecto (HPC en Cemaco).
 - **Mayorista o distribuidor:** en el mismo prototipo, catálogo con precios por volumen de ejemplo, pedidos, pedido sugerido y solicitudes de reposición de sus tiendas.
 - **Equipo de HPC:** necesitará mantener catálogo, reglas, tiendas y resultados del piloto. Ese portal administrativo está pendiente.
 - **Equipo del proyecto:** trabaja desde GitHub con distintos agentes y herramientas; comparte contexto mediante los documentos de este repositorio.
@@ -33,8 +33,8 @@ La guía empieza con la necesidad. No es una tienda de comercio electrónico ni 
 |---|---|
 | Frontend del cliente | Prototipo interactivo en `dist/`; primera versión [PR #1](https://github.com/oliverlosen/HPC_portal/pull/1), correcciones con recomendación por material [PR #3](https://github.com/oliverlosen/HPC_portal/pull/3) y pendientes de revisión [PR #5](https://github.com/oliverlosen/HPC_portal/pull/5), integrados en `main` |
 | Vista portátil | `preview/HPC_Cliente_Mockup.html`, generada desde las mismas fuentes |
-| Portal interno (colaborador y mayorista) | Prototipo de un solo archivo en `prototipos/portal-interno.html`, fuera de `dist/` y sin publicar. Datos de ejemplo en `localStorage`; se pueden pasar a otra computadora con un archivo. Códigos de acceso de demostración, no seguros. Copia datos, reglas y textos de la guía; `scripts/check-portal-interno.cjs` comprueba que sigan iguales |
-| Versiones y Releases | Versión preparada `0.4.0` (guía de clientes y portal interno); política en [docs/versiones.md](docs/versiones.md); primeras etiquetas y Releases pendientes de publicación |
+| Portal interno (colaborador y mayorista) | Prototipo de un solo archivo en `prototipos/portal-interno.html`, fuera de `dist/` y sin publicar. Datos de ejemplo en `localStorage`; se pueden pasar a otra computadora con un archivo. Códigos de acceso de demostración, no seguros: uno por colaborador de ejemplo y uno por cuenta de mayorista. Copia datos, reglas y textos de la guía; `scripts/check-portal-interno.cjs` comprueba que sigan iguales |
+| Versiones y Releases | Versión preparada `0.5.0` (guía de clientes y portal interno); política en [docs/versiones.md](docs/versiones.md); primeras etiquetas y Releases pendientes de publicación |
 | Preguntas y recomendación | Reglas de demostración en JavaScript, pendientes de validar con especialistas de HPC |
 | Productos y fotografías | Muestra basada en el catálogo HPC/Truper; las fotografías requieren conexión externa |
 | Precios | Valores de ejemplo identificados en pantalla |
@@ -63,8 +63,8 @@ Para una etapa posterior se contemplan búsqueda directa, kits/combinaciones par
 
 - Texto claro en español de Guatemala y uso cómodo en teléfono, que será el punto de entrada del QR/NFC.
 - Naranja `#FC641B` en el logo, los íconos y los bordes; `#C2410C` en textos, botones con texto y el contorno de foco; negro `#191C1D`, blanco y grises claros; títulos Manrope e interfaz DM Sans, con fuentes de sistema como alternativa.
-- El texto debe tener un contraste de al menos 4.5:1 con su fondo (3:1 si es grande), según WCAG 2.1 AA, y la guía debe poder usarse con teclado sin perder el foco. El naranja `#FC641B` sobre fondos claros no alcanza ese contraste en texto pequeño; por eso la guía usa `#C2410C` donde hay texto (opción A). El portal interno todavía usa `#FC641B` con texto blanco en sus botones.
-- Modo oscuro en la guía de clientes: «Automático» sigue el modo del teléfono, y en el menú el cliente puede elegir Claro u Oscuro; la elección se guarda en su navegador. En oscuro, los botones usan `#FC641B` con texto negro, los textos naranjas `#FF8A4C` y las fotos de producto quedan sobre fondo claro, con el mismo contraste mínimo. El portal interno no tiene modo oscuro.
+- El texto debe tener un contraste de al menos 4.5:1 con su fondo (3:1 si es grande), según WCAG 2.1 AA, y la guía debe poder usarse con teclado sin perder el foco. El naranja `#FC641B` sobre fondos claros no alcanza ese contraste en texto pequeño; por eso la guía y el portal interno usan `#C2410C` donde hay texto (opción A).
+- Modo oscuro en la guía de clientes: «Automático» sigue el modo del teléfono, y en el menú el cliente puede elegir Claro u Oscuro; la elección se guarda en su navegador. En oscuro, los botones usan `#FC641B` con texto negro, los textos naranjas `#FF8A4C` y las fotos de producto quedan sobre fondo claro, con el mismo contraste mínimo. El portal interno usa el mismo diseño y el mismo modo oscuro, con su propio selector «Aspecto».
 - Orientación útil antes de solicitar datos de contacto; no introducir barreras innecesarias para obtener la recomendación.
 - Diferenciar información oficial, ejemplos y datos pendientes de integración.
 - Mantener garantía y servicio local visibles sin prometer cobertura aprobada.
@@ -100,7 +100,7 @@ Sitio estático con HTML, CSS y JavaScript del navegador. No necesita instalar d
 5. Configurar medición del piloto, diferenciando intención, evidencia recibida y compra confirmada.
 6. Diseñar el portal administrativo y sus permisos.
 7. Definir el futuro del portal interno: acceso real por usuario, datos compartidos entre tiendas y mayoristas, publicación y si debe leer las fuentes de `dist/` en lugar de copiarlas. De esa decisión depende también si la guía muestra el código de atención a los clientes.
-8. Naranja de la marca: la guía usa la opción A (`#C2410C` donde hay texto, con texto blanco en los botones), propuesta en lugar de la opción B (texto oscuro sobre el naranja actual). Falta aplicarla al portal interno, en un PR aparte.
+8. Naranja de la marca: la guía usa la opción A (`#C2410C` donde hay texto, con texto blanco en los botones), propuesta en lugar de la opción B (texto oscuro sobre el naranja actual). Desde la versión 0.5.0 también la usa el portal interno.
 9. Priorizar búsqueda, kits y ubicación detallada después del piloto.
 
 No se han elegido todavía proveedores para el backend o una autenticación comercial. No los presentes como decisiones tomadas.

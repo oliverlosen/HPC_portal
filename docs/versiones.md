@@ -105,6 +105,21 @@ Si se integra la rama `feature/modo-oscuro` después de `v0.3.2`, publicar `v0.4
 - En oscuro, los botones usan el naranja de la marca con texto negro, y las fotos de producto quedan sobre fondo claro. Los textos cumplen el contraste mínimo de 4.5:1.
 - En el modo claro, cuatro textos que no lo cumplían ahora sí lo cumplen, y el formulario de registro ya no muestra una imagen vacía.
 - En iPhone y Android, la letra más pequeña sube a 10 u 11 px, el buscador de Mis herramientas ocupa todo el ancho y los enlaces pequeños se tocan con más facilidad. Es solo CSS, sin código de app nativa.
+
+### Notas preparadas para v0.5.0
+
+Si se integra la rama `feature/portal-codigos-metas-analisis`, publicar `v0.5.0` desde el commit de `main` que la contenga:
+
+- Portal interno, modo colaborador:
+  - Cada colaborador de ejemplo entra con su propio código, que dice quién atiende y en qué tienda. Sus atenciones quedan a su nombre. El código único anterior, `COLAB-2026`, ya no entra.
+  - «Métricas y metas» muestra las metas del piloto (aceptación de 40 % o más, menos de 1 minuto hasta la recomendación y 15 % de contactos, que todavía no se mide) y las metas del mes de cada colaborador.
+  - Una pestaña nueva, «Análisis», muestra las cifras resumidas del análisis del proyecto (HPC en Cemaco) y su relación con las necesidades de la guía.
+- El mayorista ve las metas del piloto en sus métricas.
+- El portal toma el diseño de la guía: menú lateral, logo, tarjetas y colores. En el teléfono, el menú se abre con ☰.
+- Modo oscuro en el portal: «Aspecto» con Automático, Claro u Oscuro, como en la guía.
+- Los botones y contadores del portal usan el naranja `#C2410C`, como la guía.
+- La guía de clientes solo cambia su número de versión.
+- Límites: los colaboradores, las metas y las cifras son de ejemplo o del análisis presentado; nada se conecta con sistemas de HPC.
 - El portal interno solo cambia su número de versión.
 
 ## Recuperarse si aparece un error
