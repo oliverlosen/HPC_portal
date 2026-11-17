@@ -6,6 +6,68 @@ Usa fechas `YYYY-MM-DD` de `America/Guatemala`. Las entradas nuevas van primero.
 
 ## Registro
 
+### 2026-11-16 - Portal interno: diseño de la guía, modo oscuro, códigos por persona, metas y análisis
+
+- **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.
+- **Rama:** `feature/portal-codigos-metas-analisis`, desde `main` después del PR #14, en un solo commit.
+- **Qué se hizo:**
+  - **Código por persona.** Hay cinco colaboradores de ejemplo, dos de CEMACO, dos de AKÍ y uno de la ferretería, cada uno con su código (por ejemplo, `CEM-ANA-26`).
+    - El código dice quién atiende y en qué tienda, así que la entrada ya no pide elegir la tienda.
+    - Cada atención guarda quién la registró (`by`), y la copia de datos entre computadoras lo conserva.
+    - El código único anterior, `COLAB-2026`, ya no entra. Una sesión anterior sin colaborador pide volver a entrar.
+  - **Metas.** La pestaña «Métricas y metas» muestra:
+    - las metas del piloto, con los indicadores de la presentación del proyecto: aceptación de 40 % o más («Me lo llevo» o WhatsApp sobre las recomendaciones), menos de 1 minuto hasta la recomendación y 15 % de contactos. Esta última aparece como «por medir», porque la guía no pide datos de contacto;
+    - las metas del mes del colaborador: 40 atenciones, 20 con código de atención y 15 compras registradas, todas de ejemplo;
+    - una gráfica de atenciones por colaborador de la tienda.
+
+    El mayorista ve las metas del piloto de sus tiendas.
+  - **Análisis.** Una pestaña nueva del colaborador con las cifras resumidas del análisis del proyecto (fase 3):
+    - +18 % en ventas de enero a julio de 2026;
+    - participación de mercado de 43.9 % a 43.8 %;
+    - 4 de 7 categorías perdieron participación en Cemaco, con su gráfica.
+
+    Una tabla relaciona esas categorías con las necesidades de la guía. Se aclara que la fuente es el análisis del equipo y que no son datos de un sistema de HPC.
+  - **Diseño de la guía.** El portal toma el diseño de la guía de clientes:
+    - un menú lateral con el logo «HPC», el modo, las secciones, quién entró con «Salir del portal» y el aspecto;
+    - una barra superior con la sección actual;
+    - las mismas tarjetas, botones, letras y colores.
+
+    En el teléfono, el menú se abre con ☰ y se cierra con Escape o al elegir una sección. Las pestañas horizontales ya no se usan.
+  - **Modo oscuro.** «Aspecto» ofrece Automático, Claro u Oscuro, como en la guía, y la elección se guarda en el navegador (`hpc-portal-interno:theme`).
+    - Automático sigue al equipo con `prefers-color-scheme` desde el CSS, porque el portal solo puede tener un script.
+    - Todos los colores pasan a variables con su valor claro y oscuro.
+    - Las gráficas usan pasos validados para el fondo oscuro, con la guía de visualización: serie `#3987e5` y escala por etapas `#184f95` → `#6da7ec`.
+    - El código QR queda siempre en negro sobre blanco, para que se pueda escanear.
+  - **Naranja legible.** Los botones y contadores usan `#C2410C` con texto blanco (5.2:1), como la guía (opción A). En oscuro usan `#FC641B` con texto negro. El logo es el de la guía: «HPC» en el color del texto, con la diagonal naranja.
+  - Las gráficas aceptan un valor con formato propio (por ejemplo, «−11.08 pp»).
+  - `check-portal-interno.cjs` prueba los códigos por persona, las atenciones con colaborador, las metas y el análisis.
+  - Versión `0.5.0`, por ser una función nueva del prototipo. La guía de clientes solo cambia su número de versión. Copia portátil regenerada.
+- **Por qué:**
+  - En la retroalimentación del 10 de noviembre, el equipo le dijo al evaluador que el portal incluiría un código de acceso por persona, las metas (lo que pidió Cristian) y una pestaña de análisis.
+  - El colaborador pidió que el portal se viera igual que la guía, con modo oscuro y automático.
+  - El naranja del portal estaba pendiente desde la versión 0.3.1.
+- **Archivos afectados:** `prototipos/portal-interno.html`, `scripts/check-portal-interno.cjs`, `dist/data.js`, `preview/HPC_Cliente_Mockup.html`, `PROYECTO.md`, `README.md`, `docs/versiones.md`.
+- **Comprobaciones:**
+  - `node --check`, `node scripts/check-guide.cjs` y `node scripts/check-portal-interno.cjs`: correctos.
+  - Chrome sin ventana, a 1280 y 390 px, con el portal del repositorio: 38 de 38.
+    - Cubre los códigos de la entrada, el rechazo de `COLAB-2026`, la entrada en minúsculas, la atención registrada a nombre de Ana, las metas del piloto y las del mes, las atenciones por colaborador, el análisis con sus cifras y su tabla, el cambio a otro colaborador, el mayorista sin análisis y el naranja de los botones (`rgb(194, 65, 12)`).
+    - Sin desbordamiento ni errores en la consola.
+  - Recorrido de las 7 secciones del colaborador y las 7 del mayorista: 14 de 14, con las fotos del catálogo.
+  - Diseño y aspecto, en claro y en oscuro, a 1280 y 390 px: 40 de 40.
+    - Automático sigue al equipo sin recargar; Claro y Oscuro se recuerdan al recargar.
+    - En el teléfono, el menú abre con ☰ y cierra con Escape y al elegir una sección.
+    - Las 14 secciones abren sin desbordamiento, y el QR sigue en blanco y negro.
+    - Sin errores en la consola.
+  - axe-core 4.10.2 (WCAG 2.1 A y AA), en claro y en oscuro, en la entrada, Atender cliente, Métricas y metas, Análisis, QR, el catálogo, el pedido y las métricas del mayorista: sin problemas.
+    - Se corrigieron: el texto pequeño de la opción elegida en la entrada, una etiqueta con un color fijo en Métricas y dos tablas que se desplazan en el celular, que ya se pueden recorrer con el teclado.
+  - Revisión visual de las capturas en computadora y celular, en claro y en oscuro.
+- **Pendientes/límites:**
+  - Los colaboradores, sus códigos y las metas son de ejemplo. Los códigos no protegen nada: la versión real necesita usuarios, contraseñas y un servidor.
+  - Las cifras del análisis son las que presentó el equipo. No se conectan con datos de HPC ni se actualizan solas.
+  - La meta de contactos no se puede medir hasta que la guía pida datos de contacto en la versión del piloto.
+  - Si el equipo está en claro y se eligió Oscuro, la página puede verse clara un instante al abrir, hasta que corre el script. Automático no tiene ese destello.
+  - No se probó en un iPhone ni en un Android reales.
+
 ### 2026-11-03 - Modo oscuro y ajustes para teléfonos en la guía de clientes
 
 - **Agente/herramienta:** Claude Code (Claude Opus 5.5) · colaborador: tnt101ramirez-ctrl.

@@ -137,6 +137,25 @@ catch (error) { if (!/demasiado largo/.test(error.message)) problems.push(`mensa
 const sample = portal.qr.encode('https://example.com/smart-guide/?tienda=aki&origen=qr');
 const digest = crypto.createHash('sha256').update(sample.modules.map(row => row.map(Number).join('')).join('\n')).digest('hex').slice(0, 16);
 same('QR de referencia', [sample.version, sample.mask, digest], [4, 2, '8e0f5437a96c768d']);
+// Código por persona: cada colaborador de ejemplo tiene un código único, de una tienda que existe; se acepta en minúsculas.
+same('códigos personales distintos', new Set(portal.collaborators.map(c => c.code)).size, portal.collaborators.length);
+for (const c of portal.collaborators) {
+  if (!data.stores.some(s => s.id === c.store)) problems.push(`el colaborador ${c.id} es de una tienda que no existe: ${c.store}`);
+  same(`entrar con «${c.code.toLowerCase()}»`, portal.collaboratorByCode(` ${c.code.toLowerCase()} `)?.id, c.id);
+}
+same('el código anterior para todos ya no sirve', portal.collaboratorByCode('COLAB-2026'), null);
+same('atención de un colaborador de la muestra', portal.validAttention({at:'2026-11-16T10:00:00Z', store:'cemaco', productId:null, by:'cem-ana'}), true);
+same('atención de un colaborador que no existe', portal.validAttention({at:'2026-11-16T10:00:00Z', store:'cemaco', productId:null, by:'nadie'}), false);
+// Metas del piloto: aceptación = («Me lo llevo» + WhatsApp) / recomendaciones, 40 % o más; tiempo promedio de menos de 60 s.
+same('metas del piloto alcanzadas', portal.pilotGoals({recs:100, accepted:30, whatsapp:12, time:{sum:5000, buckets:[20, 30, 30, 20]}}).map(g => [g.id, g.met]),
+  [['acceptance', true], ['time', true], ['leads', null]]);
+same('metas del piloto sin alcanzar', portal.pilotGoals({recs:100, accepted:20, whatsapp:5, time:{sum:9000, buckets:[0, 50, 50, 0]}}).map(g => g.met), [false, false, null]);
+// Metas del colaborador: solo sus atenciones del mes en curso.
+const att = (by, day, month, extra = {}) => ({by, at:new Date(2026, month, day, 10).toISOString(), store:'cemaco', ...extra});
+same('metas del mes de un colaborador', portal.personGoals([att('cem-ana', 2, 10, {via:'codigo', outcome:'compro'}), att('cem-ana', 3, 10),
+  att('cem-luis', 3, 10, {via:'codigo'}), att('cem-ana', 30, 9, {via:'codigo'})], 'cem-ana', new Date(2026, 10, 16, 12)).map(g => g.value), [2, 1, 1]);
+// Análisis: 4 de 7 categorías perdieron participación, de la mayor a la menor pérdida.
+same('categorías del análisis', [portal.analysis.lost.length, portal.analysis.categories, portal.analysis.lost.every((x, i, l) => i === 0 || x[1] >= l[i - 1][1])], [4, 7, true]);
 
 // Código de atención: el portal lee el mismo código que muestra la guía y rechaza los errores de escritura más comunes.
 const attentionCodes = new Set();
@@ -169,4 +188,4 @@ if (problems.length) {
   console.error(`${problems.length} diferencia(s) en el portal interno:\n- ${problems.slice(0, 30).join('\n- ')}`);
   process.exit(1);
 }
-console.log(`OK: el portal interno coincide con la guía ${data.version}: ${combinations.length} combinaciones de la regla, ${data.products.length} productos, preguntas y tiendas, ${explained} explicaciones y alternativas, ${S.centers.length} centros y ${texts.length} textos de servicio y garantía, categorías del QR. Código de atención: ${attentionCodes.size} códigos y ${typos} errores de escritura rechazados. Funciones del portal: descuentos por volumen, copia de datos y generador de QR (versiones 1 a 10). El diseño y los recorridos se revisan en un navegador.`);
+console.log(`OK: el portal interno coincide con la guía ${data.version}: ${combinations.length} combinaciones de la regla, ${data.products.length} productos, preguntas y tiendas, ${explained} explicaciones y alternativas, ${S.centers.length} centros y ${texts.length} textos de servicio y garantía, categorías del QR. Código de atención: ${attentionCodes.size} códigos y ${typos} errores de escritura rechazados. Funciones del portal: descuentos por volumen, copia de datos, generador de QR (versiones 1 a 10), códigos por persona, metas y análisis. El diseño y los recorridos se revisan en un navegador.`);
